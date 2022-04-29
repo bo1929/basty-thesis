@@ -1,0 +1,276 @@
+\chapter{Feature Extraction}
+For a single experiment data, feature extraction consists of four consecutive steps, where the input in a stage is the output of the previous one.
+The input of the first step is the raw output signal of the tracking and pose estimation model, in our case, the output of DeepLabCut.
+The feature extraction steps are as follows:
+
+\begin{enumerate}
+	\item Constructing pose values and preprocessing (filtering and imputation).
+	\item Computing spatio-temporal features, such as distances between body parts, velocity, angular velocity from body part positions.
+	\item Extending spatio-temporal features to multiple time-scales using wavelet transformation and sliding window statistics.
+	\item Computing high-dimensional behavioral representations with normalization.
+\end{enumerate}
+
+Matrices $\mathbf{X} \in \mathbb{R}^{T \times N}$ and $\mathbf{Y} \in \mathbb{R}^{T \times N}$ denotes a multivariate time series collected for $N$ tracked body part of the fly on $T$ time stamps by a pose estimation model, respectively for $x$ and $y$ cartesian components of two-dimensional video recordings. This multivariate time series matrices $\mathbf{X}$ and $\mathbf{Y}$ are the raw input data to the first step of the feature extraction.
+Note that $N$ must be the same among all experiments conducted with different fruit flies, but $T$ might differ.
+Each column of the $\mathbf{X}=[\mathbf{x}_1, \cdots, \mathbf{x}_N]^\top$ and $\mathbf{Y}=[\mathbf{y}_1, \cdots, \mathbf{y}_N]^\top$ can be written respectively as follows;
+
+\begin{align*}
+	\mathbf{y}_i & = (y_{i,1}, y_{i,2}, \dots, y_{i,t-1}, y_{i,t}, y_{i,t}, \dots, y_{i,T}), \\
+	\mathbf{x}_i & = (x_{i,1}, x_{i,2}, \dots, x_{i,t-1}, x_{i,t}, x_{i,t}, \dots, x_{i,T}).
+\end{align*}
+
+Here $i$ denotes the index of the body part, e.g. leg tip or proboscis.
+
+
+In addition to $\mathbf{X}$ and $\mathbf{Y}$, many tracking and pose estimation models report prediction scores for each tracked body part at each time step.
+$L \in \mathbb{R}^{N \times T}$ denotes the time series of prediction scores, each column of the $L=[l_1, \cdots, l_N]^\top$ can be written as follows;
+
+\begin{equation*}
+	\mathbf{l}_i = (l_{i,1}, l_{i,2}, \dots, l_{i,t-1}, l_{i,t}, l_{i,t}, \dots, l_{i,T}).
+\end{equation*}
+
+The prediction score drops drastically when the body part is not visible. Thus, $L$ provides valuable information about the occluded body parts. In the Section~\ref{section:dealing_with_occluded_body parts}, how $L$ is incorporated into construction of pose values is described in detail.
+
+\section{Construction of Pose Values and Preprocessing}
+The goal of this sub-stage is primarily preprocessing, which inolves filtering and imputating certain frames.
+But in addition to this, there are a couple of optional procedures that can be beneficial for our task of learning stereotypical behaviors.
+These additional procedures deal with occluded body parts of the fly, alignment of the fly orientations and defining new points of interests.
+
+\subsection{Dealing with Occluded body parts}\label{section:dealing_with_occluded_body parts}
+As mentioned in the Section~\ref{section:challanges}, the two-dimensional video recordings introduces a number of important challenges, and one of them is the occluded body part challenge.
+There are many types of occlusions which can be informally described as follows.
+One examples is short occlusions resulting from postural changes.
+Imputation of the time series $\mathbf{X}$ and $\mathbf{Y}$ for these short occlusions is relatively more robust and convenient since the number of missing data points are relatively less.
+However this is not the case for long occlusions which usually occur when the fly is dormant for a long period of time.
+Especially for the body parts which have left and right counterparts, it is common that the orientation of the fly results in one of the counterparts being occluded in long dormant epochs.
+We follow multiple approaches to handle different type occlusions; namely imputation and elimination of corresponding data-points.
+Before describing those approaches we need to define criterion for being occluded.
+
+\subsubsection{Computing Oriented Pose Values to Handle body parts with Left \& Right Counterparts}
+If the fly oriented perpendicular to the camera perspective as in Figure~\ref{figure:perpendicular-orientation}, then one of the left and right body parts is often occluded.
+In other orientations (e.g. Figure~\ref{figure:parallel-orientation} and Figure~\ref{figure:oblique-orientation}),  both of them or none of them might be occluded as well.
+However, in the conducted experiments, flies usually choose to stay dormant perpendicular to the camera perspective in long dormant epochs, as mentioned in Chapter~\ref{chapter:expt-data-collection}.
+In such cases, one can only use one of the left and right counterparts to construct pose values.
+Therefore, this optional step is included in the behavioral mapping pipeline to reduce pose values of body parts with left and right counterparts to a single value.
+
+We use prediction scores to determine which body part should be used to construct pose value.
+Let $i$ and $j$ be a pair of body parts which are left and right counterparts of each other, e.g. left haltere and right haltere.
+Then one can use the $\mathbf{l}_i$ and $\mathbf{l}_j$ to predict if one of them is occluded at a particular time step $t$.
+Let $\orient{\mathbf{x}_i, \mathbf{x}_j}$ ($\orient{\mathbf{y}_i, \mathbf{y}_j}$) be a new pose vector which will be computed based on $\mathbf{x}_i$ and $\mathbf{x}_j$ ($\mathbf{y}_i$ and $\mathbf{y}_j$), e.g. an oriented haltere pose value from left haltere and right haltere.
+The following conditional produces are proposed to compute oriented pose values from left and right pose values by deciding the orientation of the fly for that counterpart; they can be used separately or together.
+\begin{itemize}
+	\item If $l_{i,t} - l_{j,t} \geq  \epsilon$ then without loss of generality $\orient{x_{i,t}, x_{j,t}}=x_{i,t}$ and $\orient{y_{i,t}, y_{j,t}}=y_{i,t}$ for a threshold $\epsilon$, typically $\epsilon > 0.5$.
+	\item If $\card{\Set{t^{\prime}}{l_{i,t^{\prime}} > l_{j,t^{\prime}}, t^{\prime} \in [t-w \rangedots t+w]}} > w$, then without loss of generality $\orient{x_{i,t}, x_{j,t}}=x_{i,t}$ and $\orient{y_{i,t}, y_{j,t}}=y_{i,t}$ for a window size $2w+1$.
+	\item If $l_{i,t} > l_{j,t}$ and $\abs{t-t^i} < \abs{t-t^j}$ where $t^i=\argmin_{t^i} \abs{t-t^i}$, $t^i \in \Set{t^{\prime}}{l_{i,t^{\prime}} - l_{j,t^{\prime}} > \epsilon}$ and $t^j=\argmin_{t^j} \abs{t-t^j}$, $t^j \in \Set{t^{\prime}}{l_{j,t^{\prime}} - l_{i,t^{\prime}} > \epsilon}$ for some threshold $\epsilon$ then without loss of generality $\orient{x_{i,t}, x_{j,t}}=x_{i,t}$ and $\orient{y_{i,t}, y_{j,t}}=y_{i,t}$.
+	\item If simply $l_{i,t} > l_{j,t}$ (i.e. hard threshold) then without loss of generality $\orient{x_{i,t}, x_{j,t}}=x_{i,t}$ and $\orient{y_{i,t}, y_{j,t}}=y_{i,t}$.
+\end{itemize}
+Except applying a hard threshold, all other conditions may leave some of the time points with undecided orientations.
+If the number of such time points is acceptable, then applying hard threshold for those time points is convenient and handy.
+
+After applying above procedures for one right and left counterpart pair $i, j$, we can define
+\begin{align*}
+	\mathbf{X}^{\ast} & = \rbrkt{[(\mathbf{x}_p)_{p \notin \cup\mathcal{O}}] \mid [\left(\orient{\mathbf{x}_i, \mathbf{x}_j}\right)_{\set{i,j} \in \mathcal{O}}]}^\top,      \\
+	\mathbf{Y}^{\ast} & = \rbrkt{[(\mathbf{y}_p)_{p \notin \cup\mathcal{O}}] \mid [\left(\orient{\mathbf{y}_i, \mathbf{y}_j}\right)_{\set{i,j} \in \cup \mathcal{O}}]}^\top. \\
+\end{align*}
+\begin{align*}
+	\mathbf{X}^{\ast} & =\rbrkt{ (x_{p,t})_{t \in \set{1, \cdots, T}, p \notin \cup \mathcal{O}} \mid [\left(\orient{\mathbf{x}_i, \mathbf{x}_j}\right)_{\set{i,j} \in \mathcal{O}}]}^\top,   \\
+	\mathbf{Y}^{\ast} & = \rbrkt{(y_{p,t})_{t \in \set{1, \cdots, T}, p \notin \cup \mathcal{O}}  \mid  [\left(\orient{\mathbf{x}_i, \mathbf{x}_j}\right)_{\set{i,j} \in \mathcal{O}}]}^\top. \\
+\end{align*}
+where $\mathcal{O}$ is the set of index pairs of right and left counterparts and $\cup \mathcal{O}$ is the union of all such indexes.
+Applying this procedure for each right and left counterparts results in computing $\mathbf{X}^{\ast}$ and $\mathbf{Y}^{\ast}$.
+This oriented version of original data matrices can be used instead of $\mathbf{X}$ and $\mathbf{Y}$ in the rest of the pipeline, if desired.
+
+\subsubsection{Detecting Occlusions Using Prediction Scores and Preternatural Tracking Predictions}
+
+\subsection{Aligning Flies with Different Orientations}
+
+\subsection{Preprocessing: Filtering and Imputation}
+
+\section{Computation of Spatio-temporal Features from Pose Values}
+Constructing pose values enables us to go one step further towards learning stereotypical behaviors.
+Tracking of relevant body parts and constructing pose values is an essential step for quantifying behavior.
+However, a set of coordinate values is sufficient to describe and represent complex spatio-temporal dynamics of animal behavior.
+There are thousands of unique postures and behaviors are not exhibited by some static set of postures.
+Instead, they are defined by expressive and meaningful spatio-temporal features such as distances, velocities, angles and angular velocities.
+Therefor, one need to compute such features from the coordinate values of body parts in two dimensional space.
+
+Second stage of the feature extraction is computation of spatio-temporal features from pose values. Two type of features are computed in this stage.
+\begin{enumerate}
+	\item \textbf{Snapshot features:} Spatio-temporal feature values computed at a snapshot of time.
+	      \begin{itemize}
+		      \item distances,
+		      \item angles,
+		      \item cartesian pose values (i.e. per body part features).
+	      \end{itemize}
+	\item \textbf{Gradient features:} Spatio-temporal feature values computed based how snap features change over time.
+	      \begin{itemize}
+		      \item change of distances,
+		      \item change of angles (i.e. angular velocities),
+		      \item change of cartesian pose values (i.e. body part velocities).
+	      \end{itemize}
+\end{enumerate}
+
+The gradient of snapshot features computed using second order accurate central differences in the interior points. The returned gradient features has the same shape as the snapshot features.
+
+\subsection{Distances Between body parts}
+Given body part pair $\rbrkt{i,j}$, distances between them at a time step $t$ is computed as:
+\begin{equation}
+	d^{i,j}_t = \sqrt{(x_{i,t} - x_{j,t})^2 + (y_{i,t} - y_{j,t})^2}.
+\end{equation}
+
+The corresponding gradient feature, which is the change of distance between body part $i$ and $j$ is computed as follows using the second order gradient approximation:
+\begin{equation}
+	\dot{d}^{i,j}_t = \begin{cases} \frac{\abs{d^{i,j}_{t+1} - d^{i,j}_{t}}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{\abs{d^{i,j}_{t+1} - d^{i,j}_{t-1}}}{2\Delta t} & \textnormal{otherwise}, \end{cases}
+\end{equation}
+where $\Delta t$ is the sampling period, which is equal to $\sfrac{1}{\textnormal{FPS}}$ seconds.
+
+\subsection{Joint Angles Between body parts}
+Given a triplet of body parts $\rbrkt{i,j,k}$, angle between $i$ and $k$ around $j$ is computed using the 2-argument arctangent function as below.
+\begin{equation}
+	w^{i,j,k}_t = \mathop{\rm{atan2}}\left(\det \begin{bmatrix} x_{i,t} - x_{j,t}, x_{k,t} - x_{j,t} \\ y_{i,t} - y_{j,t}, y_{k,t} - y_{j,t} \end{bmatrix}, \begin{bmatrix} x_{i,t} - x_{j,t} \\ y_{i,t} - y_{j,t} \end{bmatrix} \cdot \begin{bmatrix} x_{k,t} - x_{j,t}  \\ y_{k,t} - y_{j,t} \end{bmatrix}      \right) + \pi
+\end{equation}
+
+Then similar to distance gradient feature, angular velocity is approximated by:
+\begin{equation}
+	\dot{w}^{i,j,k}_t = \begin{cases} \frac{\abs{w^{i,j,k}_{t+1} - w^{i,j,k}_{t}}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{\abs{w^{i,j,k}_{t+1} - w^{i,j,k}_{t-1}}}{2\Delta t} & \textnormal{otherwise}. \end{cases}
+\end{equation}
+
+\subsection{Cartesian Pose Values of body parts}
+Cartesian pose values of a body part $i$ is straightforwardly given by the $x$ and $y$ coordinate values:
+\begin{align}
+	x^{i}_t & = x_{i,t}, \\
+	y^{i}_t & = y_{i,t}.
+\end{align}
+Note that for a single body part two feature values is generated.
+
+Corresponding gradient features, namely body part velocities along each cartesian component is computed as follows:
+\begin{align}
+	\dot{x}^{i}_t & = \begin{cases} \frac{x^{i}_{t+1} - x^{i}_{t}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{x^{i}_{t+1} - x^{i}_{t-1}}{2\Delta t} & \textnormal{otherwise}, \end{cases} \\
+	\dot{y}^{i}_t & = \begin{cases} \frac{y^{i}_{t+1} - y^{i}_{t}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{y^{i}_{t+1} - y^{i}_{t-1}}{2\Delta t} & \textnormal{otherwise}. \end{cases}
+\end{align}
+
+\subsection{Constructing Spatio-temporal Feature Matrices}
+Let $\mathcal{C}, \mathcal{D}$, and $\mathcal{A}$ denote set of body parts, body part pairs, body part triplets which defines snapshot features; respectively cartesian pose values, distances and angles.
+Similarly, let $\mathcal{C}^{\prime}, \mathcal{D}^{\prime}$, and $\mathcal{A}^{\prime}$ denote sets which define sets respective gradient features.
+Then snapshot feature matrix $S$ constructed as follows;
+\begin{equation}
+	\mathbf{S} = \rbrkt{x^i_t}_{1 \leq t \leq T, \, i \in \mathcal{C}} \mid \rbrkt{y^i_t}_{1 \leq t \leq T, \, i \in \mathcal{C}} \mid \rbrkt{d^{i,j}_t}_{1 \leq t \leq T, \, \cbrkt{i,j} \in \mathcal{D}} \mid \rbrkt{w_t^{i,j,k}}_{1 \leq t \leq T, \, \cbrkt{i,j,k} \in \mathcal{A}} .
+\end{equation}
+
+Similarly for gradient features, feature matrix is constructed by concatenating change of distances, change of angles and body part velocities;
+\begin{equation}
+	\mathbf{V} = \rbrkt{\dot{x}^i_t}_{1 \leq t \leq T, i \in \mathcal{C}^{\prime}} \mid \rbrkt{\dot{y}^i_t}_{1 \leq t \leq T, i \in \mathcal{C}^{\prime}} \mid \rbrkt{d^{i,j}_t}_{1 \leq t \leq T, \cbrkt{i,j} \in \mathcal{D}^{\prime}} \mid \rbrkt{\dot{w}_t^{i,j,k}}_{1 \leq t \leq T, \cbrkt{i,j,k} \in \mathcal{A}^{\prime}} .
+\end{equation}
+
+The resulting two feature matrices are $\mathbf{S} \in \mathbb{R}^{T \times \rbrkt{\card{\mathcal{C}}\card{\mathcal{D}}\card{\mathcal{A}}}}$ and $\mathbf{V} \in \mathbb{R}^{T \times \rbrkt{\card{\mathcal{C}}^{\prime}\card{\mathcal{D}^{\prime}}\card{\mathcal{A}^{\prime}}}}$. Let $N_s$ denote the number of snapshot features, being equal to $\card{\mathcal{C}}\card{\mathcal{D}}\card{\mathcal{A}}$ and let $N_v$ denote number of gradient features which is equal to $\card{\mathcal{C}}^{\prime}\card{\mathcal{D}^{\prime}}\card{\mathcal{A}^{\prime}}$.
+
+\section{Extending Spatio-temporal Features to Multiple Time-scales}\label{section:extending-features-to-multiple-time-scale}
+Instantaneous values of spatio-temporal features do not provide sufficient description of behavior.
+Understanding of output of a complex biological system, in our case behavior, can only be achieved by studying multiple time-scale together.
+Previous studies attempt to search behavioral motifs, e.g. repeated sub-sequences of actions with finite length,within the behavioral time series.
+However, as \citet{berman_mapping_2014} states, this paradigm usually requires problems of temporal alignment and relative phasing between different scales.
+Alternatively, extending spatio-temporal features to capture postural dynamics at different time-scale eliminate requirements of temporal alignment and motif based analysis.
+In order to extend the spatio-temporal features, we applied wavelet transformation (similar to \citet{berman_mapping_2014}) and computed moving statistics at different time scales (similar to \citet{kabra_jaaba_2013}), respectively for snapshot feature set ($\mathbf{S}$) and gradient feature set ($\mathbf{V}$).
+
+\subsection{Computing Moving Statistics of Gradient Spatio-temporal Features}
+Gradient features only reflects the instantaneous values of velocities with respect to the sampling rate. In order to capture how these values change within a given interval, the moving statistics, e.g. mean and standard deviation, of gradient features are computed with a sliding window approach. Let $\tau$ be the window size parameter, i.e. the considered time scale, then moving mean of the corresponding gradient feature $\mathbf{v}_{i}$ is given by function $\mu_\tau$ as:
+
+\begin{equation}
+	\mu_{\tau}(v_{i,t}) = \sfrac{1}{\min\{t+\tau,T\}-\max\{t-\tau,1\}+1} \sum_{t^{\prime}=\max\{t-\tau,1\}}^{\min\{t+\tau,T\}} v_{i, t^{\prime}}.
+\end{equation}
+
+Similarly the moving standard deviation of a gradient feature $v_{i,t}$ by $\sigma_\tau$ as follows:
+\begin{equation}
+	\sigma_\tau(v_{i,t}) = \sqrt{\sfrac{1}{\min\{t+\tau,T\}-\max\{t-\tau,1\}+1} \sum_{t^{\prime}=\max\{t-\tau,1\}}^{\min\{t+\tau,T\}} \rbrkt{\mu_{\tau}(v_{i,t}) - v_{i, t^{\prime}}}^2}.
+\end{equation}
+
+This feature generation approach is used to learn animal behavior by \citet{kabra_jaaba_2013}, and \citet{marshall_continuous_2021} is also included such features into the analysis.
+
+\subsection{Applying Continuous Wavelet Transformation on Snapshot Spatio-temporal Features}
+The wavelet domain is a useful representation of postural dynamics due to the following reasons given by \citet{berman_mapping_2014}, and proposed spectrogram generation is used by others as well \citep{marshall_continuous_2021, todd_systematic_2017}.
+\begin{enumerate}
+	\item It describes dynamics over multiple time scales simultaneously by possessing a multi-resolution time-frequency trade-off.
+	\item It eliminates the requirement of precise temporal alignment for capturing periodic behaviors by taking amplitudes of the continuous wavelet transform for each snapshot feature.
+\end{enumerate}
+Given a function $s(t)$, continuous wavelet transformation at a frequency $f>0$ is expressed by following integral;
+\begin{equation}
+	W_{f,t^{\prime}}[s(t)] = \frac{1}{\sqrt{a(f)}} \int_{-\infty}^{\infty} s(t^{\prime}) \mathit{\Psi}^{\ast}\left(\frac{t^{\prime}-t}{a(f)}\right) \dd{t^{\prime}},
+\end{equation}
+where $\Psi$ is the wavelet function and $a$ is a function for converting frequencies to wavelet scale factor.
+The Morlet wavelet is suitable for describing postural dynamics which is closely related to human perception, both hearing and vision \citep{daugman_uncertainty_1985}.
+The corresponding wavelet function is given by
+\begin{equation}
+	\Psi(t) = \exp{\frac{t^2}{2}} \cos(w_0t),
+\end{equation}
+where $w_0$ is a non-dimensional. The corresponding function $a$ for Morlet wavelet is as follows;
+\begin{equation}
+	s(f) = \frac{w_0 + \sqrt{2+w_0^2}}{4 \pi f},.
+\end{equation}
+
+For the discrete sequence of snapshot feature $\mathbf{s}_i$ with sampling period $\Delta t$, $W_{f,t}[s(t)]$ translates into;
+\begin{equation}
+	\label{eq:wavelet-practical}
+	W_{f}(\mathbf{s}_i, t) = \frac{1}{\sqrt{a(f)}} \sum_{t^{\prime}=1}^{T} {\Delta t} s_{i,t^{\prime}} \mathit{\Psi}^{\ast}\left(\frac{t^{\prime}-t}{a{f}}\right),
+\end{equation}
+where $t \in \mathbb{Z}$ \citep{torrence_practical_1998}.
+
+\subsubsection{Normalization of Wavelet Power Spectrum}
+In order to ensure that wavelet transforms (Equation~\ref{eq:wavelet-practical}) at each frequency $f$ are directly comparable to each other and to the other transformed time series, the transformation $W_f$ has to be normalized at each frequency $f$ to have unit energy.
+This normalization for Morlet wavelet at frequency $f$ is given by
+\begin{equation}
+	C(f) = \frac{\pi^{-\frac{1}{4}}}{\sqrt{2a(f)}}\exp{\sfrac{1}{4}\rbrkt{w_0-\sqrt{w_0^2+2}}^2}.
+\end{equation}
+So resulting normalized transformation which is also considered to spectrogram generation in \citet{berman_mapping_2014} is given by
+\begin{equation}
+	W^0_f(\mathbf{s}_i, t) = \frac{1}{C(f)} \abs{W_f(\mathbf{s}_i, t)}.
+\end{equation}
+
+In addition to above conventionally used normalization, we alternatively adopted normalization proposed by \citet{liu_rectification_2007}. According to this alternative adjustment, wavelet power spectrum should be the transform coefficient squared divided by the scale it associates.
+\begin{equation}
+	W^{0}_f(\mathbf{s}_i, t) = \frac{W_f(\mathbf{s}_i, t)^2}{a(f)}
+\end{equation}
+We observed substantial improvements using this power spectrum (see Section~\ref{section:employing-proposed-pipeline}).
+
+\subsubsection{Determining Spectrum Frequencies}
+We investigate two different approaches for computing set of frequencies and, we include both of them in the behavior mapping pipeline.
+One set is dyadically spaced frequencies between $f_{\textnormal{min}}$ and $f_{\textnormal{max}}$ via;
+\begin{equation}
+	f_i = f_{\textnormal{max}} 2^{-\frac{i-1}{N_f-1}\log{\frac{f_{\textnormal{max}}}{f_{\textnormal{min}}}}},
+\end{equation}
+where $f_{\textnormal{max}} = \sfrac{FPS}{2} \textnormal{ Hz}$ is the Nyquist frequency.
+
+The other alternative set of frequencies is linearly spaced between $f_{\textnormal{min}}$ and $f_{\textnormal{max}}$ by
+\begin{equation}
+	f_i = f_{\textnormal{min}} + \frac{f_{\textnormal{max}} - f_{\textnormal{min}}}{N_f-1}i,
+\end{equation}
+for $i=1,2,\dots,N_f$, and their corresponding wavelet scales are computed via $a(f_i)$.
+
+\subsection{Constructing Extended Postural Dynamic Feature Tensors}
+Let $\mathcal{T}_s=\set{\sfrac{1}{f_{\textnormal{min}}}, \cdots \sfrac{1}{f_{\textnormal{max}}}}$ and $\mathcal{T}_v=\set{\tau_{\textnormal{min}}, \cdots, \tau_{\textnormal{max}}}$ denote the time scale sets respectively for wavelet transformed snapshot features and moving statistics of gradient features. Then corresponding feature tensors are given as follows:
+\begin{align}
+	\mathbf{W}        & = [W^0_{\sfrac{1}{\tau}}(\mathbf{s}_i, t)]_{1 \leq i \leq N_s, \,1 \leq t \leq T, \, \tau \in \mathcal{T}_s}, \\
+	\mathbf{M}_\mu    & = [\mu_\tau(v_{i,t})]_{1 \leq i \leq  N_v,  \, 1\leq t \leq T, \, \tau \in \mathcal{T}_v},                    \\
+	\mathbf{M}_\sigma & = [\sigma_\tau(v_{i,t})]_{1 \leq i \leq N_v, \, 1\leq t \leq T, \, \tau \in \mathcal{T}_v},
+\end{align}
+where $\mathbf{S} \in \mathbb{R}^{T \times N_s}$ and $\mathbf{V} \in \mathbb{R}^{T \times N_v}$.
+
+The resulting extended feature tensors of postural dynamic representations are $\mathbf{W} \in \mathbb{R}^{T \times \card{\mathcal{T}_s} \times N_s}$, $\mathbf{M}_\mu \in \mathbb{R}^{T \times \card{\mathcal{T}_v} \times N_v}$ and $\mathbf{M}_\sigma \in \mathbb{R}^{T \times \card{\mathcal{T}_v} \times N_v}$.
+\section{Computation of Behavioral Representations}
+After applying wavelet transformation or computing moving statistics to extend extracted spatio-temporal features to postural dynamics features, couple of additional operations are required to generate desired embeddings.
+
+\subsection{Flattening of Extended Postural Dynamics Feature Tensors}
+As mentioned in Section~\ref{section:extending-features-to-multiple-time-scale}, feature tensors are $\mathbf{W} \in \mathbb{R}^{T \times \card{\mathcal{T}_s} \times N_s}$, $\mathbf{M}_\mu \in \mathbb{R}^{T \times \card{\mathcal{T}_v} \times N_v}$, and  $\mathbf{M}_\sigma \in \mathbb{R}^{T \times \card{\mathcal{T}_v} \times N_v}$.
+In order to apply manifold learning based dimensionality reduction algorithms or traditional machine learning algorithms such as decision trees, one need to flatten last two dimensions of these postural dynamics feature tensors.
+As a result, feature matrices are $\mathbf{W}^\ast \in \mathbb{R}^{T \times \rbrkt{ N_s\card{\mathcal{T}_s}}}, \mathbf{M}_\mu^\ast \in \mathbb{R}^{T \times \rbrkt{ N_v\card{\mathcal{T}_v}}}$ and $\mathbf{M}_\sigma^\ast \in \mathbb{R}^{T \times \rbrkt{ N_v\card{\mathcal{T}_v}}}$ are obtained.
+
+\subsection{\texorpdfstring{$L^1$}{L1} Normalization of Frames}
+Wavelet power spectrum and gradient feature values are heavily dependent on the orientation of the flies and on the unique fly characteristics.
+In order to have a homogeneous feature space among flies and along the time, at each time step $t$, $L^1$ normalization is applied as follows;
+\begin{equation}
+	\mathbf{W}^{\prime}  = \rbrkt{\frac{w^\ast_{t,i}}{\sum_{j=0}^{N_s \card{\mathcal{T}_s}}w^\ast_{t, j}}}_{1 \leq t \leq T, \, 1 \leq i \leq \rbrkt{N_s \card{\mathcal{T}_s}}}.
+\end{equation}
+Similarly, $L^1$ normalized versions of $\mathbf{M}^\ast_\mu$ and $\mathbf{M}^\ast_\sigma$, namely $\mathbf{M}^\prime_\mu$ and $\mathbf{M}^\prime\sigma$ are obtained.
+
+Here $\mathbf{W}^\prime$, $\mathbf{M}^\prime_\mu$ and $\mathbf{M}^\prime\sigma$ are the final multivariate time series of normalized high dimensional behavioral representation of a fly experiment. Behavioral representation matrix $\mathbf{W}^\prime$ will be used to compute behavioral embeddings.
+
+\section{Summary}

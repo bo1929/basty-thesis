@@ -1,0 +1,97 @@
+\documentclass[
+  12pt,
+  oneside,
+  a4paper
+  ]{report}
+%%%%%%%%%%%%
+% Packages %
+%%%%%%%%%%%%
+\usepackage[
+  rmargin=2.5cm,
+  lmargin=3.5cm,
+  tmargin=2.5cm,
+  bmargin=2.5cm
+  ]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{caption, subcaption}
+\usepackage{physics}
+\usepackage{mathtools}
+\usepackage{xfrac}
+\usepackage{xcolor}
+\usepackage{amsmath, amsbsy, amssymb, amsfonts}
+% \usepackage{showframe}
+
+%%%%%%%%%%%%%%%
+% Definitions %
+%%%%%%%%%%%%%%%
+\definecolor{lacivert}{rgb}{0.0, 0.00, 0.52}
+
+%%%%%%%%%%%%%%%%%%%%
+% Defined Commands %
+%%%%%%%%%%%%%%%%%%%%
+% \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+% \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\card}{\lvert}{\rvert}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcommand{\rangedots}{\mathinner {\ldotp \ldotp}}
+\newcommand\orient[1]{\mathop{\rm{orient}}(#1)}
+\newcommand\rbrkt[1]{\left(#1\right)}
+\newcommand\sqbrkt[1]{\left[#1\right]}
+\newcommand\cbrkt[1]{\left\{#1\right\}}
+\newcommand\abrkt[1]{\langle#1\rangle}
+\newcommand\set[1]{\{\,#1\,\}}
+\newcommand\Set[2]{\{\,#1\mid#2\,\}}
+\newcommand\SET[2]{\Set{#1}{\text{#2}}}
+\renewcommand{\d}[1]{\ensuremath{\operatorname{d}\!{#1}}}
+
+\newcommand{\TODO}[1]{\textcolor{red}{[\textt{TODO:} #1]}}
+\newcommand{\NOTE}[1]{\textcolor{lacivert}{[\texttt{NOTE:} #1]}}
+
+%%%%%%%%%%%%
+% Settings %
+%%%%%%%%%%%%
+\bibliographystyle{unsrtnat}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Thesis Main Document %
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\title{}
+\author{Ali Osman Berk Şapcı}
+\maketitle
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+
+\begin{abstract}
+	A \textit{Bastı} (English: \textit{Basty}, Azerbaijani Turkish: \textit{Basdı}, Anatolian Turkish: \textit{Basdırık}) is an evil spirit in Turkic mythology which rides on people's chests while they sleep, bringing on  nightmares.
+	Bastı sits astride a sleeper's chest and becomes heavier until the crushing weight awakens the terrified and breathless dreamer.
+	The victim awakes unable to move under the Bastıs weight.
+	It may also include lucid dreams.
+	% There are different types of Bastı in Anatolia: Al-Bastı, Kara-Bastı, Kul-Bastı, Sarı-Bastı.
+\end{abstract}
+
+\input{1-Introduction}
+\input{2-DataCollection}
+\input{3-FeatureExtraction}
+\input{4-ExperimentOutlining}
+\input{5-BehaviorMapping}
+\input{6-AnalyzingBehavioralRepertoire}
+\input{7-EmployingPipeline.tex}
+\input{8-Results}
+\input{9-BastySoftwarePackage}
+\input{10-Conclusion}
+
+\bibliography{refs}
+
+\end{document}
