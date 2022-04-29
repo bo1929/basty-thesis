@@ -36,12 +36,12 @@ The goal of this sub-stage is primarily preprocessing, which inolves filtering a
 But in addition to this, there are a couple of optional procedures that can be beneficial for our task of learning stereotypical behaviors.
 These additional procedures deal with occluded body parts of the fly, alignment of the fly orientations and defining new points of interest.
 
-\subsection{Dealing with Occluded body parts}\label{section:dealing_with_occluded_body-parts}
+\subsection{Dealing with Occluded Body Parts}\label{section:dealing_with_occluded_body-parts}
 As mentioned in the Section~\ref{section:challanges}, the two-dimensional video recordings introduces a number of important challenges, and one of them is the occluded body part challenge.
 There are many types of occlusions which can be informally described as follows.
 One examples is short occlusions resulting from postural changes.
-Imputation of the time series $\mathbf{X}$ and $\mathbf{Y}$ for these short occlusions is relatively more robust and convenient since the number of missing data points are relatively less.
-However this is not the case for long occlusions which usually occur when the fly is dormant for a long period of time.
+Imputation of the time series $\mathbf{X}$ and $\mathbf{Y}$ for these short occlusions is relatively easier since the number of missing data points are relatively few.
+However, this is not the case for long occlusions which usually occur when the fly is dormant for a long period of time.
 Especially for the body parts which have left and right counterparts, it is common that the orientation of the fly results in one of the counterparts being occluded in long dormant epochs.
 We follow multiple approaches to handle different type occlusions; namely imputation and elimination of corresponding data-points.
 Before describing those approaches we need to define criterion for being occluded.
