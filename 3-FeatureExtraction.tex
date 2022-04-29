@@ -29,22 +29,22 @@ $L \in \mathbb{R}^{N \times T}$ denotes the time series of prediction scores, ea
 	\mathbf{l}_i = (l_{i,1}, l_{i,2}, \dots, l_{i,t-1}, l_{i,t}, l_{i,t}, \dots, l_{i,T}).
 \end{equation*}
 
-The prediction score drops drastically when the body part is not visible. Thus, $L$ provides valuable information about the occluded body parts. In the Section~\ref{section:dealing_with_occluded_body parts}, how $L$ is incorporated into construction of pose values is described in detail.
+The prediction score drops drastically when the body part is not visible. Thus, $L$ provides valuable information about the occluded body parts. In the Section~\ref{section:dealing-with-occluded-body-parts}, how $L$ is incorporated into construction of pose values is described in detail.
 
 \section{Construction of Pose Values and Preprocessing}
-The goal of this sub-stage is primarily preprocessing, which inolves filtering and imputating certain frames.
+The goal of this sub-stage is primarily preprocessing, which involves filtering and imputation certain frames.
 But in addition to this, there are a couple of optional procedures that can be beneficial for our task of learning stereotypical behaviors.
 These additional procedures deal with occluded body parts of the fly, alignment of the fly orientations and defining new points of interest.
 
-\subsection{Dealing with Occluded Body Parts}\label{section:dealing_with_occluded_body-parts}
+\subsection{Dealing with Occluded Body Parts}\label{section:dealing-with-occluded-body-parts}
 As mentioned in the Section~\ref{section:challanges}, the two-dimensional video recordings introduces a number of important challenges, and one of them is the occluded body part challenge.
 There are many types of occlusions which can be informally described as follows.
 One examples is short occlusions resulting from postural changes.
-Imputation of the time series $\mathbf{X}$ and $\mathbf{Y}$ for these short occlusions is relatively easier since the number of missing data points are relatively few.
+Imputation of the time series $\mathbf{X}$ and $\mathbf{Y}$ for these short occlusions is relatively easy since the number of missing data points are  few.
 However, this is not the case for long occlusions which usually occur when the fly is dormant for a long period of time.
 Especially for the body parts which have left and right counterparts, it is common that the orientation of the fly results in one of the counterparts being occluded in long dormant epochs.
 We follow multiple approaches to handle different type occlusions; namely imputation and elimination of corresponding data-points.
-Before describing those approaches we need to define criterion for being occluded.
+Before describing those approaches we define a criterion for being occluded.
 
 \subsubsection{Computing Oriented Pose Values to Handle body parts with Left \& Right Counterparts}
 If the fly oriented perpendicular to the camera perspective as in Figure~\ref{figure:perpendicular-orientation}, then one of the left and right body parts is often occluded.
