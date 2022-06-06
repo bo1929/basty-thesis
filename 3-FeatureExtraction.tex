@@ -1,5 +1,5 @@
 \chapter{Feature Extraction}
-For a single experiment data, feature extraction consists of four consecutive steps, where the input in a stage is the output of the previous one.
+For a single experiment data, feature extraction consists of four consecutive steps, where the input in one stage is the output of the previous one.
 The input of the first step is the raw output signal of the tracking and pose estimation model, in our case, the output of DeepLabCut.
 The feature extraction steps are as follows:
 
@@ -7,11 +7,11 @@ The feature extraction steps are as follows:
 	\item Constructing pose values and preprocessing (filtering and imputation).
 	\item Computing spatio-temporal features, such as distances between body parts, velocity, angular velocity from body part positions.
 	\item Extending spatio-temporal features to multiple time-scales using wavelet transformation and sliding window statistics.
-	\item Computing high-dimensional behavioral representations with normalization.
+	\item Computing normalized high-dimensional behavioral representation.
 \end{enumerate}
 
-Matrices $\mathbf{X} \in \mathbb{R}^{T \times N}$ and $\mathbf{Y} \in \mathbb{R}^{T \times N}$ denotes a multivariate time series collected for $N$ tracked body part of the fly on $T$ time stamps by a pose estimation model, respectively for $x$ and $y$ cartesian components of two-dimensional video recordings. This multivariate time series matrices $\mathbf{X}$ and $\mathbf{Y}$ are the raw input data to the first step of the feature extraction.
-Note that $N$ must be the same among all experiments conducted with different fruit flies, but $T$ might differ.
+Matrices $\mathbf{X} \in \mathbb{R}^{T \times N}$ and $\mathbf{Y} \in \mathbb{R}^{T \times N}$ denotes a multivariate time series for $x$ and $y$ cartesian components of two-dimensional video recordings that are collected for $N$ tracked body parts of the fly on $T$ consecutive time stamps by a pose estimation model. This multivariate time series matrices $\mathbf{X}$ and $\mathbf{Y}$ are the raw input data that goes into the first step of the feature extraction.
+Note that the number of body parts, $N$,must be the same among all experiments conducted with different fruit flies, but the number of time stamps, $T$, might differ.
 Each column of the $\mathbf{X}=[\mathbf{x}_1, \cdots, \mathbf{x}_N]^\top$ and $\mathbf{Y}=[\mathbf{y}_1, \cdots, \mathbf{y}_N]^\top$ can be written respectively as follows;
 
 \begin{align*}
@@ -29,18 +29,18 @@ $L \in \mathbb{R}^{N \times T}$ denotes the time series of prediction scores, ea
 	\mathbf{l}_i = (l_{i,1}, l_{i,2}, \dots, l_{i,t-1}, l_{i,t}, l_{i,t}, \dots, l_{i,T}).
 \end{equation*}
 
-The prediction score drops drastically when the body part is not visible. Thus, $L$ provides valuable information about the occluded body parts. In the Section~\ref{section:dealing-with-occluded-body-parts}, how $L$ is incorporated into construction of pose values is described in detail.
+The prediction score is very low when the body part is not visible. Thus, $L$ provides valuable information about the occluded body parts. In the Section~\ref{section:dealing-with-occluded-body-parts}, how $L$ is incorporated into construction of pose values is described in detail.
 
-\section{Construction of Pose Values and Preprocessing}
-The goal of this sub-stage is primarily preprocessing, which involves filtering and imputation certain frames.
+\section{Preprocessing}
+The goal of in this step is to preprocess the signal, which involves filtering and imputation of certain video frames.
 But in addition to this, there are a couple of optional procedures that can be beneficial for our task of learning stereotypical behaviors.
 These additional procedures deal with occluded body parts of the fly, alignment of the fly orientations and defining new points of interest.
 
 \subsection{Dealing with Occluded Body Parts}\label{section:dealing-with-occluded-body-parts}
-As mentioned in the Section~\ref{section:challanges}, the two-dimensional video recordings introduces a number of important challenges, and one of them is the occluded body part challenge.
+As mentioned in the Section~\ref{section:challanges}, the two-dimensional video recordings introduces a number of important challenges, and one of them is the the occluded body parts.
 There are many types of occlusions which can be informally described as follows.
 One examples is short occlusions resulting from postural changes.
-Imputation of the time series $\mathbf{X}$ and $\mathbf{Y}$ for these short occlusions is relatively easy since the number of missing data points are  few.
+Imputation of the time series $\mathbf{X}$ and $\mathbf{Y}$ for these short occlusions is relatively easy since the number of missing data points are few.
 However, this is not the case for long occlusions which usually occur when the fly is dormant for a long period of time.
 Especially for the body parts which have left and right counterparts, it is common that the orientation of the fly results in one of the counterparts being occluded in long dormant epochs.
 We follow multiple approaches to handle different type occlusions; namely imputation and elimination of corresponding data-points.
@@ -173,15 +173,15 @@ Alternatively, extending spatio-temporal features to capture postural dynamics a
 In order to extend the spatio-temporal features, we applied wavelet transformation (similar to \citet{berman_mapping_2014}) and computed moving statistics at different time scales (similar to \citet{kabra_jaaba_2013}), respectively for snapshot feature set ($\mathbf{S}$) and gradient feature set ($\mathbf{V}$).
 
 \subsection{Computing Moving Statistics of Gradient Spatio-temporal Features}
-Gradient features only reflects the instantaneous values of velocities with respect to the sampling rate. In order to capture how these values change within a given interval, the moving statistics, e.g. mean and standard deviation, of gradient features are computed with a sliding window approach. Let $\tau$ be the window size parameter, i.e. the considered time scale, then moving mean of the corresponding gradient feature $\mathbf{v}_{i}$ is given by function $\mu_\tau$ as:
+Gradient features only reflect the instantaneous values of velocities with respect to the sampling rate. In order to capture how these values change within a given interval, the moving statistics, e.g., mean and standard deviation, of gradient features are computed with a sliding window approach. Let $\tau$ be the window size parameter, i.e., the considered timescale, then the moving mean of the corresponding gradient feature $\mathbf{v}_{i}$ is given by the function $\mu_\tau$ as:
 
 \begin{equation}
 	\mu_{\tau}(v_{i,t}) = \sfrac{1}{\min\{t+\tau,T\}-\max\{t-\tau,1\}+1} \sum_{t^{\prime}=\max\{t-\tau,1\}}^{\min\{t+\tau,T\}} v_{i, t^{\prime}}.
 \end{equation}
 
-Similarly the moving standard deviation of a gradient feature $v_{i,t}$ by $\sigma_\tau$ as follows:
+Similarly, the moving standard deviation of a gradient feature $v_{i,t}$ by is computed by $\sigma_\tau$, as in the below equation.
 \begin{equation}
-	\sigma_\tau(v_{i,t}) = \sqrt{\sfrac{1}{\min\{t+\tau,T\}-\max\{t-\tau,1\}+1} \sum_{t^{\prime}=\max\{t-\tau,1\}}^{\min\{t+\tau,T\}} \rbrkt{\mu_{\tau}(v_{i,t}) - v_{i, t^{\prime}}}^2}.
+	\sigma_\tau(v_{i,t}) = \rbrkt{\sfrac{1}{\min\{t+\tau,T\}-\max\{t-\tau,1\}+1} \sum_{t^{\prime}=\max\{t-\tau,1\}}^{\min\{t+\tau,T\}} \rbrkt{\mu_{\tau}(v_{i,t}) - v_{i, t^{\prime}}}^2}^{\sfrac{1}{2}}
 \end{equation}
 
 This feature generation approach is used to learn animal behavior by \citet{kabra_jaaba_2013}, and \citet{marshall_continuous_2021} is also included such features into the analysis.
@@ -192,7 +192,7 @@ The wavelet domain is a useful representation of postural dynamics due to the fo
 	\item It describes dynamics over multiple time scales simultaneously by possessing a multi-resolution time-frequency trade-off.
 	\item It eliminates the requirement of precise temporal alignment for capturing periodic behaviors by taking amplitudes of the continuous wavelet transform for each snapshot feature.
 \end{enumerate}
-Given a function $s(t)$, continuous wavelet transformation at a frequency $f>0$ is expressed by following integral;
+Given a function $s(t)$, continuous wavelet transformation at a frequency $f>0$ is expressed by the following integral;
 \begin{equation}
 	W_{f,t^{\prime}}[s(t)] = \frac{1}{\sqrt{a(f)}} \int_{-\infty}^{\infty} s(t^{\prime}) \mathit{\Psi}^{\ast}\left(\frac{t^{\prime}-t}{a(f)}\right) \dd{t^{\prime}},
 \end{equation}
