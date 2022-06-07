@@ -96,13 +96,13 @@ Therefor, one need to compute such features from the coordinate values of body p
 
 The second stage of the feature extraction is computation of spatio-temporal features from pose values. Two type of features are computed in this stage, as listed below.
 \begin{enumerate}
-	\item \textbf{Snapshot features:} Spatio-temporal feature values computed at a snapshot of time, listed as follow:
+	\item \textbf{Snapshot features:} Spatio-temporal feature values computed at a snapshot of time, listed as follows:
 	      \begin{itemize}
 		      \item distances,
 		      \item angles,
 		      \item cartesian pose values (i.e., per body part features).
 	      \end{itemize}
-	\item \textbf{Gradient features:} Spatio-temporal feature values computed based how snapshot features change over time, listed as follow:
+	\item \textbf{Gradient features:} Spatio-temporal feature values computed based how snapshot features change over time, listed as follows:
 	      \begin{itemize}
 		      \item change of distances,
 		      \item change of angles (i.e., angular velocities),
@@ -114,7 +114,7 @@ The gradients of snapshot features are computed using second-order accurate cent
 The resulting gradient features have the same shape, i.e., the number of features and the number of time-stamps, as the snapshot features.
 
 \subsection{Distances Between Body Parts}
-Given a body part pair $\rbrkt{i,j}$, distance between them at a time step $t$ is calculated as a usual Euclidean distance, given below.
+Given a body part pair $\rbrkt{i,j}$, the distance between them at a time step $t$ is calculated as a usual Euclidean distance, given below.
 \begin{equation}
 	d^{i,j}_t = \sqrt{(x_{i,t} - x_{j,t})^2 + (y_{i,t} - y_{j,t})^2}.
 \end{equation}
@@ -142,15 +142,15 @@ Cartesian pose values of a body part $i$ is straightforwardly given by the $x$ a
 	x^{i}_t & = x_{i,t}, \\
 	y^{i}_t & = y_{i,t}.
 \end{align}
-Note that for a single body part, two feature values are generated.
 
+Note that for a single body part, two feature values are generated.
 Corresponding gradient features, namely the body part velocities along each cartesian component, are computed by
 \begin{align}
 	\dot{x}^{i}_t & = \begin{cases} \frac{x^{i}_{t+1} - x^{i}_{t}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{x^{i}_{t+1} - x^{i}_{t-1}}{2\Delta t} & \textnormal{otherwise}, \end{cases} \\
 	\dot{y}^{i}_t & = \begin{cases} \frac{y^{i}_{t+1} - y^{i}_{t}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{y^{i}_{t+1} - y^{i}_{t-1}}{2\Delta t} & \textnormal{otherwise}. \end{cases}
 \end{align}
 
-In order to compute overall two dimensional velocity of a body part, one can always use the distance between origin and corresponding body part.
+In order to compute overall two-dimensional velocity of a body part, one can always use the distance between origin and corresponding body part.
 
 \subsection{Constructing Spatio-temporal Feature Matrices}
 Let $\mathcal{C}, \mathcal{D}$, and $\mathcal{A}$ denote set of body parts, body part pairs, body part triplets which defines snapshot features; respectively cartesian pose values, distances, and angles.
