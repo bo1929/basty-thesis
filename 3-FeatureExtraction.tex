@@ -72,18 +72,14 @@ The following conditional procedures are proposed to compute oriented pose value
 Except directly comparing the prediction confidence scores as in the last procedure, some of the time points might be left with undecided orientations.
 If the number of such time points is acceptable, then directly comparing the prediction scores for those time points is convenient and handy.
 
-After applying the above procedures for a right and left counterpart pair $i$ and $j$, we can define oriented multivariate time series as;
+After applying the above procedures for a left and right counterpart pair $i$ and $j$, we can define oriented multivariate time series as;
 \begin{align*}
-	\mathbf{X}^{\ast} & = \rbrkt{[(\mathbf{x}_p)_{p \notin \cup\mathcal{O}}] \mid [\left(\orient{\mathbf{x}_i, \mathbf{x}_j}\right)_{\set{i,j} \in \mathcal{O}}]}^\top, \\
-	\mathbf{Y}^{\ast} & = \rbrkt{[(\mathbf{y}_p)_{p \notin \cup\mathcal{O}}] \mid [\left(\orient{\mathbf{y}_i, \mathbf{y}_j}\right)_{\set{i,j} \in \cup \mathcal{O}}]}^\top,
+	\mathbf{X}^{\omicron} & = \rbrkt{\sqbrkt{\rbrkt{\mathbf{x}_k}_{k \notin \bigcup_{\set{i,j} \in \mathcal{O}} \set{i,j}}}^\top \concat \sqbrkt{\rbrkt{\orient{\mathbf{x}_i, \mathbf{x}_j}}_{\set{i,j} \in \mathcal{O}}}^\top}, \\
+	\mathbf{Y}^{\omicron} & = \rbrkt{\sqbrkt{\rbrkt{\mathbf{y}_k}_{k \notin \bigcup_{\set{i,j} \in \mathcal{O}} \set{i,j}}}^\top \concat \sqbrkt{\rbrkt{\orient{\mathbf{y}_i, \mathbf{y}_j}}_{\set{i,j} \in \mathcal{O}}}^\top},
 \end{align*}
-% \begin{align*}
-% 	\mathbf{X}^{\ast} & =\rbrkt{ (x_{p,t})_{t \in \set{1, \cdots, T}, p \notin \cup \mathcal{O}} \mid [\left(\orient{\mathbf{x}_i, \mathbf{x}_j}\right)_{\set{i,j} \in \mathcal{O}}]}^\top,   \\
-% 	\mathbf{Y}^{\ast} & = \rbrkt{(y_{p,t})_{t \in \set{1, \cdots, T}, p \notin \cup \mathcal{O}}  \mid  [\left(\orient{\mathbf{x}_i, \mathbf{x}_j}\right)_{\set{i,j} \in \mathcal{O}}]}^\top
-% \end{align*}
-where $\mathcal{O}$ is the set of index pairs of right and left counterparts and $\cup \mathcal{O}$ is the union of all such indexes.
-Applying this procedure for each right and left counterparts results in computing $\mathbf{X}^{\ast}$ and $\mathbf{Y}^{\ast}$.
-This oriented version of original data matrices can be used instead of $\mathbf{X}$ and $\mathbf{Y}$ in the rest of the pipeline, if desired.
+where $\mathcal{O}$ is the set of index pairs of left and right counterparts and $\bigcup_{\set{i,j} \in \mathcal{O}} \set{i,j}$ is the union of all indexes of such body parts pairs.
+Applying described procedures for each left and right counterparts results in computing $\mathbf{X}^{\omicron}$ and $\mathbf{Y}^{\omicron}$.
+This oriented versions of original data matrices can be used instead of $\mathbf{X}$ and $\mathbf{Y}$ in the rest of the pipeline, if desired.
 
 \subsubsection{Detecting Occlusions Using Prediction Scores and Preternatural Tracking Predictions}
 
@@ -91,23 +87,22 @@ This oriented version of original data matrices can be used instead of $\mathbf{
 
 \subsection{Filtering and Imputation}
 
-\section{Computation of Spatio-temporal Features from Pose Values}
-Constructing pose values enables us to go one step further towards learning stereotypical behaviors.
-Tracking of relevant body parts and constructing pose values is an essential step for quantifying behavior.
-However, a set of coordinate values is sufficient to describe and represent complex spatio-temporal dynamics of animal behavior.
-There are thousands of unique postures and behaviors are not exhibited by some static set of postures.
+\section{Computation of Spatio-temporal Features}
+After preprocessing of pose values, it is now feasible to go one step further towards learning stereotypical behaviors.
+Although tracking of relevant body parts and processing corresponding pose values is an essential step for quantifying behavior, a set of coordinate values is not sufficient to represent and capture complex spatio-temporal dynamics of animal behavior.
+There are thousands of unique postures, and behaviors are not even exhibited by some static set of postures.
 Instead, they are defined by expressive and meaningful spatio-temporal features such as distances, velocities, angles and angular velocities.
 Therefor, one need to compute such features from the coordinate values of body parts in two-dimensional space.
 
-The second stage of the feature extraction is computation of spatio-temporal features from pose values. Two type of features are computed in this stage.
+The second stage of the feature extraction is computation of spatio-temporal features from pose values. Two type of features are computed in this stage, as listed below.
 \begin{enumerate}
-	\item \textbf{Snapshot features:} Spatio-temporal feature values computed at a snapshot of time.
+	\item \textbf{Snapshot features:} Spatio-temporal feature values computed at a snapshot of time, listed as follow:
 	      \begin{itemize}
 		      \item distances,
 		      \item angles,
 		      \item cartesian pose values (i.e., per body part features).
 	      \end{itemize}
-	\item \textbf{Gradient features:} Spatio-temporal feature values computed based how snap features change over time.
+	\item \textbf{Gradient features:} Spatio-temporal feature values computed based how snapshot features change over time, listed as follow:
 	      \begin{itemize}
 		      \item change of distances,
 		      \item change of angles (i.e., angular velocities),
@@ -115,44 +110,47 @@ The second stage of the feature extraction is computation of spatio-temporal fea
 	      \end{itemize}
 \end{enumerate}
 
-The gradient of snapshot features computed using second order accurate central differences in the interior points. The returned gradient features has the same shape as the snapshot features.
+The gradients of snapshot features are computed using second-order accurate central differences in the interior points.
+The resulting gradient features have the same shape, i.e., the number of features and the number of time-stamps, as the snapshot features.
 
-\subsection{Distances Between body parts}
-Given body part pair $\rbrkt{i,j}$, distances between them at a time step $t$ is computed as:
+\subsection{Distances Between Body Parts}
+Given a body part pair $\rbrkt{i,j}$, distance between them at a time step $t$ is calculated as a usual Euclidean distance, given below.
 \begin{equation}
 	d^{i,j}_t = \sqrt{(x_{i,t} - x_{j,t})^2 + (y_{i,t} - y_{j,t})^2}.
 \end{equation}
 
-The corresponding gradient feature, which is the change of distance between body part $i$ and $j$ is computed as follows using the second order gradient approximation:
+The corresponding gradient feature, namely the change of distance between body part $i$ and $j$, is computed using the second order gradient approximation,
 \begin{equation}
 	\dot{d}^{i,j}_t = \begin{cases} \frac{\abs{d^{i,j}_{t+1} - d^{i,j}_{t}}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{\abs{d^{i,j}_{t+1} - d^{i,j}_{t-1}}}{2\Delta t} & \textnormal{otherwise}, \end{cases}
 \end{equation}
-where $\Delta t$ is the sampling period, which is equal to $\sfrac{1}{\textnormal{FPS}}$ seconds.
+where $\Delta t$ is the sampling period, and it is equal to $\sfrac{1}{\textnormal{FPS}}$ seconds.
 
-\subsection{Joint Angles Between body parts}
-Given a triplet of body parts $\rbrkt{i,j,k}$, angle between $i$ and $k$ around $j$ is computed using the 2-argument arctangent function as below.
+\subsection{Joint Angles Between Body Parts}
+Given a triplet of body parts $\rbrkt{i,j,k}$, angle between $i$ and $k$ around $j$ is computed using the 2-argument $\operatorname{arctangent}$ function as given below.
 \begin{equation}
-	w^{i,j,k}_t = \mathop{\rm{atan2}}\left(\det \begin{bmatrix} x_{i,t} - x_{j,t}, x_{k,t} - x_{j,t} \\ y_{i,t} - y_{j,t}, y_{k,t} - y_{j,t} \end{bmatrix}, \begin{bmatrix} x_{i,t} - x_{j,t} \\ y_{i,t} - y_{j,t} \end{bmatrix} \cdot \begin{bmatrix} x_{k,t} - x_{j,t}  \\ y_{k,t} - y_{j,t} \end{bmatrix}      \right) + \pi
+	w^{i,j,k}_t = \mathop{\rm{atan2}} \rbrkt{\det \begin{bmatrix} x_{i,t} - x_{j,t}, x_{k,t} - x_{j,t} \\ y_{i,t} - y_{j,t}, y_{k,t} - y_{j,t} \end{bmatrix}, \begin{bmatrix} x_{i,t} - x_{j,t} \\ y_{i,t} - y_{j,t} \end{bmatrix} \cdot \begin{bmatrix} x_{k,t} - x_{j,t}  \\ y_{k,t} - y_{j,t} \end{bmatrix}} + \pi.
 \end{equation}
 
-Then, similar to distance gradient feature, angular velocity is approximated by:
+Then, similar to the change of distance features, angular velocities are approximated by,
 \begin{equation}
 	\dot{w}^{i,j,k}_t = \begin{cases} \frac{\abs{w^{i,j,k}_{t+1} - w^{i,j,k}_{t}}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{\abs{w^{i,j,k}_{t+1} - w^{i,j,k}_{t-1}}}{2\Delta t} & \textnormal{otherwise}. \end{cases}
 \end{equation}
 
-\subsection{Cartesian Pose Values of body parts}
-Cartesian pose values of a body part $i$ is straightforwardly given by the $x$ and $y$ coordinate values:
+\subsection{Cartesian Pose Values of Body Parts}
+Cartesian pose values of a body part $i$ is straightforwardly given by the $x$ and $y$ coordinate values as follows,
 \begin{align}
 	x^{i}_t & = x_{i,t}, \\
 	y^{i}_t & = y_{i,t}.
 \end{align}
 Note that for a single body part, two feature values are generated.
 
-Corresponding gradient features, namely body part velocities along each cartesian component, are computed as follows:
+Corresponding gradient features, namely the body part velocities along each cartesian component, are computed by
 \begin{align}
 	\dot{x}^{i}_t & = \begin{cases} \frac{x^{i}_{t+1} - x^{i}_{t}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{x^{i}_{t+1} - x^{i}_{t-1}}{2\Delta t} & \textnormal{otherwise}, \end{cases} \\
 	\dot{y}^{i}_t & = \begin{cases} \frac{y^{i}_{t+1} - y^{i}_{t}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{y^{i}_{t+1} - y^{i}_{t-1}}{2\Delta t} & \textnormal{otherwise}. \end{cases}
 \end{align}
+
+In order to compute overall two dimensional velocity of a body part, one can always use the distance between origin and corresponding body part.
 
 \subsection{Constructing Spatio-temporal Feature Matrices}
 Let $\mathcal{C}, \mathcal{D}$, and $\mathcal{A}$ denote set of body parts, body part pairs, body part triplets which defines snapshot features; respectively cartesian pose values, distances, and angles.
