@@ -1,16 +1,17 @@
 \chapter{Feature Extraction}
-For a single experiment data, i.e., single fruit fly recorded between ZT2 and ZT14 (zeitgeber time 12 and 14), feature extraction consists of four consecutive steps, where the input in one stage is the output of the previous one.
+For a single experiment data, i.e., single fruit fly recorded between ZT10 and ZT2 (zeitgeber time 10 and 2), feature extraction consists of four consecutive steps, where the input in one stage is the output of the previous one.
 The input of the first step is the raw output signal of the tracking and pose estimation model, in our case, the output of DeepLabCut, a toolbox for markerless pose estimation.
 The feature extraction steps are as follows:
 
 \begin{enumerate}
 	\item Constructing pose values and preprocessing; dealing with occluded body parts, alignment of different orientations, filtering and imputation.
 	\item Computing spatio-temporal features, such as distances between body parts, velocity, angular velocity from body part positions.
-	\item Extending spatio-temporal features to multiple time-scales using wavelet transformation and sliding window statistics.
+	\item Computing dynamic postural features by extending spatio-temporal features to multiple time-scales using wavelet transformation and sliding window statistics.
 	\item Computing normalized high-dimensional behavioral representations.
 \end{enumerate}
 
-Matrices $\mathbf{X} \in \mathbb{R}^{T \times N}$ and $\mathbf{Y} \in \mathbb{R}^{T \times N}$ denotes a multivariate time series for $x$ and $y$ cartesian components of two-dimensional video recordings that are collected for $N$ tracked body parts of the fly on $T$ consecutive time stamps by a pose estimation model. This multivariate time series matrices $\mathbf{X}$ and $\mathbf{Y}$ are the raw input data that goes into the first step of the feature extraction.
+Matrices $\mathbf{X} \in \mathbb{R}^{T \times N}$ and $\mathbf{Y} \in \mathbb{R}^{T \times N}$ denotes a multivariate time series for $x$ and $y$ cartesian components of two-dimensional video recordings that are collected for $N$ tracked body parts of the fly on $T$ consecutive time stamps by a pose estimation model.
+This multivariate time series matrices $\mathbf{X}$ and $\mathbf{Y}$ are the raw input data that goes into the first step of the feature extraction.
 Note that the number of body parts, $N$, must be the same among all experiments conducted with different fruit flies, but the number of time stamps, $T$, might differ.
 Each column of the $\mathbf{X}=[\mathbf{x}_1, \cdots, \mathbf{x}_N]^\top$ and $\mathbf{Y}=[\mathbf{y}_1, \cdots, \mathbf{y}_N]^\top$ can be written respectively as follows;
 
@@ -153,69 +154,71 @@ Corresponding gradient features, namely the body part velocities along each cart
 In order to compute overall two-dimensional velocity of a body part, one can always use the distance between origin and corresponding body part.
 
 \subsection{Constructing Spatio-temporal Feature Matrices}
-Let $\mathcal{C}, \mathcal{D}$, and $\mathcal{A}$ denote set of body parts, body part pairs, body part triplets which defines snapshot features; respectively cartesian pose values, distances, and angles.
+Let $\mathcal{C}, \mathcal{D}$, and $\mathcal{A}$ denote the sets of body parts, body part pairs, and body part triplets; respectively defining cartesian pose values, distances, and angles.
 Similarly, let $\mathcal{C}^{\prime}, \mathcal{D}^{\prime}$, and $\mathcal{A}^{\prime}$ denote sets which define sets of respective gradient features.
 Then snapshot feature matrix $S$ constructed as follows;
 \begin{equation}
 	\mathbf{S} = \rbrkt{x^i_t}_{1 \leq t \leq T, \, i \in \mathcal{C}} \mid \rbrkt{y^i_t}_{1 \leq t \leq T, \, i \in \mathcal{C}} \mid \rbrkt{d^{i,j}_t}_{1 \leq t \leq T, \, \cbrkt{i,j} \in \mathcal{D}} \mid \rbrkt{w_t^{i,j,k}}_{1 \leq t \leq T, \, \cbrkt{i,j,k} \in \mathcal{A}} .
 \end{equation}
 
-Similarly, for gradient features, the feature matrix is constructed by concatenating change of distances, change of angles and body part velocities;
+Similarly, for gradient features, the feature matrix is constructed by concatenating change of distances, angular velocities and body part velocities; given by
 \begin{equation}
-	\mathbf{V} = \rbrkt{\dot{x}^i_t}_{1 \leq t \leq T, i \in \mathcal{C}^{\prime}} \mid \rbrkt{\dot{y}^i_t}_{1 \leq t \leq T, i \in \mathcal{C}^{\prime}} \mid \rbrkt{d^{i,j}_t}_{1 \leq t \leq T, \cbrkt{i,j} \in \mathcal{D}^{\prime}} \mid \rbrkt{\dot{w}_t^{i,j,k}}_{1 \leq t \leq T, \cbrkt{i,j,k} \in \mathcal{A}^{\prime}} .
+	\mathbf{G} = \rbrkt{\dot{x}^i_t}_{1 \leq t \leq T, i \in \mathcal{C}^{\prime}} \mid \rbrkt{\dot{y}^i_t}_{1 \leq t \leq T, i \in \mathcal{C}^{\prime}} \mid \rbrkt{d^{i,j}_t}_{1 \leq t \leq T, \cbrkt{i,j} \in \mathcal{D}^{\prime}} \mid \rbrkt{\dot{w}_t^{i,j,k}}_{1 \leq t \leq T, \cbrkt{i,j,k} \in \mathcal{A}^{\prime}} .
 \end{equation}
 
-The resulting two feature matrices are $\mathbf{S} \in \mathbb{R}^{T \times \rbrkt{\card{\mathcal{C}}\card{\mathcal{D}}\card{\mathcal{A}}}}$ and $\mathbf{V} \in \mathbb{R}^{T \times \rbrkt{\card{\mathcal{C}}^{\prime}\card{\mathcal{D}^{\prime}}\card{\mathcal{A}^{\prime}}}}$. Let $N_s$ denote the number of snapshot features, being equal to $\card{\mathcal{C}}\card{\mathcal{D}}\card{\mathcal{A}}$ and let $N_v$ denote the number of gradient features, which is equal to $\card{\mathcal{C}}^{\prime}\card{\mathcal{D}^{\prime}}\card{\mathcal{A}^{\prime}}$.
+The resulting two feature matrices are $\mathbf{S} \in \mathbb{R}^{T \times \rbrkt{2\card{\mathcal{C}}+\card{\mathcal{D}}+\card{\mathcal{A}}}}$ and $\mathbf{G} \in \mathbb{R}^{T \times \rbrkt{2\card{\mathcal{C}^{\prime}}+\card{\mathcal{D}^{\prime}}+\card{\mathcal{A}^{\prime}}}}$.
+Let $N_S$ denote the number of snapshot features, being equal to $2\card{\mathcal{C}}+\card{\mathcal{D}}+\card{\mathcal{A}}$ and let $N_G$ denote the number of gradient features, which is equal to $2\card{\mathcal{C}^{\prime}}+\card{\mathcal{D}^{\prime}}+\card{\mathcal{A}^{\prime}}$.
 
-\section{Extending Spatio-temporal Features to Multiple Time-scales}\label{section:extending-features-to-multiple-time-scale}
-Instantaneous values of spatio-temporal features do not provide sufficient description of behavior.
-Understanding of the output of a complex biological system, in our case behavior, can only be achieved by studying multiple time-scale together.
-Previous studies attempt to search behavioral motifs, e.g., repeated sub-sequences of actions with finite length, within the behavioral time series.
+\section{Computation of Dynamic Postural Features}\label{section:dynamic-postural-features}
+Instantaneous values of spatio-temporal features do not provide a sufficient description of complex postural dynamics of behaviors.
+Understanding the output of a complex biological system, in our case behavior, can only be achieved by studying multiple time-scales together.
+Previous studies attempt to search behavioral motifs, e.g., repeated sub-sequences of actions with finite length, within the behavioral time series \CITE.
 However, as \citet{berman_mapping_2014} states, this paradigm usually requires problems of temporal alignment and relative phasing between different scales.
-Alternatively, extending spatio-temporal features to capture postural dynamics at different time-scale eliminate requirements of temporal alignment and motif based analysis.
-In order to extend the spatio-temporal features, we applied wavelet transformation (similar to \citet{berman_mapping_2014}) and computed moving statistics at different time-scales (similar to \citet{kabra_jaaba_2013}), respectively for snapshot feature set ($\mathbf{S}$) and gradient feature set ($\mathbf{V}$).
+Alternatively, extending spatio-temporal features to capture postural dynamics at different time-scales eliminate requirements of temporal alignment and motif based analysis.
+In order to extend the spatio-temporal features to dynamic postural features, we applied wavelet transformation (similar to \citet{berman_mapping_2014}) and computed moving statistics at different time-scales (similar to \citet{kabra_jaaba_2013}), respectively for snapshot feature set ($\mathbf{S}$) and gradient feature set ($\mathbf{G}$).
 
-\subsection{Computing Moving Statistics of Gradient Spatio-temporal Features}
-Gradient features only reflect the instantaneous values of velocities with respect to the sampling rate. In order to capture how these values change within a given interval, the moving statistics, e.g., mean and standard deviation, of gradient features are computed with a sliding window approach. Let $\tau$ be the window size parameter, i.e., the considered timescale, then the moving mean of the corresponding gradient feature $\mathbf{v}_{i}$ is given by the function $\mu_\tau$ as:
-
+\subsection{Moving Statistics of Gradient Features}
+Gradient features only reflect the instantaneous values of velocities with respect to the sampling rate.
+In order to capture how these values change within a given interval, the moving statistics, e.g., mean and standard deviation, of gradient features are computed with a sliding window approach.
+Let $\tau$ be the window size parameter, i.e., the timescale of interest, then the moving mean of the corresponding gradient feature $\mathbf{g}_{i}$ is given by the function $\mu_\tau$;
 \begin{equation}
-	\mu_{\tau}(v_{i,t}) = \sfrac{1}{\min\{t+\tau,T\}-\max\{t-\tau,1\}+1} \sum_{t^{\prime}=\max\{t-\tau,1\}}^{\min\{t+\tau,T\}} v_{i, t^{\prime}}.
+	\mu_{\tau}(g_{i,t}) = \sfrac{1}{\min\{t+\tau,T\}-\max\{t-\tau,1\}+1} \sum_{t^{\prime}=\max\{t-\tau,1\}}^{\min\{t+\tau,T\}} g_{i, t^{\prime}}.
 \end{equation}
 
-Similarly, the moving standard deviation of a gradient feature $v_{i,t}$ by is computed by $\sigma_\tau$, as in the below equation.
+Similarly, the moving standard deviation of a gradient feature $g_{i,t}$ by is computed by $\sigma_\tau$, as in the below equation.
 \begin{equation}
-	\sigma_\tau(v_{i,t}) = \rbrkt{\sfrac{1}{\min\{t+\tau,T\}-\max\{t-\tau,1\}+1} \sum_{t^{\prime}=\max\{t-\tau,1\}}^{\min\{t+\tau,T\}} \rbrkt{\mu_{\tau}(v_{i,t}) - v_{i, t^{\prime}}}^2}^{\sfrac{1}{2}}
+	\sigma_\tau(g_{i,t}) = \rbrkt{\sfrac{1}{\min\{t+\tau,T\}-\max\{t-\tau,1\}+1} \sum_{t^{\prime}=\max\{t-\tau,1\}}^{\min\{t+\tau,T\}} \rbrkt{\mu_{\tau}(g_{i,t}) - g_{i, t^{\prime}}}^2}^{\sfrac{1}{2}}
 \end{equation}
 
-This feature generation approach is used to learn animal behavior by \citet{kabra_jaaba_2013}, and \citet{marshall_continuous_2021} is also included such features into the analysis.
+Moving statistics feature generation approach is used to learn animal behavior by \citet{kabra_jaaba_2013}, and \citet{marshall_continuous_2021} is also included such features into the analysis.
 
-\subsection{Applying Continuous Wavelet Transformation on Snapshot Spatio-temporal Features}
+\subsection{Wavelet Transformation of Snapshot Features}
 The wavelet domain is a useful representation of postural dynamics due to the following reasons given by \citet{berman_mapping_2014}, and proposed spectrogram generation is used by others as well \citep{marshall_continuous_2021, todd_systematic_2017}.
-\begin{enumerate}
+\begin{itemize}
 	\item It describes dynamics over multiple time-scales simultaneously by possessing a multi-resolution time-frequency trade-off.
-	\item It eliminates the requirement of precise temporal alignment for capturing periodic behaviors by taking amplitudes of the continuous wavelet transform for each snapshot feature.
-\end{enumerate}
+	\item It eliminates the requirement of precise temporal alignment for capturing periodic behaviors by taking amplitudes of the continuous wavelet transform of each snapshot feature at different scales.
+\end{itemize}
 Given a function $s(t)$, continuous wavelet transformation at a frequency $f>0$ is expressed by the following integral;
 \begin{equation}
-	W_{f,t^{\prime}}[s(t)] = \frac{1}{\sqrt{a(f)}} \int_{-\infty}^{\infty} s(t^{\prime}) \mathit{\Psi}^{\ast}\left(\frac{t^{\prime}-t}{a(f)}\right) \dd{t^{\prime}},
+	W_{f,t^{\prime}}\sqbrkt{s\rbrkt{t}} = \frac{1}{\sqrt{a\rbrkt{f}}} \int_{-\infty}^{\infty} s\rbrkt{t} \mathit{\Psi}^{\ast}\rbrkt{\frac{t - t^{\prime}}{a(f)}} \dd{t},
 \end{equation}
 where $\Psi$ is the wavelet function and $a$ is a function for converting frequencies to wavelet scale factor.
-The Morlet wavelet is suitable for describing postural dynamics which is closely related to human perception, both hearing and vision \citep{daugman_uncertainty_1985}.
+The Morlet wavelet is suitable for describing postural dynamics which is closely related to human perception, both hearing and vision \citep{daugman_uncertainty_1985}, and is used in the pipeline.
 The corresponding wavelet function is given by
 \begin{equation}
 	\Psi(t) = \exp{\frac{t^2}{2}} \cos(w_0t),
 \end{equation}
-where $w_0$ is a non-dimensional. The corresponding function $a$ for Morlet wavelet is as follows;
+where $w_0$ is a non-dimensional parameter. The frequency to scale conversion function $a$ for Morlet wavelet is as follows;
 \begin{equation}
-	s(f) = \frac{w_0 + \sqrt{2+w_0^2}}{4 \pi f},.
+	a\rbrkt{f} = \frac{w_0 + \sqrt{2+w_0^2}}{4 \pi f},.
 \end{equation}
 
-For the discrete sequence of snapshot feature $\mathbf{s}_i$ with sampling period $\Delta t$, $W_{f,t}[s(t)]$ translates into;
+For the discrete sequence of snapshot feature $\mathbf{s}_i$ with sampling period $\Delta t$, $W_{f,t^\prime}[s(t)]$ translates into;
 \begin{equation}
 	\label{eq:wavelet-practical}
-	W_{f}(\mathbf{s}_i, t) = \frac{1}{\sqrt{a(f)}} \sum_{t^{\prime}=1}^{T} {\Delta t} s_{i,t^{\prime}} \mathit{\Psi}^{\ast}\left(\frac{t^{\prime}-t}{a{f}}\right),
+	W_f\rbrkt{\mathbf{s}_i, t^\prime} = \frac{1}{\sqrt{a(f)}} \sum_{t=1}^{T} {\Delta t} s_{i,t} \mathit{\Psi}^{\ast}\rbrkt{\frac{t-t^{\prime}}{a{f}}},
 \end{equation}
-where $t \in \mathbb{Z}$ \citep{torrence_practical_1998}.
+where $t^\prime, t \in \mathbb{Z}$ and $ 1 \leq t^\prime \leq T$ \citep{torrence_practical_1998}.
 
 \subsubsection{Normalization of Wavelet Power Spectrum}
 In order to ensure that wavelet transforms (Equation~\ref{eq:wavelet-practical}) at each frequency $f$ are directly comparable to each other and to the other transformed time series, the transformation $W_f$ has to be normalized at each frequency $f$ to have unit energy.
@@ -223,14 +226,14 @@ This normalization for Morlet wavelet at frequency $f$ is given by
 \begin{equation}
 	C(f) = \frac{\pi^{-\frac{1}{4}}}{\sqrt{2a(f)}}\exp{\sfrac{1}{4}\rbrkt{w_0-\sqrt{w_0^2+2}}^2}.
 \end{equation}
-So resulting normalized transformation which is also considered to spectrogram generation in \citet{berman_mapping_2014} is given by
+So resulting normalized transformation which is also used to generate the spectrogram in \citet{berman_mapping_2014} is given by
 \begin{equation}
-	W^0_f(\mathbf{s}_i, t) = \frac{1}{C(f)} \abs{W_f(\mathbf{s}_i, t)}.
+	W^0_f\rbrkt{\mathbf{s}_i, t^\prime} = \frac{1}{C\rbrkt{f}} \abs{W_f\rbrkt{\mathbf{s}_i, t^\prime}}.
 \end{equation}
 
-In addition to the above conventionally used normalization, we alternatively adopted the normalization proposed by \citet{liu_rectification_2007}. According to this alternative adjustment, the wavelet power spectrum should be the transform coefficient squared divided by the scale it associates.
+In addition to the above conventionally used normalization, we alternatively adopted the normalization proposed by \citet{liu_rectification_2007}. According to this alternative adjustment, the wavelet power spectrum should be equal to the transform coefficient squared divided by the scale it associates.
 \begin{equation}
-	W^{0}_f(\mathbf{s}_i, t) = \frac{W_f(\mathbf{s}_i, t)^2}{a(f)}
+	W^{0}_f\rbrkt{\mathbf{s}_i, t^\prime} = \frac{W_f\rbrkt{\mathbf{s}_i, t^\prime}^2}{a\rbrkt{f}}
 \end{equation}
 We observed substantial improvements using this power spectrum (see Section~\ref{section:employing-proposed-pipeline}).
 
@@ -246,33 +249,34 @@ The other alternative set of frequencies is linearly spaced between $f_{\textnor
 \begin{equation}
 	f_i = f_{\textnormal{min}} + \frac{f_{\textnormal{max}} - f_{\textnormal{min}}}{N_f-1}i,
 \end{equation}
-for $i=1,2,\dots,N_f$, and their corresponding wavelet scales are computed via $a(f_i)$.
+for $i=1,2,\dots,N_f$, and their corresponding wavelet scales are computed via $a\rbrkt{f_i}$.
 
-\subsection{Constructing Extended Postural Dynamic Feature Tensors}
-Let $\mathcal{T}_s=\set{\sfrac{1}{f_{\textnormal{min}}}, \cdots \sfrac{1}{f_{\textnormal{max}}}}$ and $\mathcal{T}_v=\set{\tau_{\textnormal{min}}, \cdots, \tau_{\textnormal{max}}}$ denote the time-scale sets respectively for wavelet transformed snapshot features and moving statistics of gradient features. Then corresponding feature tensors are given as follows:
+\subsection{Constructing Dynamic Postural Feature Tensors}
+Let $\mathcal{T}_S=\set{\sfrac{1}{f_{\textnormal{min}}}, \cdots \sfrac{1}{f_{\textnormal{max}}}}$ and $\mathcal{T}_G=\set{\tau_{\textnormal{min}}, \cdots, \tau_{\textnormal{max}}}$ denote the time-scale sets respectively for wavelet transforms of snapshot features and moving statistics of gradient features. Then corresponding feature tensors are given as follows:
 \begin{align}
-	\mathbf{W}        & = [W^0_{\sfrac{1}{\tau}}(\mathbf{s}_i, t)]_{1 \leq i \leq N_s, \,1 \leq t \leq T, \, \tau \in \mathcal{T}_s}, \\
-	\mathbf{M}_\mu    & = [\mu_\tau(v_{i,t})]_{1 \leq i \leq  N_v,  \, 1\leq t \leq T, \, \tau \in \mathcal{T}_v},                    \\
-	\mathbf{M}_\sigma & = [\sigma_\tau(v_{i,t})]_{1 \leq i \leq N_v, \, 1\leq t \leq T, \, \tau \in \mathcal{T}_v},
+	\mathbf{W}        & = \sqbrkt{W^0_{\sfrac{1}{f}}\rbrkt{\mathbf{s}_i, t}}_{1 \leq i \leq N_S, \,1 \leq t \leq T, \, \sfrac{1}{f} \in \mathcal{T}_S}, \\
+	\mathbf{M}_\mu    & = \sqbrkt{\mu_\tau\rbrkt{g_{i,t}}}_{1 \leq i \leq  N_G,  \, 1\leq t \leq T, \, \tau \in \mathcal{T}_G},                         \\
+	\mathbf{M}_\sigma & = \sqbrkt{\sigma_\tau\rbrkt{g_{i,t}}}_{1 \leq i \leq N_G, \, 1\leq t \leq T, \, \tau \in \mathcal{T}_G},
 \end{align}
-where $\mathbf{S} \in \mathbb{R}^{T \times N_s}$ and $\mathbf{V} \in \mathbb{R}^{T \times N_v}$.
+where $\mathbf{S} \in \mathbb{R}^{T \times N_S}$ and $\mathbf{G} \in \mathbb{R}^{T \times N_G}$.
 
-The resulting extended feature tensors of postural dynamic representations are $\mathbf{W} \in \mathbb{R}^{T \times \card{\mathcal{T}_s} \times N_s}$, $\mathbf{M}_\mu \in \mathbb{R}^{T \times \card{\mathcal{T}_v} \times N_v}$ and $\mathbf{M}_\sigma \in \mathbb{R}^{T \times \card{\mathcal{T}_v} \times N_v}$.
+The resulting extended feature tensors of dynamic postural representations are $\mathbf{W} \in \mathbb{R}^{T \times \card{\mathcal{T}_s} \times N_S}$, $\mathbf{M}_\mu \in \mathbb{R}^{T \times \card{\mathcal{T}_v} \times N_G}$ and $\mathbf{M}_\sigma \in \mathbb{R}^{T \times \card{\mathcal{T}_v} \times N_G}$.
+
 \section{Computation of Behavioral Representations}
-After applying wavelet transformation or computing moving statistics to extend extracted spatio-temporal features to postural dynamics features, a couple of additional operations are required to generate desired embeddings.
+After applying wavelet transformation or computing moving statistics to extend extracted spatio-temporal features to dynamic postural features, a couple of additional operations are required to generate desired behavioral embeddings.
 
-\subsection{Flattening of Extended Postural Dynamics Feature Tensors}
-As mentioned in Section~\ref{section:extending-features-to-multiple-time-scale}, feature tensors are $\mathbf{W} \in \mathbb{R}^{T \times \card{\mathcal{T}_s} \times N_s}$, $\mathbf{M}_\mu \in \mathbb{R}^{T \times \card{\mathcal{T}_v} \times N_v}$, and  $\mathbf{M}_\sigma \in \mathbb{R}^{T \times \card{\mathcal{T}_v} \times N_v}$.
-In order to apply manifold learning based dimensionality reduction algorithms or traditional machine learning algorithms such as decision trees, one need to flatten the last two dimensions of these postural dynamics feature tensors.
-As a result, feature matrices are $\mathbf{W}^\ast \in \mathbb{R}^{T \times \rbrkt{ N_s\card{\mathcal{T}_s}}}, \mathbf{M}_\mu^\ast \in \mathbb{R}^{T \times \rbrkt{ N_v\card{\mathcal{T}_v}}}$ and $\mathbf{M}_\sigma^\ast \in \mathbb{R}^{T \times \rbrkt{ N_v\card{\mathcal{T}_v}}}$ are obtained.
+\subsection{Flattening Dynamic Postural Feature Tensors}
+As constructed in Section~\ref{section:dynamic-postural-features}, dynamic postural feature tensors are $\mathbf{W} \in \mathbb{R}^{T \times \card{\mathcal{T}_S} \times N_S}$, $\mathbf{M}_\mu \in \mathbb{R}^{T \times \card{\mathcal{T}_G} \times N_G}$, and  $\mathbf{M}_\sigma \in \mathbb{R}^{T \times \card{\mathcal{T}_G} \times N_G}$.
+In order to apply manifold learning-based dimensionality reduction algorithms or traditional machine learning algorithms such as decision trees, one needs to flatten the last two dimensions of these feature tensors.
+As a result, feature matrices are $\mathbf{W}^\ast \in \mathbb{R}^{T \times \rbrkt{ N_S\card{\mathcal{T}_S}}}, \mathbf{M}_\mu^\ast \in \mathbb{R}^{T \times \rbrkt{ N_G\card{\mathcal{T}_G}}}$ and $\mathbf{M}_\sigma^\ast \in \mathbb{R}^{T \times \rbrkt{ N_G\card{\mathcal{T}_G}}}$ are obtained.
 
-\subsection{\texorpdfstring{$L^1$}{L1} Normalization of Frames}
+\subsection{\texorpdfstring{$\textnormal{L}_1$}{L1} Normalization of Frames}
 Wavelet power spectrum and gradient feature values are heavily dependent on the orientation of the flies and on the unique fly characteristics.
-In order to have a homogeneous feature space among flies and along the time, at each time step $t$, $L^1$ normalization is applied as follows;
+In order to have a homogeneous feature space among flies and along the time, at each time step $t$, $\textnormal{L}_1$ normalization is applied as follows;
 \begin{equation}
-	\mathbf{W}^{\prime}  = \rbrkt{\frac{w^\ast_{t,i}}{\sum_{j=0}^{N_s \card{\mathcal{T}_s}}w^\ast_{t, j}}}_{1 \leq t \leq T, \, 1 \leq i \leq \rbrkt{N_s \card{\mathcal{T}_s}}}.
+	\mathbf{W}^{\prime}  = \rbrkt{\frac{w^\ast_{t,i}}{\sum_{j=0}^{N_S \card{\mathcal{T}_s}}w^\ast_{t, j}}}_{1 \leq t \leq T, \, 1 \leq i \leq \rbrkt{N_S \card{\mathcal{T}_s}}}.
 \end{equation}
-Similarly, $L^1$ normalized versions of $\mathbf{M}^\ast_\mu$ and $\mathbf{M}^\ast_\sigma$, namely $\mathbf{M}^\prime_\mu$ and $\mathbf{M}^\prime\sigma$ are obtained.
+Similarly, $\textnormal{L}_1$ normalized versions of $\mathbf{M}^\ast_\mu$ and $\mathbf{M}^\ast_\sigma$, namely $\mathbf{M}^\prime_\mu$ and $\mathbf{M}^\prime\sigma$ are obtained.
 
 Here $\mathbf{W}^\prime$, $\mathbf{M}^\prime_\mu$ and $\mathbf{M}^\prime\sigma$ are the final multivariate time series of normalized high dimensional behavioral representation of a fly experiment. Behavioral representation matrix $\mathbf{W}^\prime$ will be used to compute behavioral embeddings.
 
