@@ -1,13 +1,13 @@
 \chapter{Feature Extraction}
-For a single experiment data, feature extraction consists of four consecutive steps, where the input in one stage is the output of the previous one.
-The input of the first step is the raw output signal of the tracking and pose estimation model, in our case, the output of DeepLabCut.
+For a single experiment data, i.e. single fruit fly recorded over a night, feature extraction consists of four consecutive steps, where the input in one stage is the output of the previous one.
+The input of the first step is the raw output signal of the tracking and pose estimation model, in our case, the output of DeepLabCut, a toolbox for markerless pose estimation.
 The feature extraction steps are as follows:
 
 \begin{enumerate}
-	\item Constructing pose values and preprocessing (filtering and imputation).
+	\item Constructing pose values and preprocessing; dealing with occluded body parts, alignment of different orientations, filtering and imputation.
 	\item Computing spatio-temporal features, such as distances between body parts, velocity, angular velocity from body part positions.
 	\item Extending spatio-temporal features to multiple time-scales using wavelet transformation and sliding window statistics.
-	\item Computing normalized high-dimensional behavioral representation.
+	\item Computing normalized high-dimensional behavioral representations.
 \end{enumerate}
 
 Matrices $\mathbf{X} \in \mathbb{R}^{T \times N}$ and $\mathbf{Y} \in \mathbb{R}^{T \times N}$ denotes a multivariate time series for $x$ and $y$ cartesian components of two-dimensional video recordings that are collected for $N$ tracked body parts of the fly on $T$ consecutive time stamps by a pose estimation model. This multivariate time series matrices $\mathbf{X}$ and $\mathbf{Y}$ are the raw input data that goes into the first step of the feature extraction.
@@ -21,15 +21,16 @@ Each column of the $\mathbf{X}=[\mathbf{x}_1, \cdots, \mathbf{x}_N]^\top$ and $\
 
 Here $i$ denotes the index of the body part, e.g. leg tip or proboscis.
 
-
-In addition to $\mathbf{X}$ and $\mathbf{Y}$, many tracking and pose estimation models report prediction scores for each tracked body part at each time step.
-$L \in \mathbb{R}^{N \times T}$ denotes the time series of prediction scores, each column of the $L=[l_1, \cdots, l_N]^\top$ can be written as follows;
+In addition to $\mathbf{X}$ and $\mathbf{Y}$, a pose estimation model may report prediction scores for each tracked body part at each time step, which is the case for DeepLabCut as well.
+$L \in \mathbb{R}^{N \times T}$ denotes the time series of prediction scores, each column of the $L=[\mathbf{l_1}, \cdots, \mathbf{l_N}]^\top$ can be written as follows;
 
 \begin{equation*}
 	\mathbf{l}_i = (l_{i,1}, l_{i,2}, \dots, l_{i,t-1}, l_{i,t}, l_{i,t}, \dots, l_{i,T}).
 \end{equation*}
 
-The prediction score is very low when the body part is not visible. Thus, $L$ provides valuable information about the occluded body parts. In the Section~\ref{section:dealing-with-occluded-body-parts}, how $L$ is incorporated into construction of pose values is described in detail.
+The prediction scores tend to be very low when the body part is not visible.
+Thus, $L$ provides valuable information about the occluded body parts.
+In the Section~\ref{section:dealing-with-occluded-body-parts}, how $L$ is incorporated into construction of pose values is described in detail.
 
 \section{Preprocessing}
 The goal of in this step is to preprocess the signal, which involves filtering and imputation of certain video frames.
@@ -37,54 +38,58 @@ But in addition to this, there are a couple of optional procedures that can be b
 These additional procedures deal with occluded body parts of the fly, alignment of the fly orientations and defining new points of interest.
 
 \subsection{Dealing with Occluded Body Parts}\label{section:dealing-with-occluded-body-parts}
-As mentioned in the Section~\ref{section:challanges}, the two-dimensional video recordings introduces a number of important challenges, and one of them is the the occluded body parts.
-There are many types of occlusions which can be informally described as follows.
+As mentioned in the Section~\ref{section:challanges}, the two-dimensional video recordings introduces a number of important challenges, and one of them is the problem of occluded body parts.
+There are many types of occlusions, and some of them can be informally described as follows.
 One examples is short occlusions resulting from postural changes.
-Imputation of the time series $\mathbf{X}$ and $\mathbf{Y}$ for these short occlusions is relatively easy since the number of missing data points are few.
+Imputation of the time series $\mathbf{X}$ and $\mathbf{Y}$ for such short occlusions is relatively easy since the number of consecutive missing data points are not many.
 However, this is not the case for long occlusions which usually occur when the fly is dormant for a long period of time.
-Especially for the body parts which have left and right counterparts, it is common that the orientation of the fly results in one of the counterparts being occluded in long dormant epochs.
+Especially for the body parts which have left and right counterparts, it is usual that the orientation of the fly results in one of the counterparts being occluded in long dormant epochs.
 We follow multiple approaches to handle different type occlusions; namely imputation and elimination of corresponding data-points.
 Before describing those approaches we define a criterion for being occluded.
 
-\subsubsection{Computing Oriented Pose Values to Handle Body Parts with Left \& Right Counterparts}
-If the fly oriented perpendicular to the camera perspective as in Figure~\ref{figure:perpendicular-orientation}, then one of the left and right body parts is often occluded.
+\subsubsection{Oriented Pose Values for Body Parts with Left \& Right Counterparts}
+If the fly is oriented perpendicular to the camera perspective as in Figure~\ref{figure:perpendicular-orientation}, then one of the left and right body parts is often occluded.
 In other orientations (e.g. Figure~\ref{figure:parallel-orientation} and Figure~\ref{figure:oblique-orientation}),  both of them or none of them might be occluded as well.
 However, in the conducted experiments, flies usually choose to stay dormant perpendicular to the camera perspective in long dormant epochs, as mentioned in Chapter~\ref{chapter:expt-data-collection}.
-In such cases, one can only use one of the left and right counterparts to construct pose values.
+In such cases, one can concede to use only one of the left and right counterparts to construct pose values.
 Therefore, this optional step is included in the behavioral mapping pipeline to reduce pose values of body parts with left and right counterparts to a single value.
 
-We use prediction scores to determine which body part should be used to construct pose value.
+We use prediction scores to determine which body part should be used to compute oriented pose values.
 Let $i$ and $j$ be a pair of body parts which are left and right counterparts of each other, e.g. left haltere and right haltere.
-Then one can use the $\mathbf{l}_i$ and $\mathbf{l}_j$ to predict if one of them is occluded at a particular time step $t$.
-Let $\orient{\mathbf{x}_i, \mathbf{x}_j}$ ($\orient{\mathbf{y}_i, \mathbf{y}_j}$) be a new pose vector which will be computed based on $\mathbf{x}_i$ and $\mathbf{x}_j$ ($\mathbf{y}_i$ and $\mathbf{y}_j$), e.g. an oriented haltere pose value from left haltere and right haltere.
-The following conditional produces are proposed to compute oriented pose values from left and right pose values by deciding the orientation of the fly for that counterpart; they can be used separately or together.
-\begin{itemize}
-	\item If $l_{i,t} - l_{j,t} \geq  \epsilon$ then without loss of generality $\orient{x_{i,t}, x_{j,t}}=x_{i,t}$ and $\orient{y_{i,t}, y_{j,t}}=y_{i,t}$ for a threshold $\epsilon$, typically $\epsilon > 0.5$.
-	\item If $\card{\Set{t^{\prime}}{l_{i,t^{\prime}} > l_{j,t^{\prime}}, t^{\prime} \in [t-w \rangedots t+w]}} > w$, then without loss of generality $\orient{x_{i,t}, x_{j,t}}=x_{i,t}$ and $\orient{y_{i,t}, y_{j,t}}=y_{i,t}$ for a window size $2w+1$.
-	\item If $l_{i,t} > l_{j,t}$ and $\abs{t-t^i} < \abs{t-t^j}$ where $t^i=\argmin_{t^i} \abs{t-t^i}$, $t^i \in \Set{t^{\prime}}{l_{i,t^{\prime}} - l_{j,t^{\prime}} > \epsilon}$ and $t^j=\argmin_{t^j} \abs{t-t^j}$, $t^j \in \Set{t^{\prime}}{l_{j,t^{\prime}} - l_{i,t^{\prime}} > \epsilon}$ for some threshold $\epsilon$ then without loss of generality $\orient{x_{i,t}, x_{j,t}}=x_{i,t}$ and $\orient{y_{i,t}, y_{j,t}}=y_{i,t}$.
-	\item If simply $l_{i,t} > l_{j,t}$ (i.e. hard threshold) then without loss of generality $\orient{x_{i,t}, x_{j,t}}=x_{i,t}$ and $\orient{y_{i,t}, y_{j,t}}=y_{i,t}$.
-\end{itemize}
-Except applying a hard threshold, all other conditions may leave some of the time points with undecided orientations.
-If the number of such time points is acceptable, then applying hard threshold for those time points is convenient and handy.
+Then, one can use the $\mathbf{l}_i$ and $\mathbf{l}_j$ to predict if one of them is occluded at a particular time step $t$.
+Let $\orient{\mathbf{x}_i, \mathbf{x}_j}$ ($\orient{\mathbf{y}_i, \mathbf{y}_j}$) be a new pose vector which will be computed based on $\mathbf{x}_i$ and $\mathbf{x}_j$ ($\mathbf{y}_i$ and $\mathbf{y}_j$), e.g. a vector of oriented haltere pose values, composed from left haltere and right haltere.
+The following conditional procedures are proposed to compute oriented pose values from left and right pose values by deciding the orientation of the fly for a counterpart body pair. They procedures below can be used separately, or successively.
 
-After applying above procedures for one right and left counterpart pair $i, j$, we can define
+\begin{itemize}
+	\item If $l_{i,t} - l_{j,t} \geq  \epsilon$, then, without loss of generality, $\orient{\mathbf{x}_i, \mathbf{x}_j}_t=x_{i,t}$ and $\orient{\mathbf{y}_i, \mathbf{y}_j}_t=y_{i,t}$ for a threshold $\epsilon$, typically $\epsilon > 0.5$.
+
+	\item If $\card{\Set{t^{\prime}}{l_{i,t^{\prime}} > l_{j,t^{\prime}}, \, t^{\prime} \in [t-w \rangedots t+w]}} > w$, then, without loss of generality, $\orient{\mathbf{x}_i, \mathbf{x}_j}_t=x_{i,t}$ and $\orient{\mathbf{y}_i, \mathbf{y}_j}_t=y_{i,t}$, for a window of size $2w+1$.
+
+	\item If $l_{i,t} > l_{j,t}$ and if nearest confident left orientation is closer than the nearest confident right orientation, i.e., $$\argmin_{t^{\prime}} \Set{\abs{t-t^{\prime}}}{l_{i,t^{\prime}} - l_{j,t^{\prime}} \geq \epsilon} > \argmin_{t^{\prime}} \Set{\abs{t - t^{\prime}}}{l_{j,t^{\prime}} - l_{i,t^{\prime}} \geq \epsilon},$$ then, without loss of generality, $\orient{\mathbf{x}_i, \mathbf{x}_j}_t=x_{i,t}$ and $\orient{\mathbf{y}_i, \mathbf{y}_j}_t=y_{i,t}$.
+	\item If simply $l_{i,t} > l_{j,t}$, then without loss of generality, $\orient{\mathbf{x}_i, \mathbf{x}_j}_t=x_{i,t}$ and $\orient{\mathbf{y}_i, \mathbf{y}_j}_t=y_{i,t}$.
+\end{itemize}
+
+Except directly comparing the prediction confidence scores as in the last procedure, some of the time points might be left with undecided orientations.
+If the number of such time points is acceptable, then directly comparing the prediction scores for those time points is convenient and handy.
+
+After applying above procedures for a right and left counterpart pair $i$ and $j$, we can define oriented multivariate time series as;
 \begin{align*}
 	\mathbf{X}^{\ast} & = \rbrkt{[(\mathbf{x}_p)_{p \notin \cup\mathcal{O}}] \mid [\left(\orient{\mathbf{x}_i, \mathbf{x}_j}\right)_{\set{i,j} \in \mathcal{O}}]}^\top,      \\
-	\mathbf{Y}^{\ast} & = \rbrkt{[(\mathbf{y}_p)_{p \notin \cup\mathcal{O}}] \mid [\left(\orient{\mathbf{y}_i, \mathbf{y}_j}\right)_{\set{i,j} \in \cup \mathcal{O}}]}^\top. \\
+	\mathbf{Y}^{\ast} & = \rbrkt{[(\mathbf{y}_p)_{p \notin \cup\mathcal{O}}] \mid [\left(\orient{\mathbf{y}_i, \mathbf{y}_j}\right)_{\set{i,j} \in \cup \mathcal{O}}]}^\top,
 \end{align*}
-\begin{align*}
-	\mathbf{X}^{\ast} & =\rbrkt{ (x_{p,t})_{t \in \set{1, \cdots, T}, p \notin \cup \mathcal{O}} \mid [\left(\orient{\mathbf{x}_i, \mathbf{x}_j}\right)_{\set{i,j} \in \mathcal{O}}]}^\top,   \\
-	\mathbf{Y}^{\ast} & = \rbrkt{(y_{p,t})_{t \in \set{1, \cdots, T}, p \notin \cup \mathcal{O}}  \mid  [\left(\orient{\mathbf{x}_i, \mathbf{x}_j}\right)_{\set{i,j} \in \mathcal{O}}]}^\top. \\
-\end{align*}
+% \begin{align*}
+% 	\mathbf{X}^{\ast} & =\rbrkt{ (x_{p,t})_{t \in \set{1, \cdots, T}, p \notin \cup \mathcal{O}} \mid [\left(\orient{\mathbf{x}_i, \mathbf{x}_j}\right)_{\set{i,j} \in \mathcal{O}}]}^\top,   \\
+% 	\mathbf{Y}^{\ast} & = \rbrkt{(y_{p,t})_{t \in \set{1, \cdots, T}, p \notin \cup \mathcal{O}}  \mid  [\left(\orient{\mathbf{x}_i, \mathbf{x}_j}\right)_{\set{i,j} \in \mathcal{O}}]}^\top
+% \end{align*}
 where $\mathcal{O}$ is the set of index pairs of right and left counterparts and $\cup \mathcal{O}$ is the union of all such indexes.
 Applying this procedure for each right and left counterparts results in computing $\mathbf{X}^{\ast}$ and $\mathbf{Y}^{\ast}$.
 This oriented version of original data matrices can be used instead of $\mathbf{X}$ and $\mathbf{Y}$ in the rest of the pipeline, if desired.
 
 \subsubsection{Detecting Occlusions Using Prediction Scores and Preternatural Tracking Predictions}
 
-\subsection{Aligning Flies with Different Orientations}
+\subsection{Aligning Different Orientations}
 
-\subsection{Preprocessing: Filtering and Imputation}
+\subsection{Filtering and Imputation}
 
 \section{Computation of Spatio-temporal Features from Pose Values}
 Constructing pose values enables us to go one step further towards learning stereotypical behaviors.
