@@ -15,19 +15,19 @@ This multivariate time series matrices $\V{X}$ and $\V{Y}$ are the raw input dat
 Note that the number of body parts, $N$, must be the same among all experiments conducted with different fruit flies, but the number of time stamps, $T$, might differ.
 Each column of the $\V{X}=[\V{x}_1, \cdots, \V{x}_N]^\top$ and $\V{Y}=[\V{y}_1, \cdots, \V{y}_N]^\top$ can be written respectively as follows;
 
-\begin{align*}
+\begin{align}
 	\V{y}_i & = (y_{i,1}, y_{i,2}, \dots, y_{i,t-1}, y_{i,t}, y_{i,t+1}, \dots, y_{i,T}), \\
 	\V{x}_i & = (x_{i,1}, x_{i,2}, \dots, x_{i,t-1}, x_{i,t}, x_{i,t+1}, \dots, x_{i,T}).
-\end{align*}
+\end{align}
 
 Here $i$ denotes the index of the body part, e.g., leg tip or proboscis.
 
 In addition to $\V{X}$ and $\V{Y}$, a pose estimation model may report prediction scores for each tracked body part at each time step, which is the case for DeepLabCut as well.
 $L \in \mathbb{R}^{N \times T}$ denotes the time series of prediction scores, each column of the $L=[\V{l_1}, \cdots, \V{l_N}]^\top$ can be written as follows;
 
-\begin{equation*}
+\begin{equation}
 	\V{l}_i = (l_{i,1}, l_{i,2}, \dots, l_{i,t-1}, l_{i,t}, l_{i,t+1}, \dots, l_{i,T}).
-\end{equation*}
+\end{equation}
 
 The prediction scores tend to be very low when the body part is not visible.
 Thus, $L$ provides valuable information about the occluded body parts.
@@ -82,7 +82,22 @@ where $\mathcal{O}$ is the set of index pairs of left and right counterparts and
 Applying described procedures for each left and right counterparts results in computing $\V{X}^{\omicron}$ and $\V{Y}^{\omicron}$.
 This oriented versions of original data matrices can be used instead of $\V{X}$ and $\V{Y}$ in the rest of the pipeline, if desired.
 
-\subsubsection{Detecting Occlusions Using Prediction Scores and Preternatural Tracking Predictions}
+\subsubsection{Detecting Occlusions Using Prediction Scores \& Anomalous Pose Values}
+Major postural changes and overlapping body parts during movements result in some body parts being occluded for a short interval of time.
+These types of occlusions may span several frames to several seconds.
+Since the pose estimation model makes predictions for such data points, it is necessary to detect and process such data points.
+Our pipeline exploits two indicators for detection: prediction scores and anomalous changes in pose values.
+We mark the body parts estimated to be occluded and corresponding time intervals, and then the desired imputation method is used to fill those time intervals appropriately.
+
+The following conditions are considered to detect occluded body parts, note that they can be used separately or in combination with each other.
+\begin{itemize}
+	\item If the prediction confidence score at time step $t$ is lower than a given threshold $\epsilon$, then the $t$ is marked to be imputed.
+	\item If $z$-score of the prediction confidence score $l_{i,t}$ computed within a window with size $\tau$, and centered at $t$, is lower than a given threshold $\epsilon_z$, then the $t$ is marked to be imputed.
+	\item If the second-order gradient of the estimated pose value exceeds a given threshold $\delta$, then the $t$ is marked to be imputed.
+	\item If the difference between estimated pose value at time step $t$ and median of pose values within the window of size $\tau$, centered at time step $t$, exceeds the threshold $\delta$, then the $t$ is marked to be imputed.
+\end{itemize}
+Here, the window sizes and threshold parameters are determined separately for each condition.
+The conditions described above are useful not only for occluded body parts, but are also beneficial for tackling unnatural and abnormal predictions made by the pose estimation model.
 
 \subsection{Aligning Different Orientations}
 
@@ -92,8 +107,8 @@ This oriented versions of original data matrices can be used instead of $\V{X}$ 
 After preprocessing of pose values, it is now feasible to go one step further towards learning stereotypical behaviors.
 Although tracking of relevant body parts and processing corresponding pose values is an essential step for quantifying behavior, a set of coordinate values is not sufficient to represent and capture complex spatio-temporal dynamics of animal behavior.
 There are thousands of unique postures, and behaviors are not even exhibited by some static set of postures.
-Instead, they are defined by expressive and meaningful spatio-temporal features such as distances, velocities, angles and angular velocities.
-Therefor, one need to compute such features from the coordinate values of body parts in two-dimensional space.
+Instead, they are defined by expressive and meaningful spatio-temporal features such as distances, velocities, angles, and angular velocities.
+Therefore, one needs to compute such features from the coordinate values of body parts in two-dimensional space.
 
 The second stage of the feature extraction is computation of spatio-temporal features from pose values. Two type of features are computed in this stage, as listed below.
 \begin{enumerate}
@@ -120,7 +135,7 @@ Given a body part pair $\rbr{i,j}$, the distance between them at a time step $t$
 	d^{i,j}_t = \sqrt{(x_{i,t} - x_{j,t})^2 + (y_{i,t} - y_{j,t})^2}.
 \end{equation}
 
-The corresponding gradient feature, namely the change of distance between body part $i$ and $j$, is computed using the second order gradient approximation,
+The corresponding gradient feature, namely the change of distance between body part $i$ and $j$, is computed using the second-order gradient approximation,
 \begin{equation}
 	\dot{d}^{i,j}_t = \begin{cases} \frac{\abs{d^{i,j}_{t+1} - d^{i,j}_{t}}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{\abs{d^{i,j}_{t+1} - d^{i,j}_{t-1}}}{2\Delta t} & \textnormal{otherwise}, \end{cases}
 \end{equation}
@@ -280,5 +295,3 @@ In order to have a homogeneous feature space among flies and along the time, at 
 \end{align}
 Similarly, $\textnormal{L}_1$ normalized versions of $\V{M}^\ast_\mu$ and $\V{M}^\ast_\sigma$, namely $\V{\hat{M}}_\mu$ and $\V{\hat{M}}_\sigma$ are obtained.
 Here $\V{\hat{W}}$, $\V{\hat{M}}_\mu$ and $\V{\hat{M}}_\sigma$ are the final multivariate time series of normalized high dimensional behavioral representation of a single experiment data, i.e., single fruit fly recorded between ZT10 and ZT2. Notice that, we may treat each time step, i.e., frame, as a discrete probability distribution after $\textnormal{L}_1$ normalization.
-
-\section{Summary}
