@@ -68,10 +68,7 @@
 	Finally for each excluded embedding, soft cluster memberships vectors are computed based on the formed clusters.
 }
 
-\section{Computing Behavioral Correspondences}
-
 \subsection{Mapping Clusters to Behavioral Categories}
-
 \NOTE{
 	If a clustering contains annotated experiments, we map that clusters in that clustering to a behavioral composition as follows ({\it subject to change, there are couple of alternatives})
 	\begin{equation}
@@ -91,25 +88,27 @@
 	As a result, for each frame we end up with a behavioral score vector $\mathbf{y}=(y_\alpha)$.
 }
 
-\section{k-NN Classifier}
+\section{Nearest Neighbor Analysis and Classification}
+
+Consider two experiments, an annotated one $\exptAnn$, and an unannotated one $\exptUnann$, and their semi-supervised pair embeddings, respectively $\Ann{\V{E}}=\qmatrix{\Ann{\V{e}}_1, \cdots \Ann{\V{e}_{\Ann{F}}}}$, $\Unann{\V{E}}=\qmatrix{\Unann{\V{e}}_1, \cdots \Unann{\V{e}}_{\Unann{F}}}$, where $\Ann{F}$ and $\Unann{F}$ are the total numbers of frames estimated as dormant and active.
 
 \begin{equation}
-	\V{b}_f = \sqbr{b_{f,1}, \cdots, b_{f,K}}
+	\V{b}_f = \qmatrix{b_{f,1}, \cdots, b_{f,K}}.
 \end{equation}
 
 \begin{equation}
 	b_{f,i} = \begin{dcases}
-		\sum_{f^\prime \in \NN{k}{i}{f}}\frac{1}{\dist{e_f}{e_f^\prime}^p + \epsilon} & \textnormal{if } \card{\NN{k}{i}{f}} \neq 0, \\
-		0                                                                             & \textnormal{if otherwise},
+		\sum_{f^\prime \in \NN{k}{i}{f}}\frac{1}{\dist{\V{e}_f}{\V{e}_f^\prime}^p + \epsilon} & \textnormal{if } \card{\NN{k}{i}{f}} \neq 0, \\
+		0                                                                                     & \textnormal{if otherwise},
 	\end{dcases} \qbwhere p \in \set{0,1,2}.
 \end{equation}
 
 \begin{equation}
-	b^\prime_{f,i} = \frac{b_{f,i}}{\rbr{1 + N^\ann_i}^p} \qbor \frac{b_{f,i}}{\log_k(1 + N^\ann_i)} \qbwhere p \in \set{0, \sfrac{1}{2}, 1}, k \in \set{2, 10}.
+	b^\prime_{f,i} = \frac{b_{f,i}}{\rbr{1 + N^{\plus}_i}^p} \qbor \frac{b_{f,i}}{\log_k(1 + N^{\plus}_i)} \qbwhere p \in \set{0, \sfrac{1}{2}, 1}, k \in \set{2, 10}.
 \end{equation}
 
 \begin{equation}
-	N^\ann_i = \card*{\Set{f}{y_f^{\ann}=i}}
+	N^{\plus}_i = \card*{\Set{f}{y^{\plus}_f=i}}
 \end{equation}
 
 \begin{equation}
@@ -118,4 +117,8 @@
 
 \begin{equation}
 	v_{f,i} = \rbr{\log_2(K) - \entropy{\V{\hat{b}}_f}} \hat{b}_{f,i} \qbor \rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}} \hat{b}_{f,i} \qbor \hat{b}_{f,i}
+\end{equation}
+
+\begin{equation}
+	\V{v}_f = \qmatrix{v_{f,1}, \cdots, v_{f,K}}
 \end{equation}
