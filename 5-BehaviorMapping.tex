@@ -90,3 +90,32 @@
 	where $C$ is the number of clusters, $\mathbf{m}^c$ is the behavioral composition of cluster $c$.
 	As a result, for each frame we end up with a behavioral score vector $\mathbf{y}=(y_\alpha)$.
 }
+
+\section{k-NN Classifier}
+
+\begin{equation}
+	\V{b}_f = \sqbr{b_{f,1}, \cdots, b_{f,K}}
+\end{equation}
+
+\begin{equation}
+	b_{f,i} = \begin{dcases}
+		\sum_{f^\prime \in \NN{k}{i}{f}}\frac{1}{\dist{e_f}{e_f^\prime}^p + \epsilon} & \textnormal{if } \card{\NN{k}{i}{f}} \neq 0, \\
+		0                                                                             & \textnormal{if otherwise},
+	\end{dcases} \qbwhere p \in \set{0,1,2}.
+\end{equation}
+
+\begin{equation}
+	b^\prime_{f,i} = \frac{b_{f,i}}{\rbr{1 + N^\ann_i}^p} \qbor \frac{b_{f,i}}{\log_k(1 + N^\ann_i)} \qbwhere p \in \set{0, \sfrac{1}{2}, 1}, k \in \set{2, 10}.
+\end{equation}
+
+\begin{equation}
+	N^\ann_i = \card*{\Set{f}{y_f^{\ann}=i}}
+\end{equation}
+
+\begin{equation}
+	\hat{b}_{f,i} = \frac{\exp{b^\prime_{f,i}}}{\sum_{j=1}^{K} \exp{b^\prime_{f,j}}} \qbor \frac{b^\prime_{f,i}}{\sum_{j=1}^{K} b^\prime_{f,j}}
+\end{equation}
+
+\begin{equation}
+	v_{f,i} = \rbr{\log_2(K) - \entropy{\V{\hat{b}}_f}} \hat{b}_{f,i} \qbor \rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}} \hat{b}_{f,i} \qbor \hat{b}_{f,i}
+\end{equation}

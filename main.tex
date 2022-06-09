@@ -6,7 +6,7 @@
 %%%%%%%%%%%%
 % Packages %
 %%%%%%%%%%%%
-\usepackage[utf8]{inputenc}
+\usepackage{inputenc}
 \usepackage[
   rmargin=2.5cm,
   lmargin=3.5cm,
@@ -24,26 +24,38 @@
 %%%%%%%%%%%%%%%%%%%%
 % Defined Commands %
 %%%%%%%%%%%%%%%%%%%%
-% \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 % \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+% \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 \DeclarePairedDelimiter{\card}{\lvert}{\rvert}
 
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\distance}{d}
 \DeclareMathSymbol{\omicron}{\mathord}{letters}{"6F}
-
-\newcommand{\rangedots}{\mathinner {\ldotp \ldotp}}
+\newcommand{\rangedots}{\mathinner{\ldotp \ldotp}}
 \newcommand{\concat}{\; \middle| \;}
-\newcommand{\app}{{\sim}}
-\newcommand\orient[1]{\mathop{\rm{orient}}(#1)}
+\newcommand\orient[1]{\operatorname{orient}(#1)}
 \newcommand\rbr[1]{\left(#1\right)}
 \newcommand\sqbr[1]{\left[#1\right]}
 \newcommand\cbr[1]{\left\{#1\right\}}
 \newcommand\abr[1]{\langle#1\rangle}
 \newcommand\set[1]{\left\{ \, #1 \, \right\}}
 \newcommand\Set[2]{\left\{ \, #1 \; \colon \; #2 \, \right\}}
+\newcommand{\V}[1]{\symrm{\symbf{#1}}}
+\newcommand{\dist}[2]{\distance \left( #1, #2 \right)}
+\newcommand{\NN}[3]{{#1\mathrm{NN}}_#2 \left( #3 \right)}
+\newcommand{\function}[2]{\operatorname{#1} \left( #2 \right)}
+\newcommand{\g}[1]{\operatorname{s} \left( #1 \right)}
+\newcommand{\ann}{\mathrm{ann}}
+\newcommand{\entropy}[1]{\symrm{H}\rbr{#1}}
+
+\newcommand{\qbor}{\quad \textnormal{or} \quad}
+\newcommand{\qbwhere}{\quad \textnormal{where} \quad}
+\newcommand{\dband}{\; \textnormal{and} \;}
+
+\let\bsim\sim 
+\renewcommand{\sim}{{\bsim}}
 \renewcommand{\d}[1]{\ensuremath{\operatorname{d}\!{#1}}}
-\newcommand{\V}[1]{\bm{\mathrm{#1}}}
 
 \newcommand{\TODO}[1]{\textcolor{red}{[\texttt{TODO:} #1]}}
 \newcommand{\NOTE}[1]{\textcolor{lacivert}{[\texttt{NOTE:} #1]}}
