@@ -50,7 +50,7 @@ Before describing those approaches, we define a criterion for being occluded.
 
 \subsubsection{Oriented Pose Values for Body Parts with Left \& Right Counterparts}
 If the fly is oriented perpendicular to the camera perspective, as in Figure~\ref{figure:perpendicular-orientation}, then one of the left and right body parts is often occluded.
-In other orientations (e.g., Figure~\ref{figure:parallel-orientation} and Figure~\ref{figure:oblique-orientation}),  both of them or none of them might be occluded as well.
+In other orientations (e.g., Figure~\ref{figure:parallel-horizontal-orientation} and Figure~\ref{figure:oblique-orientation}),  both of them or none of them might be occluded as well.
 However, in the conducted experiments, flies usually choose to stay dormant perpendicular to the camera perspective in long dormant epochs, as mentioned in Chapter~\ref{chapter:expt-data-collection}.
 In such cases, one can concede to use only one of the left and right counterparts to construct pose values.
 Therefore, this optional step is included in the behavioral mapping pipeline to reduce pose values of body parts with left and right counterparts to a single value.
@@ -100,8 +100,32 @@ Here, the window sizes and threshold parameters are determined separately for ea
 The conditions described above are useful not only for occluded body parts, but are also beneficial for tackling unnatural and abnormal predictions made by the pose estimation model.
 
 \subsection{Aligning Different Orientations}
+It may be desired to align different orientations and postures in some cases.
+For instance, it is not possible to interpret vertical and horizontal replacements of body parts separately without aligning them into a reference frame.
+Because flies can position themselves in different orientations while exhibiting similar actions, as it can be seen from the Figure~\ref{figure:parallel-horizontal-orientation} and Figure~\ref{figure:parallel-vertical-orientation}.
+
+To rotationally align each frame, we transformed body part coordinate values into an egocentric reference frame centered on the middle of the fly's spine, e.g., a line along the thorax.
+Then, we performed a linear transformation to all pose values in order to place the spine at the origin, oriented along the $y$-axis.
+
+Alignment of the frames is an optional step in the behavioral mapping pipeline.
+It is potentially beneficial and reasonable to perform alignment when the cartesian pose values of the body parts are included as spatio-temporal features.
 
 \subsection{Filtering and Imputation}
+Estimated pose values are highly noisy because of the reasons explained in Section~\ref{section:challanges}.
+Thus, filtering the pose values and imputation of the data points marked as occluded or abnormal is an essential step before proceeding with the rest of the pipeline, which contains stages that are sensitive to noise.
+
+One of the most practical and effective approaches for time series imputation is applying interpolation.
+We also benefit from univariate interpolation to replace values at marked time points, where the exact algorithm is chosen to be one of the followings; linear interpolation, spline interpolation, forward filling, and backward filling.
+
+After imputation, we apply a median filter with appropriate window size and smooth each $\V{x_i}$ and $\V{y_i}$ separately.
+Finally, a boxcar filter (moving average) with a relatively small window size is used to filter out rapidly changing signals by averaging.
+We observed that large window sizes may result in smoothing out some critical signals, which potentially define short-duration low-amplitude behaviors, e.g., switch-like haltere movement behavior.
+% The values of both $\tau_{\textnormal{median}}$ and $\tau_{\textnormal{boxcar}}$ is typically between $100$ milliseconds to $200$ milliseconds, which corresponds to $\app 3$ frames to $\app 6$ frames in our $30$ FPS setup.
+
+A Rauch-Tung-Striebel Kalman smoother \citep{rauch_maximum_1965} is employed in the development stage.
+However, no significant performance improvement is observed, and hence, later abandoned due to its computational cost and requirement of setting the various state parameters to reasonable values.
+
+The configuration and actual parameters of the imputation methods and the filters are given in Chapter~\ref{chapter:employing-proposed-pipeline}, together with some representative examples demonstrating the effect of preprocessing with different configurations.
 
 \section{Computation of Spatio-temporal Features}
 After preprocessing of pose values, it is now feasible to go one step further towards learning stereotypical behaviors.
@@ -250,7 +274,7 @@ In addition to the above conventionally used normalization, we alternatively ado
 \begin{equation}
 	W^{0}_f\rbr{\V{s}_i, t^\prime} = \frac{W_f\rbr{\V{s}_i, t^\prime}^2}{a\rbr{f}}
 \end{equation}
-We observed substantial improvements using this power spectrum (see Section~\ref{section:employing-proposed-pipeline}).
+We observed substantial improvements using this power spectrum (see Section~\ref{chapter:employing-proposed-pipeline}).
 
 \subsubsection{Determining Spectrum Frequencies}
 We investigate two different approaches for computing a set of frequencies and, we include both of them in the behavior mapping pipeline.
@@ -269,11 +293,10 @@ for $i=1,2,\dots,N_f$, and their corresponding wavelet scales are computed via $
 \subsection{Constructing Dynamic Postural Feature Tensors}
 Let $\mathcal{T}_S=\set{\sfrac{1}{f_{\textnormal{min}}}, \cdots \sfrac{1}{f_{\textnormal{max}}}}$ and $\mathcal{T}_G=\set{\tau_{\textnormal{min}}, \cdots, \tau_{\textnormal{max}}}$ denote the time-scale sets respectively for wavelet transforms of snapshot features and moving statistics of gradient features. Then corresponding feature tensors are given as follows:
 \begin{align}
-	\V{W}        & = \sqbr{W^0_{\sfrac{1}{f}}\rbr{\V{s}_i, t}}_{1 \leq i \leq N_S, \,1 \leq t \leq T, \, \sfrac{1}{f} \in \mathcal{T}_S}, \\
-	\V{M}_\mu    & = \sqbr{\mu_\tau\rbr{g_{i,t}}}_{1 \leq i \leq  N_G,  \, 1\leq t \leq T, \, \tau \in \mathcal{T}_G},                    \\
-	\V{M}_\sigma & = \sqbr{\sigma_\tau\rbr{g_{i,t}}}_{1 \leq i \leq N_G, \, 1\leq t \leq T, \, \tau \in \mathcal{T}_G},
+	\V{W}        & = \rbr{W^0_{f}\rbr{\V{s}_i, t}}_{1 \leq i \leq N_S, \,1 \leq t \leq T, \, \sfrac{1}{f} \in \mathcal{T}_S}, \\
+	\V{M}_\mu    & = \rbr{\mu_\tau\rbr{g_{i,t}}}_{1 \leq i \leq  N_G,  \, 1\leq t \leq T, \, \tau \in \mathcal{T}_G},         \\
+	\V{M}_\sigma & = \rbr{\sigma_\tau\rbr{g_{i,t}}}_{1 \leq i \leq N_G, \, 1\leq t \leq T, \, \tau \in \mathcal{T}_G}.
 \end{align}
-where $\V{S} \in \mathbb{R}^{T \times N_S}$ and $\V{G} \in \mathbb{R}^{T \times N_G}$.
 
 The resulting extended feature tensors of dynamic postural representations are $\V{W} \in \mathbb{R}^{T \times \card{\mathcal{T}_s} \times N_S}$, $\V{M}_\mu \in \mathbb{R}^{T \times \card{\mathcal{T}_v} \times N_G}$ and $\V{M}_\sigma \in \mathbb{R}^{T \times \card{\mathcal{T}_v} \times N_G}$.
 
@@ -289,9 +312,8 @@ As a result, feature matrices are $\V{W}^\ast \in \mathbb{R}^{T \times \rbr{ N_S
 Dynamic postural feature distributions of similar behaviors may differ among flies due to different characteristics such as gender, and being sleep-deprived.
 Due to the two-dimensional nature of the video recordings, different orientations may cause observing different feature values for the same behavior.
 In order to have a homogeneous feature space among flies and along the time, at each time step $t$, $\textnormal{L}_1$ normalization is applied as follows;
-\begin{align}
-	\V{\hat{w}}_i & = \rbr{\frac{w^\ast_{t,i}}{\sum_{j=1}^{N_S \card{\mathcal{T}_s}}w^\ast_{t, j}}}_{1 \leq t \leq T}, \\
-	\V{\hat{W}}   & = \sqbr{\rbr{\V{w}_i}_{1 \leq i \leq N_S\card{\mathcal{T}_S}}}.
-\end{align}
+\begin{equation}
+	\V{\hat{w}}_i = \rbr{\frac{w^\ast_{t,i}}{\sum_{j=1}^{N_S \card{\mathcal{T}_s}}w^\ast_{t, j}}}_{1 \leq t \leq T} \textnormal{ and } \V{\hat{W}}   = \sqbr{\rbr{\V{\hat{w}}_i}_{1 \leq i \leq N_S\card{\mathcal{T}_S}}}.
+\end{equation}
 Similarly, $\textnormal{L}_1$ normalized versions of $\V{M}^\ast_\mu$ and $\V{M}^\ast_\sigma$, namely $\V{\hat{M}}_\mu$ and $\V{\hat{M}}_\sigma$ are obtained.
 Here $\V{\hat{W}}$, $\V{\hat{M}}_\mu$ and $\V{\hat{M}}_\sigma$ are the final multivariate time series of normalized high dimensional behavioral representation of a single experiment data, i.e., single fruit fly recorded between ZT10 and ZT2. Notice that, we may treat each time step, i.e., frame, as a discrete probability distribution after $\textnormal{L}_1$ normalization.
