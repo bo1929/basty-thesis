@@ -1,12 +1,14 @@
 \chapter{Feature Extraction}
-For a single experiment data, i.e., single fruit fly recorded between ZT10 and ZT2 (zeitgeber time 10 and 2), feature extraction consists of four consecutive steps, where the input in one stage is the output of the previous one.
+
+\section{Overview of Feature Extraction}
+For a single experiment data, i.e., a single fruit fly recorded between ZT10 and ZT2 (zeitgeber time 10 and 2), feature extraction consists of four consecutive steps, where the input in one stage is the output of the previous one.
 The input of the first step is the raw output signal of the tracking and pose estimation model, in our case, the output of DeepLabCut, a toolbox for markerless pose estimation.
 The feature extraction steps are as follows:
 
 \begin{enumerate}
 	\item Constructing pose values and preprocessing; dealing with occluded body parts, alignment of different orientations, filtering and imputation.
-	\item Computing spatio-temporal features, such as distances between body parts, velocity, angular velocity from body part positions.
-	\item Computing dynamic postural features by extending spatio-temporal features to multiple time-scales using wavelet transformation and sliding window statistics.
+	\item Computing spatio-temporal features, such as distances between body parts, velocity, and angular velocity from body part positions.
+	\item Computing dynamic postural features by extending spatio-temporal features to multiple time scales using wavelet transformation and sliding window statistics.
 	\item Computing normalized high-dimensional behavioral representations.
 \end{enumerate}
 
@@ -33,32 +35,29 @@ Thus, $L$ provides valuable information about the occluded body parts.
 In the Section~\ref{section:dealing-with-occluded-body-parts}, how $L$ is incorporated into construction of pose values is described in detail.
 
 \section{Preprocessing}
-The goal of in this step is to preprocess the signal, which involves filtering and imputation of certain video frames.
+This step involves preprocessing the signal by filtering and imputation of certain video frames.
 But in addition to this, there are a couple of optional procedures that can be beneficial for our task of learning stereotypical behaviors.
 These additional procedures deal with occluded body parts of the fly, alignment of the fly orientations and defining new points of interest.
 
-\subsection{Dealing with Occluded Body Parts}\label{section:dealing-with-occluded-body-parts}
-As mentioned in the Section~\ref{section:challanges}, the two-dimensionality of the video recordings introduces a number of important challenges, and one of them is the problem of occluded body parts.
-There are many types of occlusions, and some of them can be informally described as follows.
-One examples is short occlusions resulting from postural changes.
-Imputation of the time series $\V{X}$ and $\V{Y}$ for such short occlusions is relatively easy since the number of consecutive missing data points are not many.
-However, this is not the case for long occlusions, which usually occur when the fly is dormant for a long period of time.
-Especially for the body parts which have left and right counterparts, it is usual that the orientation of the fly results in one of the counterparts being occluded in long dormant epochs.
-We follow multiple approaches to handle different type occlusions; namely imputation and elimination of corresponding data-points.
-Before describing those approaches, we define a criterion for being occluded.
+\subsection{Occluded Body Parts}\label{section:dealing-with-occluded-body-parts}
+As mentioned in the Section~\ref{section:challanges}, the two-dimensionality of the video recordings introduces several significant challenges,  one of which is the occluded body parts.
+There are many types of occlusions. One type is short occlusions that often results from postural changes. Imputation of the time series $\V{X}$ and $\V{Y}$ for such short occlusions is relatively easy since the number of consecutive missing data points is few.
+However, this is not the case for long occlusions, which usually occur when the fly is dormant for an extended period of time.
+Especially for the body parts with left and right counterparts,  fly's orientation can result in one of the counterparts being occluded for long dormant epochs.
+We use imputation and elimination of corresponding data-points to deal with the occlusions. Before describing those approaches, we define a criterion for being occluded.
 
 \subsubsection{Oriented Pose Values for Body Parts with Left \& Right Counterparts}
 If the fly is oriented perpendicular to the camera perspective, as in Figure~\ref{figure:perpendicular-orientation}, then one of the left and right body parts is often occluded.
 In other orientations (e.g., Figure~\ref{figure:parallel-horizontal-orientation} and Figure~\ref{figure:oblique-orientation}),  both of them or none of them might be occluded as well.
 However, in the conducted experiments, flies usually choose to stay dormant perpendicular to the camera perspective in long dormant epochs, as mentioned in Chapter~\ref{chapter:expt-data-collection}.
-In such cases, one can concede to use only one of the left and right counterparts to construct pose values.
+In such cases, one can concede using only one of the left and right counterparts to construct pose values.
 Therefore, this optional step is included in the behavioral mapping pipeline to reduce pose values of body parts with left and right counterparts to a single value.
 
 We use prediction scores to determine which body part should be used to compute oriented pose values.
 Let $i$ and $j$ be a pair of body parts which are left and right counterparts of each other, e.g., left haltere and right haltere.
 Then, one can use the $\V{l}_i$ and $\V{l}_j$ to predict if one of them is occluded at a particular time step $t$.
-Let $\orient{\V{x}_i, \V{x}_j}$ ($\orient{\V{y}_i, \V{y}_j}$) be a new pose vector which will be computed based on $\V{x}_i$ and $\V{x}_j$ ($\V{y}_i$ and $\V{y}_j$), e.g., a vector of oriented haltere pose values, composed of left haltere and right haltere pose values.
-The following conditional procedures are proposed to compute oriented pose values from left and right pose values by deciding the orientation of the fly for a counterpart body pair. The procedures below can be used separately, or successively.
+Let $\orient{\V{x}_i, \V{x}_j}$ ($\orient{\V{y}_i, \V{y}_j}$) be a new pose vector that will be computed based on $\V{x}_i$ and $\V{x}_j$ ($\V{y}_i$ and $\V{y}_j$), e.g., a vector of oriented haltere pose values, composed of left haltere and right haltere pose values.
+The following conditional procedures are proposed to compute oriented pose values from the left and right pose values by deciding the orientation of the fly for a counterpart body pair. The procedures below can be used separately, or successively.
 
 \begin{itemize}
 	\item If $l_{i,t} - l_{j,t} \geq  \epsilon$, then, without loss of generality, $\orient{\V{x}_i, \V{x}_j}_t=x_{i,t}$ and $\orient{\V{y}_i, \V{y}_j}_t=y_{i,t}$ for a threshold $\epsilon$, typically $\epsilon > 0.5$.
