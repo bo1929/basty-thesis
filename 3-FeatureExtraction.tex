@@ -63,7 +63,7 @@ The following conditional procedures are proposed to compute oriented pose value
 \begin{itemize}
 	\item If $l_{i,t} - l_{j,t} \geq  \epsilon$, then, without loss of generality, $\orient{\V{x}_i, \V{x}_j}_t=x_{i,t}$ and $\orient{\V{y}_i, \V{y}_j}_t=y_{i,t}$ for a threshold $\epsilon$, typically $\epsilon > 0.5$.
 
-	\item If $\card*{\Set{t^{\prime}}{l_{i,t^{\prime}} > l_{j,t^{\prime}}, \, t^{\prime} \in [t-w \rangedots t+w]}} > w$, then, without loss of generality, $\orient{\V{x}_i, \V{x}_j}_t=x_{i,t}$ and $\orient{\V{y}_i, \V{y}_j}_t=y_{i,t}$, for a window of size $2w+1$.
+	\item If $\card*{\Set{t^{\prime}}{l_{i,t^{\prime}} > l_{j,t^{\prime}}, \, t^{\prime} \in [t-\tau \rangedots t+\tau]}} > \tau$, then, without loss of generality, $\orient{\V{x}_i, \V{x}_j}_t=x_{i,t}$ and $\orient{\V{y}_i, \V{y}_j}_t=y_{i,t}$, for a window of size $2w+1$.
 
 	\item If $l_{i,t} > l_{j,t}$ and if the nearest confident left orientation is closer than the nearest confident right orientation, i.e., $$\argmin_{t^{\prime}} \Set{\abs*{t-t^{\prime}}}{l_{i,t^{\prime}} - l_{j,t^{\prime}} \geq \epsilon} > \argmin_{t^{\prime}} \Set{\abs*{t - t^{\prime}}}{l_{j,t^{\prime}} - l_{i,t^{\prime}} \geq \epsilon},$$ then, without loss of generality, $\orient{\V{x}_i, \V{x}_j}_t=x_{i,t}$ and $\orient{\V{y}_i, \V{y}_j}_t=y_{i,t}$.
 	\item If simply $l_{i,t} > l_{j,t}$, then without loss of generality, $\orient{\V{x}_i, \V{x}_j}_t=x_{i,t}$ and $\orient{\V{y}_i, \V{y}_j}_t=y_{i,t}$.
@@ -167,12 +167,12 @@ where $\Delta t$ is the sampling period, and it is equal to $\sfrac{1}{\textnorm
 \subsection{Joint Angles Between Body Parts}
 Given a triplet of body parts $\rbr{i,j,k}$, angle between $i$ and $k$ around $j$ is computed using the 2-argument $\operatorname{arctangent}$ function as given below,
 \begin{equation}
-	w^{i,j,k}_t = \mathop{\rm{atan2}} \rbr{\det \begin{bmatrix} x_{i,t} - x_{j,t}, x_{k,t} - x_{j,t} \\ y_{i,t} - y_{j,t}, y_{k,t} - y_{j,t} \end{bmatrix}, \begin{bmatrix} x_{i,t} - x_{j,t} \\ y_{i,t} - y_{j,t} \end{bmatrix} \cdot \begin{bmatrix} x_{k,t} - x_{j,t}  \\ y_{k,t} - y_{j,t} \end{bmatrix}} + \pi.
+	\omega^{i,j,k}_t = \mathop{\rm{atan2}} \rbr{\det \begin{bmatrix} x_{i,t} - x_{j,t}, x_{k,t} - x_{j,t} \\ y_{i,t} - y_{j,t}, y_{k,t} - y_{j,t} \end{bmatrix}, \begin{bmatrix} x_{i,t} - x_{j,t} \\ y_{i,t} - y_{j,t} \end{bmatrix} \cdot \begin{bmatrix} x_{k,t} - x_{j,t}  \\ y_{k,t} - y_{j,t} \end{bmatrix}} + \pi.
 \end{equation}
 
 Then, similar to the change of distance features, angular velocities are approximated by
 \begin{equation}
-	\dot{w}^{i,j,k}_t = \begin{cases} \frac{\abs*{w^{i,j,k}_{t+1} - w^{i,j,k}_{t}}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{\abs*{w^{i,j,k}_{t+1} - w^{i,j,k}_{t-1}}}{2\Delta t} & \textnormal{otherwise}. \end{cases}
+	\dot{\omega}^{i,j,k}_t = \begin{cases} \frac{\abs*{\omega^{i,j,k}_{t+1} - \omega^{i,j,k}_{t}}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{\abs*{\omega^{i,j,k}_{t+1} - \omega^{i,j,k}_{t-1}}}{2\Delta t} & \textnormal{otherwise}. \end{cases}
 \end{equation}
 
 \subsection{Cartesian Pose Values of Body Parts}
@@ -196,13 +196,15 @@ Let $\mathcal{C}, \mathcal{D}$, and $\mathcal{A}$ denote the sets of body parts,
 Similarly, let $\mathcal{C}^{\prime}, \mathcal{D}^{\prime}$, and $\mathcal{A}^{\prime}$ denote sets which define sets of respective gradient features.
 Then snapshot feature matrix $S$ constructed as follows;
 \begin{equation}
-	\V{S} = \rbr{\rbr{x^i_t}_{1 \leq t \leq T, \, i \in \mathcal{C}} \concat \rbr{y^i_t}_{1 \leq t \leq T, \, i \in \mathcal{C}} \concat \rbr{d^{i,j}_t}_{1 \leq t \leq T, \, \set{i,j} \in \mathcal{D}} \concat \rbr{w_t^{i,j,k}}_{1 \leq t \leq T, \, \set{i,j,k} \in \mathcal{A}}}.
+	\V{S} = \rbr{\qmatrix{\rbr{\V{x}^i}_{i \in \mathcal{C}}} \concat \qmatrix{\rbr{\V{y}^i}_{i \in \mathcal{C}}} \concat \qmatrix{\rbr{\V{d}^{i,j}}_{\set{i,j} \in \mathcal{D}}} \concat \qmatrix{\rbr{\V{\omega}^{i,j,k}}_{\set{i,j,k} \in \mathcal{A}}}},
 \end{equation}
+where the vectors are defined as $\V{x}^{i}{=}\qmatrix{x^{i}_1, \cdots, x^{i}_T}$, $\V{y}^{i}{=}\qmatrix{y^{i}_1, \cdots, y^{i}_T}$,   $\V{d}^{i,j}{=}\qmatrix{d^{i,j}, \cdots, d^{i,j}_T}$, and $\V{\omega}^{i,j,k}{=}\qmatrix{\omega_1^{i,j,k}, \cdots, \omega^{i,j,k}_T}$.
 
 Similarly, for gradient features, the feature matrix is constructed by concatenating change of distances, angular velocities and body part velocities; given by
 \begin{equation}
-	\V{G} = \rbr{\rbr{\dot{x}^i_t}_{1 \leq t \leq T, \, i \in \mathcal{C}^{\prime}} \concat \rbr{\dot{y}^i_t}_{1 \leq t \leq T, \, i \in \mathcal{C}^{\prime}} \concat \rbr{d^{i,j}_t}_{1 \leq t \leq T, \, \set{i,j} \in \mathcal{D}^{\prime}} \concat \rbr{\dot{w}_t^{i,j,k}}_{1 \leq t \leq T, \, \set{i,j,k} \in \mathcal{A}^{\prime}} }.
+	\V{G} = \rbr{\qmatrix{\rbr{\V{\dot{x}}^i}_{i \in \mathcal{C}^{\prime}}} \concat \qmatrix{\rbr{\V{\dot{y}}^i}_{i \in \mathcal{C}^{\prime}}} \concat \qmatrix{\rbr{\V{\dot{d}}^{i,j}}_{\set{i,j} \in \mathcal{D}^{\prime}}} \concat \qmatrix{\rbr{\V{\dot{\omega}}^{i,j,k}}_{\set{i,j,k} \in \mathcal{A}^{\prime}}}},
 \end{equation}
+where the vectors are defined as $\V{\dot{x}}^{i}{=}\qmatrix{\dot{x}^{i}_1, \cdots, \dot{x}^{i}_T}$, $\V{\dot{y}}^{i}{=}\qmatrix{\dot{y}^{i}_1, \cdots, \dot{y}^{i}_T}$,   $\V{\dot{d}}^{i,j}{=}\qmatrix{\dot{d}^{i,j}, \cdots, \dot{d}^{i,j}_T}$, and $\V{\dot{\omega}}^{i,j,k}{=}\qmatrix{\dot{\omega}_1^{i,j,k}, \cdots, \dot{\omega}^{i,j,k}_T}$.
 
 The resulting two feature matrices are $\V{S} \in \mathbb{R}^{T \times \rbr{2\card*{\mathcal{C}}+\card*{\mathcal{D}}+\card*{\mathcal{A}}}}$, namely snapshot feature matrix, and $\V{G} \in \mathbb{R}^{T \times \rbr{2\card*{\mathcal{C}^{\prime}}+\card*{\mathcal{D}^{\prime}}+\card*{\mathcal{A}^{\prime}}}}$, namely gradient feature matrix.
 Let $N_S$ denote the number of snapshot features, being equal to $2\card*{\mathcal{C}}+\card*{\mathcal{D}}+\card*{\mathcal{A}}$ and let $N_G$ denote the number of gradient features, which is equal to $2\card*{\mathcal{C}^{\prime}}+\card*{\mathcal{D}^{\prime}}+\card*{\mathcal{A}^{\prime}}$.
@@ -292,9 +294,9 @@ for $i=1,2,\dots,N_f$, and their corresponding wavelet scales are computed via $
 \subsection{Constructing Dynamic Postural Feature Tensors}
 Let $\mathcal{T}_S=\set{\sfrac{1}{f_{\textnormal{min}}}, \cdots \sfrac{1}{f_{\textnormal{max}}}}$ and $\mathcal{T}_G=\set{\tau_{\textnormal{min}}, \cdots, \tau_{\textnormal{max}}}$ denote the time-scale sets respectively for wavelet transforms of snapshot features and moving statistics of gradient features. Then corresponding feature tensors are given as follows:
 \begin{align}
-	\V{W}        & = \rbr{W^0_{f}\rbr{\V{s}_i, t}}_{1 \leq i \leq N_S, \,1 \leq t \leq T, \, \sfrac{1}{f} \in \mathcal{T}_S}, \\
-	\V{M}_\mu    & = \rbr{\mu_\tau\rbr{g_{i,t}}}_{1 \leq i \leq  N_G,  \, 1\leq t \leq T, \, \tau \in \mathcal{T}_G},         \\
-	\V{M}_\sigma & = \rbr{\sigma_\tau\rbr{g_{i,t}}}_{1 \leq i \leq N_G, \, 1\leq t \leq T, \, \tau \in \mathcal{T}_G}.
+	\V{W}        & = \rbr{W^0_{f}\rbr{\V{s}_i, t}}_{1 \leq t \leq T, \, \sfrac{1}{f} \in \mathcal{T}_S, \, 1 \leq i \leq N_S}, \\
+	\V{M}_\mu    & = \rbr{\mu_\tau\rbr{g_{i,t}}}_{1\leq t \leq T, \, \tau \in \mathcal{T}_G, \, 1 \leq i \leq  N_G},           \\
+	\V{M}_\sigma & = \rbr{\sigma_\tau\rbr{g_{i,t}}}_{1\leq t \leq T, \, \tau \in \mathcal{T}_G, 1 \leq i \leq N_G}.
 \end{align}
 
 The resulting extended feature tensors of dynamic postural representations are $\V{W} \in \mathbb{R}^{T \times \card*{\mathcal{T}_s} \times N_S}$, $\V{M}_\mu \in \mathbb{R}^{T \times \card*{\mathcal{T}_v} \times N_G}$ and $\V{M}_\sigma \in \mathbb{R}^{T \times \card*{\mathcal{T}_v} \times N_G}$.
@@ -315,4 +317,5 @@ In order to have a homogeneous feature space among flies and along the time, at 
 	\V{\hat{w}}_i = \rbr{\frac{w^\ast_{t,i}}{\sum_{j=1}^{N_S \card*{\mathcal{T}_s}}w^\ast_{t, j}}}_{1 \leq t \leq T} \dband \V{\hat{W}}   = \qmatrix{\rbr{\V{\hat{w}}_i}_{1 \leq i \leq N_S\card*{\mathcal{T}_S}}}.
 \end{equation}
 Similarly, $\textnormal{L}_1$ normalized versions of $\V{M}^\ast_\mu$ and $\V{M}^\ast_\sigma$, namely $\V{\hat{M}}_\mu$ and $\V{\hat{M}}_\sigma$ are obtained.
-Here $\V{\hat{W}}$, $\V{\hat{M}}_\mu$ and $\V{\hat{M}}_\sigma$ are the final multivariate time series of normalized high dimensional behavioral representation of a single experiment data, i.e., single fruit fly recorded between ZT10 and ZT2. Notice that, we may treat each time step, i.e., frame, as a discrete probability distribution after $\textnormal{L}_1$ normalization.
+Here $\V{\hat{W}}$, $\V{\hat{M}}_\mu$ and $\V{\hat{M}}_\sigma$ are the final multivariate time series of normalized high dimensional behavioral representation of a single experiment data, i.e., single fruit fly recorded between ZT10 and ZT2.
+Notice that, we may treat each time step, i.e., frame, as a discrete probability distribution after $\textnormal{L}_1$ normalization.

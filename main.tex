@@ -32,6 +32,14 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator{\distance}{d}
 \DeclareMathSymbol{\omicron}{\mathord}{letters}{"6F}
+
+\newcommand{\minus}{\scalebox{0.6}{-}}
+\newcommand{\plus}{\scalebox{0.6}{+}}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\degrees}{^\circ}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\integers}{\mathbb{Z}}
 \newcommand{\rangedots}{\mathinner{\ldotp \ldotp}}
 \newcommand{\concat}{\; \middle| \;}
 \newcommand\orient[1]{\operatorname{orient}(#1)}
@@ -43,11 +51,10 @@
 \newcommand\Set[2]{\left\{ \, #1 \; \colon \; #2 \, \right\}}
 \newcommand{\V}[1]{\symrm{\symbf{#1}}}
 \newcommand{\dist}[2]{\distance \left( #1, #2 \right)}
-\newcommand{\NN}[3]{{#1\mathrm{NN}}_#2 \left( #3 \right)}
+\newcommand{\NNi}[3]{{#1\mathrm{\textnormal{-}NN}}_#2 \left( #3 \right)}
+\newcommand{\NN}[2]{{#1\mathrm{\textnormal{-}NN}} \left( #2 \right)}
 \newcommand{\function}[2]{\operatorname{#1} \left( #2 \right)}
 \newcommand{\g}[1]{\operatorname{s} \left( #1 \right)}
-\newcommand{\minus}{\scalebox{0.8}{-}}
-\newcommand{\plus}{\scalebox{0.6}{+}}
 \newcommand{\Ann}[1]{#1^{\plus}}
 \newcommand{\Unann}[1]{#1^{\minus}}
 \newcommand{\exptAnn}{\Ann{\symrm{expt}}}
