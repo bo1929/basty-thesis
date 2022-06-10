@@ -105,7 +105,7 @@ $\dist{\Unann{\V{e}}_f}{\Ann{\V{e}}_{f^\prime}}$ is the euclidean distance betwe
 We add a small number $\epsilon$ ($10^{{-}6}$) to the denominator to avoid numerical errors.
 The resulting vector $\V{b}_f = \qmatrix{b_{f,1}, \cdots, b_{f,K}}$ weights the similarity of frame $f$ to each behavioral category in the shared embeddings space based on the nearest neighbors.
 
-Naturally, the number of occurrences of durations of the behavior bouts are different for each behavioral category, and therefore, $\Ann{\V{y}}$ is highly imbalanced.
+Naturally, the number of occurrences or durations of the behavior bouts are different for each behavioral category, and therefore, $\Ann{\V{y}}$ is highly imbalanced.
 As a result, number of nearest neighbors and $\V{b}_f$ are biased in favor of frequently occurring and long-bout behaviors.
 For instance, pumping-like movement of proboscis occur more frequently in longer bouts than switch-like movement of haltere.
 Especially when the $k$ is large, it becomes crucial to consider the imbalanced distribution of behavior occurrences, since the embedding space will be dominated by frequent behaviors.
