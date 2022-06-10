@@ -16,7 +16,7 @@
 \NOTE{
 	We compute Supervised-UMAP embeddings of all annotated experiments together.
 	There is no specific benefit or use case (except visualization purposes) for computing this.
-	The resulting embedding usually is not homogeneous in terms of fly experiments.
+	The resulting embedding is usually not homogeneous in terms of fly experiments.
 	Different flies do not mix well in the behavioral space.
 }
 
@@ -28,7 +28,7 @@
 \subsection{Unsupervised Joint Embedding}
 \NOTE{
 	We compute a single behavioral embedding using all experiments.
-	The problem with this approach is that embedding space is too crowded and thus we can not find meaningful and homogeneous clusters right away.
+	The problem with this approach is that embedding space is too crowded, and thus we can not find meaningful and homogeneous clusters right away.
 	This embedding might be useful for visualization purposes.
 }
 
@@ -36,9 +36,9 @@
 \NOTE{
 	This is the novel and most useful embedding approach that we finally utilize to label unannotated experiments using annotated ones.
 	We compute an embedding for each annotated and unannotated pair.
-	For example, if there are $N_A$ annotated experiments and $N_U$ unannotated experiments we compute $N_A \cdot N_U$ embeddings in total.
+	For example, if there are $N_A$ annotated experiments and $N_U$ unannotated experiments, we compute $N_A \cdot N_U$ embeddings in total.
 	There are number of advantageous of this approach.
-	Especially when, an behavioral repertoire of an annotated an unannotated are similar, resulting embedding is easy to interpret and use for clustering etc.
+	Especially when the behavioral repertoire of the annotated and the unannotated are similar, resulting embedding is easy to interpret and use for clustering, etc.
 }
 \section{Soft Clustering of Behavioral Embeddings}
 \NOTE{
@@ -62,10 +62,10 @@
 \subsection{Crosswise Clustering}
 \NOTE{
 	This is again only applicable to joint and pair embeddings.
-	For joint embeddings, we exclude a sub-group of experiments.
+	For joint embeddings, we exclude a subgroup of experiments.
 	For pair embeddings, we exclude one of the pair experiments.
 	Then rest of the embedding is clustered and clusters are formed.
-	Finally for each excluded embedding, soft cluster memberships vectors are computed based on the formed clusters.
+	Finally, for each excluded embedding, soft cluster membership vectors are computed based on the formed clusters.
 }
 
 \subsection{Mapping Clusters to Behavioral Categories}
@@ -84,14 +84,14 @@
 	\begin{equation}
 		y_\alpha = \sum_{c=0}^C m^c_\alpha
 	\end{equation}
-	where $C$ is the number of clusters, $\mathbf{m}^c$ is the behavioral composition of cluster $c$.
-	As a result, for each frame we end up with a behavioral score vector $\mathbf{y}=(y_\alpha)$.
+	where $C$ is the number of clusters, $\mathbf{m}^c$ is the behavioral composition of the cluster $c$.
+	As a result, for each frame, we end up with a behavioral score vector $\mathbf{y}=(y_\alpha)$.
 }
 
 \section{Nearest Neighbor Analysis and Classification}
 \subsection{Behavioral Weights}
-Consider two experiments, an annotated one $\exptAnn$, and an unannotated one $\exptUnann$, and their semi-supervised pair embeddings, respectively $\Ann{\V{E}}=\qmatrix{\Ann{\V{e}}_1, \cdots \Ann{\V{e}_{\Ann{F}}}}$ and $\Unann{\V{E}}=\qmatrix{\Unann{\V{e}}_1, \cdots \Unann{\V{e}}_{\Unann{F}}}$, where $\Ann{F}$ and $\Unann{F}$ are the total numbers of data points, e.g., frames, estimated as dormant and active.
-Given the true annotations $\Ann{\V{y}}$ of $\exptAnn$, and $K$ behavioral categories, the goal is to compute $\V{\hat{b}}_f=\qmatrix{\hat{b}_{f,1}, \cdots \hat{b}_{f,K}}$, representing the weights (in other words similarity score) of each behavioral categories, for $\exptUnann$, using $\Ann{\V{E}}, \Unann{\V{E}}$ and $\Ann{\V{y}}$.
+Consider two experiments, an annotated one $\exptAnn$, and an unannotated one $\exptUnann$, and their semi-supervised pair embeddings, respectively $\Ann{\V{E}}=\qmatrix{\Ann{\V{e}}_1, \cdots \Ann{\V{e}_{\Ann{F}}}}$ and $\Unann{\V{E}}=\qmatrix{\Unann{\V{e}}_1, \cdots \Unann{\V{e}}_{\Unann{F}}}$, where $\Ann{F}$ and $\Unann{F}$ are the total numbers of data points, for example, frames, estimated as dormant and active.
+Given the true annotations $\Ann{\V{y}}$ of $\exptAnn$, and $K$ behavioral categories, the goal is to compute $\V{\hat{b}}_f=\qmatrix{\hat{b}_{f,1}, \cdots \hat{b}_{f,K}}$, representing the weights (in other words, the similarity score) of each behavioral category for $\exptUnann$, using $\Ann{\V{E}}, \Unann{\V{E}}$ and $\Ann{\V{y}}$.
 
 The procedure start by constructing $k$-nearest neighbor graph using $\Ann{\V{E}}$ and $\Unann{\V{E}}$, and $\NN{k}{f}$ denotes the set of indices of $\Unann{\V{e}}_f$'s $k$ nearest neighbors. Then, the initial $k$-NN weight $b_{f,i}$ for each query point (i.e., frame) $f$ of $\exptUnann$, and behavioral category $i$, is computed by
 \begin{equation}
@@ -100,17 +100,17 @@ The procedure start by constructing $k$-nearest neighbor graph using $\Ann{\V{E}
 		0                                                                                                      & \textnormal{if otherwise},
 	\end{dcases} \qbwhere p \in \set{0,1,2}.
 \end{equation}
-Here, $\NNi{k}{i}{f}=\Set{f^\prime}{\Ann{y}_{f^\prime}=i, \dband f^\prime \in \NN{k}{f}}$, is the set of indices of data points of $\exptAnn$ whose annotation is behavior category $i$, and is one of the $k$ nearest neighbors of $\Unann{\V{e}}_f$.
+Here, $\NNi{k}{i}{f}=\Set{f^\prime}{\Ann{y}_{f^\prime}=i, \dband f^\prime \in \NN{k}{f}}$, is the set of indices of data points of $\exptAnn$ whose annotation is the behavior category $i$ and is one of the $k$ nearest neighbors of $\Unann{\V{e}}_f$.
 $\dist{\Unann{\V{e}}_f}{\Ann{\V{e}}_{f^\prime}}$ is the euclidean distance between $\Unann{\V{e}}_f$ and $\Ann{\V{e}}_{f^\prime}$, and $p$ parameterizes the relation between distance and weight $b_{f,i}$.
 We add a small number $\epsilon$ ($10^{{-}6}$) to the denominator to avoid numerical errors.
-The resulting vector $\V{b}_f = \qmatrix{b_{f,1}, \cdots, b_{f,K}}$ weights the similarity of frame $f$ to each behavioral category in the shared embeddings space based on the nearest neighbors.
+The resulting vector $\V{b}_f = \qmatrix{b_{f,1}, \cdots, b_{f,K}}$ weights the similarity of the frame $f$ to each behavioral category in the shared embedding space based on nearest neighbors.
 
 Naturally, the number of occurrences or durations of the behavior bouts are different for each behavioral category, and therefore, $\Ann{\V{y}}$ is highly imbalanced.
 As a result, number of nearest neighbors and $\V{b}_f$ are biased in favor of frequently occurring and long-bout behaviors.
-For instance, pumping-like movement of proboscis occur more frequently in longer bouts than switch-like movement of haltere.
-Especially when the $k$ is large, it becomes crucial to consider the imbalanced distribution of behavior occurrences, since the embedding space will be dominated by frequent behaviors.
-Thus, incorporating this imbalance to the formulation may help to improve the recall of rarely occurring short-bout behaviors and precision of frequently occurring long-bout behaviors.
-To achieve this, we normalize previously computed scores $b_{f,i}$ by a function of number of occurrences of the behavioral category $i$ as follows:
+For instance, pumping-like movements of the proboscis occur more frequently in longer bouts than switch-like movements of the haltere.
+Especially when $k$ is large, it becomes crucial to consider the imbalanced distribution of behavior occurrences, since the embedding space will be dominated by frequent behaviors.
+Thus, incorporating this imbalance into the formulation may help to improve the recall of rarely occurring short-bout behaviors and precision of frequently occurring long-bout behaviors.
+To achieve this, we normalize the scores previously computed, $b_{f,i}$, as a function of the number of occurrences of the behavioral category $i$ as follows:
 
 \begin{equation}
 	b^\prime_{f,i} = \frac{b_{f,i}}{\rbr{1 + N^{\plus}_i}^p} \qbor \frac{b_{f,i}}{\log_k(1 + N^{\plus}_i)} \qbwhere p \in \set{0, \sfrac{1}{2}, 1}, k \in \set{2, 10},
@@ -121,29 +121,29 @@ For instance, if one is mostly interested in achieving high recall for frequentl
 It may be even desired to set $p=0$, and not considering the number of occurrences in some cases, see Section~\ref{chapter:employing-proposed-pipeline} for more details.
 
 The resulting vector $\V{b^{\prime}}_f \in \reals^K$ is dependent on the annotated experiment $\exptAnn$, and the vectors computed based on different annotated experiments are not comparable with each other.
-Hence, we map values of $b^\prime_{f,i}$ to $\sqbr{0,1}$ by using either $\operatorname {softmax}$ function or $\textnormal{L}_1$ normalization as follows:
+Hence, we map the values of $b^\prime_{f,i}$ to $\sqbr{0,1}$ using either the $\operatorname {softmax}$ function or $\textnormal{L}_1$ normalization as follows:
 \begin{equation}
 	\hat{b}_{f,i} = \frac{\exp{b^\prime_{f,i}}}{\sum_{j=1}^{K} \exp{b^\prime_{f,j}}} \qbor \frac{b^\prime_{f,i}}{\sum_{j=1}^{K} b^\prime_{f,j}}.
 \end{equation}
 The resulting behavioral weight vector $\V{\hat{b}}_f \in \sqbr{0,1}^K$ can be considered as a probability distribution.
-Here, the vector $\V{\hat{b}}_f$ represents the behavioral characteristics of frame $f$ of $\exptUnann$ based on the behavioral repertoire of $\exptAnn$.
-The voting-like scheme, as described in Section~\ref{section:committee-voting}, incorporates behavioral weight vectors of all annotated experiments to finalize classification for $\exptUnann$.
+Here, the vector $\V{\hat{b}}_f$ represents the behavioral characteristics of the frame $f$ of $\exptUnann$ based on the behavioral repertoire of $\exptAnn$.
+The voting-like scheme, as described in Section~\ref{section:committee-voting}, incorporates the behavioral weight vectors of all annotated experiments to finalize the classification for $\exptUnann$.
 
 \subsection{Experiment Committee by Voting}\label{section:committee-voting}
 Consider all experiments: unannotated experiments $\exptUnann_1, \cdots, \exptUnann_{\Unann{R}}$, and annotated experiments $\exptAnn_1, \cdots, \exptAnn_{\Ann{R}}$, where $\Unann{R}$ and $\Ann{R}$ are the number of experiments, respectively.
-The goal is to combine behavioral weights of an unannotated experiments $\exptUnann_k$, computed separately for each annotated experiment.
+The goal is to combine the behavioral weights of an unannotated experiment $\exptUnann_k$, calculated separately for each annotated experiment.
 
 Let $\V{\hat{b}}_f^{k,l}$ denote the behavioral weights of $\exptUnann_k$ computed with $\exptAnn_l$. Each annotated experiment contributes to the overall behavioral score of $\exptUnann_k$; in other words, a committee consisting of annotated experiments vote according to $\V{\hat{b}}_f^{k,l}$. Before describing hard voting and soft voting approaches, there is one more step to discuss.
 
 There exists a significant variation among the exhibited behavioral repertoires in the experiments.
-An annotated experiment might lack some behavioral expressions, or it might manifest some behaviors excessively.
-In such cases, if the behavioral weight vector $\V{\hat{b}}_f^{k,l}$ is not confident, i.e., weights of behavioral categories are close to each other, one may want to decrease the its contribution to the voting.
+An annotated experiment might lack some behavioral expressions or manifest some behaviors excessively.
+In such cases, if the behavioral weight vector $\V{\hat{b}}_f^{k,l}$ is not confident, i.e., weights of behavioral categories are close to each other, one may want to decrease its contribution to the voting.
 To achieve this, we propose two optional approaches; penalizing the behavioral weights with the entropy of the ``probability distribution'' $\V{\hat{b}}_f^{k,l}$, or with the uncertainty.
-The vote contribution of $\exptAnn_l$ to the committee formed for $\exptUnann_k$ is $\V{v}_f^{k,l} = \qmatrix{v_{f,1}^{k,l}, \cdots, v_{f,K}^{k,l}}$, and given by
+The contribution of votes of $\exptAnn_l$ to the committee formed for $\exptUnann_k$ is $\V{v}_f^{k,l} = \qmatrix{v_{f,1}^{k,l}, \cdots, v_{f,K}^{k,l}}$, and is given by
 \begin{equation}
 	v_{f,i}^{k,l} = \rbr{\log_2(K) - \entropy{\V{\hat{b}}_f^{k,l}}} \hat{b}_{f,i}^{k,l} \qbor \rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}^{k,l}} \hat{b}_{f,i}^{k,l} \qbor \hat{b}_{f,i}^{k,l}.
 \end{equation}
-If the $\max_i \hat{b}_{f,i}$ is close to $\sfrac{1}{K}$, meaning that computed vector weights behaviors uniformly, then the factors $\rbr{\log_2(K) - \entropy{\V{\hat{b}}_f^{k,l}}}$ or $\rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}^{k,l}}$ may be used to decrease the ``importance'' of the vote.
+If $\max_i \hat{b}_{f,i}$ is close to $\sfrac{1}{K}$, which means that the computed vector weights the behaviors uniformly, then the factors $\rbr{\log_2(K) - \entropy{\V{\hat{b}}_f^{k,l}}}$ or $\rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}^{k,l}}$ may be used to decrease the ``importance'' of the vote.
 
 \subsubsection{Soft Voting}
 \begin{equation}

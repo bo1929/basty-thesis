@@ -2,11 +2,11 @@
 
 \section{Overview of Feature Extraction}
 For a single experiment data, i.e., a single fruit fly recorded between ZT10 and ZT2 (zeitgeber time 10 and 2), feature extraction consists of four consecutive steps, where the input in one stage is the output of the previous one.
-The input of the first step is the raw output signal of the tracking and pose estimation model, in our case, the output of DeepLabCut, a toolbox for markerless pose estimation.
+The input of the first step is the raw output signal of the tracking and pose estimation model; in our case, the output of DeepLabCut, a toolbox for markerless pose estimation.
 The feature extraction steps are as follows:
 
 \begin{enumerate}
-	\item Constructing pose values and preprocessing; dealing with occluded body parts, alignment of different orientations, filtering and imputation.
+	\item Constructing pose values and preprocessing; dealing with occluded body parts, alignment of different orientations, filtering, and imputation.
 	\item Computing spatio-temporal features, such as distances between body parts, velocity, and angular velocity from body part positions.
 	\item Computing dynamic postural features by extending spatio-temporal features to multiple time scales using wavelet transformation and sliding window statistics.
 	\item Computing normalized high-dimensional behavioral representations.
@@ -121,7 +121,7 @@ We observed that large window sizes may result in smoothing out some critical si
 % The values of both $\tau_{\textnormal{median}}$ and $\tau_{\textnormal{boxcar}}$ is typically between $100$ milliseconds to $200$ milliseconds, which corresponds to $\sim 3$ frames to $\sim 6$ frames in our $30$ FPS setup.
 
 A Rauch-Tung-Striebel Kalman smoother \citep{rauch_maximum_1965} is employed in the development stage.
-However, no significant performance improvement is observed, and hence, later abandoned due to its computational cost and requirement of setting the various state parameters to reasonable values.
+However, no significant performance improvement is observed, and hence later abandoned due to its computational cost and requirement of setting the various state parameters to reasonable values.
 
 The configuration and actual parameters of the imputation methods and the filters are given in Chapter~\ref{chapter:employing-proposed-pipeline}, together with some representative examples demonstrating the effect of preprocessing with different configurations.
 
@@ -140,7 +140,7 @@ The second stage of the feature extraction is computation of spatio-temporal fea
 		      \item angles,
 		      \item cartesian pose values (i.e., per body part features).
 	      \end{itemize}
-	\item \textbf{Gradient features:} Spatio-temporal feature values computed based how snapshot features change over time, listed as follows:
+	\item \textbf{Gradient features:} Spatio-temporal feature values computed based on how snapshot features change over time, listed as follows:
 	      \begin{itemize}
 		      \item change of distances,
 		      \item change of angles (i.e., angular velocities),
@@ -164,18 +164,18 @@ The corresponding gradient feature, namely the change of distance between body p
 where $\Delta t$ is the sampling period, and it is equal to $\sfrac{1}{\textnormal{FPS}}$ seconds.
 
 \subsection{Joint Angles Between Body Parts}
-Given a triplet of body parts $\rbr{i,j,k}$, angle between $i$ and $k$ around $j$ is computed using the 2-argument $\operatorname{arctangent}$ function as given below,
+Given a triplet of body parts $\rbr{i,j,k}$, the angle between $i$ and $k$ around $j$ is calculated using the two-argument $\operatorname{arctangent}$ function as given below,
 \begin{equation}
 	\omega^{i,j,k}_t = \mathop{\rm{atan2}} \rbr{\det \begin{bmatrix} x_{i,t} - x_{j,t}, x_{k,t} - x_{j,t} \\ y_{i,t} - y_{j,t}, y_{k,t} - y_{j,t} \end{bmatrix}, \begin{bmatrix} x_{i,t} - x_{j,t} \\ y_{i,t} - y_{j,t} \end{bmatrix} \cdot \begin{bmatrix} x_{k,t} - x_{j,t}  \\ y_{k,t} - y_{j,t} \end{bmatrix}} + \pi.
 \end{equation}
 
-Then, similar to the change of distance features, angular velocities are approximated by
+Then, similar to the change of distance features, the angular velocities are approximated by
 \begin{equation}
 	\dot{\omega}^{i,j,k}_t = \begin{cases} \frac{\abs*{\omega^{i,j,k}_{t+1} - \omega^{i,j,k}_{t}}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{\abs*{\omega^{i,j,k}_{t+1} - \omega^{i,j,k}_{t-1}}}{2\Delta t} & \textnormal{otherwise}. \end{cases}
 \end{equation}
 
 \subsection{Cartesian Pose Values of Body Parts}
-Cartesian pose values of a body part $i$ is straightforwardly given by the $x$ and $y$ coordinate values as follows:
+Cartesian pose values of a body part $i$ are straightforwardly given by the $x$ and $y$ coordinate values as follows:
 \begin{align}
 	x^{i}_t & = x_{i,t}, \\
 	y^{i}_t & = y_{i,t}.
@@ -188,11 +188,11 @@ Corresponding gradient features, namely the body part velocities along each cart
 	\dot{y}^{i}_t & = \begin{cases} \frac{y^{i}_{t+1} - y^{i}_{t}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{y^{i}_{t+1} - y^{i}_{t-1}}{2\Delta t} & \textnormal{otherwise}. \end{cases}
 \end{align}
 
-In order to compute overall two-dimensional velocity of a body part, one can always use the distance between origin and corresponding body part.
+In order to compute overall two-dimensional velocity of a body part, one can always use the distance between the origin and corresponding body part.
 
 \subsection{Constructing Spatio-temporal Feature Matrices}
 Let $\mathcal{C}, \mathcal{D}$, and $\mathcal{A}$ denote the sets of body parts, body part pairs, and body part triplets; respectively defining cartesian pose values, distances, and angles.
-Similarly, let $\mathcal{C}^{\prime}, \mathcal{D}^{\prime}$, and $\mathcal{A}^{\prime}$ denote sets which define sets of respective gradient features.
+Similarly, let $\mathcal{C}^{\prime}, \mathcal{D}^{\prime}$, and $\mathcal{A}^{\prime}$ denote sets that define sets of respective gradient features.
 Then snapshot feature matrix $S$ constructed as follows;
 \begin{equation}
 	\V{S} = \rbr{\qmatrix{\rbr{\V{x}^i}_{i \in \mathcal{C}}} \concat \qmatrix{\rbr{\V{y}^i}_{i \in \mathcal{C}}} \concat \qmatrix{\rbr{\V{d}^{i,j}}_{\set{i,j} \in \mathcal{D}}} \concat \qmatrix{\rbr{\V{\omega}^{i,j,k}}_{\set{i,j,k} \in \mathcal{A}}}},
@@ -214,7 +214,7 @@ Understanding the output of a complex biological system, in our case behavior, c
 Previous studies attempt to search behavioral motifs, e.g., repeated sub-sequences of actions with finite length, within the behavioral time series \CITE.
 However, as \citet{berman_mapping_2014} states, this paradigm usually requires problems of temporal alignment and relative phasing between different scales.
 Alternatively, extending spatio-temporal features to capture postural dynamics at different time-scales eliminate requirements of temporal alignment and motif based analysis.
-In order to extend the spatio-temporal features to dynamic postural features, we applied wavelet transformation (similar to \citet{berman_mapping_2014}) and computed moving statistics at different time-scales (similar to \citet{kabra_jaaba_2013}), respectively for snapshot feature set ($\V{S}$) and gradient feature set ($\V{G}$).
+In order to extend the spatio-temporal features to dynamic postural features, we applied wavelet transformation (similar to \citet{berman_mapping_2014}) and computed moving statistics at different time-scales (similar to \citet{kabra_jaaba_2013}), respectively for snapshot feature set ($\V{S}$) and the gradient feature set ($\V{G}$).
 
 \subsection{Moving Statistics of Gradient Features}
 Gradient features only reflect the instantaneous values of velocities with respect to the sampling rate.
@@ -232,12 +232,12 @@ Similarly, the moving standard deviation of a gradient feature $g_{i,t}$ by is c
 Moving statistics feature generation approach is used to learn animal behavior by \citet{kabra_jaaba_2013}, and \citet{marshall_continuous_2021} is also included such features into the analysis.
 
 \subsection{Wavelet Transformation of Snapshot Features}
-The wavelet domain is a useful representation of postural dynamics due to the following reasons given by \citet{berman_mapping_2014}, and proposed spectrogram generation is used by others as well \citep{marshall_continuous_2021, todd_systematic_2017}.
+The wavelet domain is a useful representation of postural dynamics due to the following reasons given by \citet{berman_mapping_2014}, and the proposed spectrogram generation is used by others as well \citep{marshall_continuous_2021, todd_systematic_2017}.
 \begin{itemize}
 	\item It describes dynamics over multiple time-scales simultaneously by possessing a multi-resolution time-frequency trade-off.
 	\item It eliminates the requirement of precise temporal alignment for capturing periodic behaviors by taking amplitudes of the continuous wavelet transform of each snapshot feature at different scales.
 \end{itemize}
-Given a function $s(t)$, continuous wavelet transformation at a frequency $f>0$ is expressed by the following integral:
+Given a function $s(t)$, continuous wavelet transformation at a frequency $f>0$ is expressed as the following integral:
 \begin{equation}
 	W_{f,t^{\prime}}\qmatrix{s\rbr{t}} = \frac{1}{\sqrt{a\rbr{f}}} \int_{-\infty}^{\infty} s\rbr{t} \mathit{\Psi}^{\ast}\rbr{\frac{t - t^{\prime}}{a(f)}} \dd{t},
 \end{equation}
@@ -247,7 +247,7 @@ The corresponding wavelet function is given by
 \begin{equation}
 	\Psi(t) = \exp{\frac{t^2}{2}} \cos(w_0t),
 \end{equation}
-where $w_0$ is a non-dimensional parameter. The frequency to scale conversion function $a$ for Morlet wavelet is as follows:
+where $w_0$ is a non-dimensional parameter. The frequency-to-scale conversion function $a$ for the Morlet wavelet is as follows:
 \begin{equation}
 	a\rbr{f} = \frac{w_0 + \sqrt{2+w_0^2}}{4 \pi f}.
 \end{equation}
@@ -261,7 +261,7 @@ where $t^\prime, t \in \mathbb{Z}$ and $ 1 \leq t^\prime \leq T$ \citep{torrence
 
 \subsubsection{Normalization of Wavelet Power Spectrum}
 In order to ensure that wavelet transforms (Equation~\ref{eq:wavelet-practical}) at each frequency $f$ are directly comparable to each other and to the other transformed time series, the transformation $W_f$ has to be normalized at each frequency $f$ to have unit energy.
-This normalization for Morlet wavelet at frequency $f$ is as follows:
+This normalization for the Morlet wavelet at frequency $f$ is as follows:
 \begin{equation}
 	C(f) = \frac{\pi^{-\frac{1}{4}}}{\sqrt{2a(f)}}\exp{\sfrac{1}{4}\rbr{w_0-\sqrt{w_0^2+2}}^2}.
 \end{equation}
@@ -288,7 +288,7 @@ The other alternative set of frequencies is linearly spaced between $f_{\textnor
 \begin{equation}
 	f_i = f_{\textnormal{min}} + \frac{f_{\textnormal{max}} - f_{\textnormal{min}}}{N_f-1}i,
 \end{equation}
-for $i=1,2,\dots,N_f$, and their corresponding wavelet scales are computed via $a\rbr{f_i}$.
+for $i=1,2,\dots,N_f$, and their corresponding wavelet scales are computed by $a\rbr{f_i}$.
 
 \subsection{Constructing Dynamic Postural Feature Tensors}
 Let $\mathcal{T}_S=\set{\sfrac{1}{f_{\textnormal{min}}}, \cdots \sfrac{1}{f_{\textnormal{max}}}}$ and $\mathcal{T}_G=\set{\tau_{\textnormal{min}}, \cdots, \tau_{\textnormal{max}}}$ denote the time-scale sets respectively for wavelet transforms of snapshot features and moving statistics of gradient features. Then corresponding feature tensors are given as follows:
@@ -305,7 +305,7 @@ After applying wavelet transformation or computing moving statistics to extend e
 
 \subsection{Flattening Dynamic Postural Feature Tensors}
 As constructed in Section~\ref{section:dynamic-postural-features}, dynamic postural feature tensors are $\V{W} \in \mathbb{R}^{T \times \card*{\mathcal{T}_S} \times N_S}$, $\V{M}_\mu \in \mathbb{R}^{T \times \card*{\mathcal{T}_G} \times N_G}$, and  $\V{M}_\sigma \in \mathbb{R}^{T \times \card*{\mathcal{T}_G} \times N_G}$.
-In order to apply manifold learning-based dimensionality reduction algorithms or traditional machine learning algorithms such as decision trees, the last two dimensions of these feature tensors needs to be flattened.
+In order to apply manifold learning-based dimensionality reduction algorithms or traditional machine learning algorithms such as decision trees, the last two dimensions of these feature tensors need to be flattened.
 As a result, feature matrices are $\V{W}^\ast \in \mathbb{R}^{T \times \rbr{ N_S\card*{\mathcal{T}_S}}}, \V{M}_\mu^\ast \in \mathbb{R}^{T \times \rbr{ N_G\card*{\mathcal{T}_G}}}$ and $\V{M}_\sigma^\ast \in \mathbb{R}^{T \times \rbr{ N_G\card*{\mathcal{T}_G}}}$ are obtained.
 
 \subsection{\texorpdfstring{$\textnormal{L}_1$}{L1} Normalization of Frames}
@@ -317,4 +317,4 @@ In order to have a homogeneous feature space among flies and along the time, at 
 \end{equation}
 Similarly, $\textnormal{L}_1$ normalized versions of $\V{M}^\ast_\mu$ and $\V{M}^\ast_\sigma$, namely $\V{\hat{M}}_\mu$ and $\V{\hat{M}}_\sigma$ are obtained.
 Here $\V{\hat{W}}$, $\V{\hat{M}}_\mu$ and $\V{\hat{M}}_\sigma$ are the final multivariate time series of normalized high dimensional behavioral representation of a single experiment data, i.e., single fruit fly recorded between ZT10 and ZT2.
-Notice that, we may treat each time step, i.e., frame, as a discrete probability distribution after $\textnormal{L}_1$ normalization.
+Notice that we may treat each time step, that is, the frame, as a discrete probability distribution after $\textnormal{L}_1$ normalization.
