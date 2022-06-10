@@ -93,7 +93,7 @@
 Consider two experiments, an annotated one $\exptAnn$, and an unannotated one $\exptUnann$, and their semi-supervised pair embeddings, respectively $\Ann{\V{E}}=\qmatrix{\Ann{\V{e}}_1, \cdots \Ann{\V{e}_{\Ann{F}}}}$ and $\Unann{\V{E}}=\qmatrix{\Unann{\V{e}}_1, \cdots \Unann{\V{e}}_{\Unann{F}}}$, where $\Ann{F}$ and $\Unann{F}$ are the total numbers of data points, e.g., frames, estimated as dormant and active.
 Given the true annotations $\Ann{\V{y}}$ of $\exptAnn$, and $K$ behavioral categories, the goal is to compute $\V{\hat{b}}_f=\qmatrix{\hat{b}_{f,1}, \cdots \hat{b}_{f,K}}$, representing the weights (in other words similarity score) of each behavioral categories, for $\exptUnann$, using $\Ann{\V{E}}, \Unann{\V{E}}$ and $\Ann{\V{y}}$.
 
-The procedure start by constructing $k$-nearest neighbor graph using $\Ann{\V{E}}$ and $\Unann{\V{E}}$, and $\NN{k}{f}$ denotes the set of indices of $\Unann{\V{e}}_f$'s $k$ nearest neighbors. Then, initial $k$-NN weight $b_{f,i}$ for each query point (i.e., frame) $f$ of $\exptUnann$, and behavioral category $i$, is computed by
+The procedure start by constructing $k$-nearest neighbor graph using $\Ann{\V{E}}$ and $\Unann{\V{E}}$, and $\NN{k}{f}$ denotes the set of indices of $\Unann{\V{e}}_f$'s $k$ nearest neighbors. Then, the initial $k$-NN weight $b_{f,i}$ for each query point (i.e., frame) $f$ of $\exptUnann$, and behavioral category $i$, is computed by
 \begin{equation}
 	b_{f,i} = \begin{dcases}
 		\sum_{f^\prime \in \NNi{k}{i}{f}}\frac{1}{\dist{\Unann{\V{e}}_f}{\Ann{\V{e}}_{f^\prime}}^p + \epsilon} & \textnormal{if } \card{\NNi{k}{i}{f}} \neq 0, \\
@@ -101,22 +101,22 @@ The procedure start by constructing $k$-nearest neighbor graph using $\Ann{\V{E}
 	\end{dcases} \qbwhere p \in \set{0,1,2}.
 \end{equation}
 Here, $\NNi{k}{i}{f}=\Set{f^\prime}{\Ann{y}_{f^\prime}=i, \dband f^\prime \in \NN{k}{f}}$, is the set of indices of data points of $\exptAnn$ whose annotation is behavior category $i$, and is one of the $k$ nearest neighbors of $\Unann{\V{e}}_f$.
-$\dist{\Unann{\V{e}}_f}{\Ann{\V{e}}_{f^\prime}}$ is the euclidean distance between $\Unann{\V{e}}_f$ and $\Ann{\V{e}}_{f^\prime}$, and $p$ parameterises the relation between distance and weight $b_{f,i}$.
+$\dist{\Unann{\V{e}}_f}{\Ann{\V{e}}_{f^\prime}}$ is the euclidean distance between $\Unann{\V{e}}_f$ and $\Ann{\V{e}}_{f^\prime}$, and $p$ parameterizes the relation between distance and weight $b_{f,i}$.
 We add a small number $\epsilon$ ($10^{{-}6}$) to the denominator to avoid numerical errors.
-Resulting vector $\V{b}_f = \qmatrix{b_{f,1}, \cdots, b_{f,K}}$ weights the similarity of frame $f$ to each behavioral category in the shared embeddings space based on the nearest neighbors.
+The resulting vector $\V{b}_f = \qmatrix{b_{f,1}, \cdots, b_{f,K}}$ weights the similarity of frame $f$ to each behavioral category in the shared embeddings space based on the nearest neighbors.
 
 Naturally, the number of occurrences of durations of the behavior bouts are different for each behavioral category, and therefore, $\Ann{\V{y}}$ is highly imbalanced.
-As a results, number of nearest neighbors and $\V{b}_f$ are biased in favour of frequently occurring and long-bout behaviors.
+As a result, number of nearest neighbors and $\V{b}_f$ are biased in favor of frequently occurring and long-bout behaviors.
 For instance, pumping-like movement of proboscis occur more frequently in longer bouts than switch-like movement of haltere.
 Especially when the $k$ is large, it becomes crucial to consider the imbalanced distribution of behavior occurrences, since the embedding space will be dominated by frequent behaviors.
 Thus, incorporating this imbalance to the formulation may help to improve the recall of rarely occurring short-bout behaviors and precision of frequently occurring long-bout behaviors.
-To achieve this, we normalize previously computed scores $b_{f,i}$ by a function of number of occurrences of behavioral category $i$ as follows:
+To achieve this, we normalize previously computed scores $b_{f,i}$ by a function of number of occurrences of the behavioral category $i$ as follows:
 
 \begin{equation}
 	b^\prime_{f,i} = \frac{b_{f,i}}{\rbr{1 + N^{\plus}_i}^p} \qbor \frac{b_{f,i}}{\log_k(1 + N^{\plus}_i)} \qbwhere p \in \set{0, \sfrac{1}{2}, 1}, k \in \set{2, 10},
 \end{equation}
 where $N^{\plus}_i = \card*{\Set{f}{y^{\plus}_f=i}}$ is the number of frames annotated as behavioral category $i$.
-In the above equation, two different alternatives are given for this normalization step; a polynomial one and a logarithmic one, where $p$ and $k$ parameterise the relation between $N^{\plus}_i$ and $b^\prime_{f,i}$.
+In the above equation, two different alternatives are given for this normalization step; a polynomial one and a logarithmic one, where $p$ and $k$ parameterize the relation between $N^{\plus}_i$ and $b^\prime_{f,i}$.
 For instance, if one is mostly interested in achieving high recall for frequently occurring behaviors, low $p$ values or using the logarithmic alternative might be more appropriate.
 It may be even desired to set $p=0$, and not considering the number of occurrences in some cases, see Section~\ref{chapter:employing-proposed-pipeline} for more details.
 
@@ -125,7 +125,7 @@ Hence, we map values of $b^\prime_{f,i}$ to $\sqbr{0,1}$ by using either $\opera
 \begin{equation}
 	\hat{b}_{f,i} = \frac{\exp{b^\prime_{f,i}}}{\sum_{j=1}^{K} \exp{b^\prime_{f,j}}} \qbor \frac{b^\prime_{f,i}}{\sum_{j=1}^{K} b^\prime_{f,j}}.
 \end{equation}
-Resulting behavioral weight vector $\V{\hat{b}}_f \in \sqbr{0,1}^K$ can be considered as a probability distribution.
+The resulting behavioral weight vector $\V{\hat{b}}_f \in \sqbr{0,1}^K$ can be considered as a probability distribution.
 Here, the vector $\V{\hat{b}}_f$ represents the behavioral characteristics of frame $f$ of $\exptUnann$ based on the behavioral repertoire of $\exptAnn$.
 The voting-like scheme, which is used to finalize classification, incorporates all annotated experiments $\exptAnn_r$ considering corresponding $\V{\hat{b}}_r$ behavioral weight vectors.
 
