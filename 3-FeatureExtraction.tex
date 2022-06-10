@@ -102,7 +102,7 @@ It may be desired to align different orientations and postures in some cases.
 For instance, it is not possible to interpret vertical and horizontal replacements of body parts separately without aligning them into a reference frame.
 Because flies can position themselves in different orientations while exhibiting similar actions, as it can be seen from the Figure~\ref{figure:parallel-horizontal-orientation} and Figure~\ref{figure:parallel-vertical-orientation}.
 
-To rotationally align each frame, we transformed body part coordinate values into an egocentric reference frame centered on the middle of the fly's spine, e.g., a line along the thorax.
+To rotationally align each frame, we transformed body part coordinate values into an egocentric reference frame centered in the middle of the fly's spine, e.g., a line along the thorax.
 Then, we performed a linear transformation to all pose values in order to place the spine at the origin, oriented along the $y$-axis.
 
 Alignment of the frames is an optional step in the behavioral mapping pipeline.
@@ -214,7 +214,7 @@ Understanding the output of a complex biological system, in our case behavior, c
 Previous studies attempt to search behavioral motifs, e.g., repeated sub-sequences of actions with finite length, within the behavioral time series \CITE.
 However, as \citet{berman_mapping_2014} states, this paradigm usually requires problems of temporal alignment and relative phasing between different scales.
 Alternatively, extending spatio-temporal features to capture postural dynamics at different time-scales eliminate requirements of temporal alignment and motif based analysis.
-In order to extend the spatio-temporal features to dynamic postural features, we applied wavelet transformation (similar to \citet{berman_mapping_2014}) and computed moving statistics at different time-scales (similar to \citet{kabra_jaaba_2013}), respectively for snapshot feature set ($\V{S}$) and the gradient feature set ($\V{G}$).
+In order to extend the spatio-temporal features to dynamic postural features, we applied wavelet transformation (similar to \citet{berman_mapping_2014}) and computed moving statistics at different time-scales (similar to \citet{kabra_jaaba_2013}), respectively for the snapshot feature set ($\V{S}$) and the gradient feature set ($\V{G}$).
 
 \subsection{Moving Statistics of Gradient Features}
 Gradient features only reflect the instantaneous values of velocities with respect to the sampling rate.
