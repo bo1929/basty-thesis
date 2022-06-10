@@ -89,7 +89,7 @@
 }
 
 \section{Nearest Neighbor Analysis and Classification}
-\subsection{}
+\subsection{Behavioral Weights}
 Consider two experiments, an annotated one $\exptAnn$, and an unannotated one $\exptUnann$, and their semi-supervised pair embeddings, respectively $\Ann{\V{E}}=\qmatrix{\Ann{\V{e}}_1, \cdots \Ann{\V{e}_{\Ann{F}}}}$ and $\Unann{\V{E}}=\qmatrix{\Unann{\V{e}}_1, \cdots \Unann{\V{e}}_{\Unann{F}}}$, where $\Ann{F}$ and $\Unann{F}$ are the total numbers of data points, e.g., frames, estimated as dormant and active.
 Given the true annotations $\Ann{\V{y}}$ of $\exptAnn$, and $K$ behavioral categories, the goal is to compute $\V{\hat{b}}_f=\qmatrix{\hat{b}_{f,1}, \cdots \hat{b}_{f,K}}$, representing the weights (in other words similarity score) of each behavioral categories, for $\exptUnann$, using $\Ann{\V{E}}, \Unann{\V{E}}$ and $\Ann{\V{y}}$.
 
@@ -127,14 +127,30 @@ Hence, we map values of $b^\prime_{f,i}$ to $\sqbr{0,1}$ by using either $\opera
 \end{equation}
 The resulting behavioral weight vector $\V{\hat{b}}_f \in \sqbr{0,1}^K$ can be considered as a probability distribution.
 Here, the vector $\V{\hat{b}}_f$ represents the behavioral characteristics of frame $f$ of $\exptUnann$ based on the behavioral repertoire of $\exptAnn$.
-The voting-like scheme, which is used to finalize classification, incorporates all annotated experiments $\exptAnn_r$ considering corresponding $\V{\hat{b}}_r$ behavioral weight vectors.
+The voting-like scheme, as described in Section~\ref{section:committee-voting}, incorporates behavioral weight vectors of all annotated experiments to finalize classification for $\exptUnann$.
 
-\subsection{}
+\subsection{Experiment Committee by Voting}\label{section:committee-voting}
+Consider all experiments: unannotated experiments $\exptUnann_1, \cdots, \exptUnann_{\Unann{R}}$, and annotated experiments $\exptAnn_1, \cdots, \exptAnn_{\Ann{R}}$, where $\Unann{R}$ and $\Ann{R}$ are the number of experiments, respectively.
+The goal is to combine behavioral weights of an unannotated experiments $\exptUnann_k$, computed separately for each annotated experiment.
 
+Let $\V{\hat{b}}_f^{k,l}$ denote the behavioral weights of $\exptUnann_k$ computed with $\exptAnn_l$. Each annotated experiment contributes to the overall behavioral score of $\exptUnann_k$; in other words, a committee consisting of annotated experiments vote according to $\V{\hat{b}}_f^{k,l}$. Before describing hard voting and soft voting approaches, there is one more step to discuss.
+
+There exists a significant variation among the exhibited behavioral repertoires in the experiments.
+An annotated experiment might lack some behavioral expressions, or it might manifest some behaviors excessively.
+In such cases, if the behavioral weight vector $\V{\hat{b}}_f^{k,l}$ is not confident, i.e., weights of behavioral categories are close to each other, one may want to decrease the its contribution to the voting.
+To achieve this, we propose two optional approaches; penalizing the behavioral weights with the entropy of the ``probability distribution'' $\V{\hat{b}}_f^{k,l}$, or with the uncertainty.
+The vote contribution of $\exptAnn_l$ to the committee formed for $\exptUnann_k$ is $\V{v}_f^{k,l} = \qmatrix{v_{f,1}^{k,l}, \cdots, v_{f,K}^{k,l}}$, and given by
 \begin{equation}
-	v_{f,i} = \rbr{\log_2(K) - \entropy{\V{\hat{b}}_f}} \hat{b}_{f,i} \qbor \rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}} \hat{b}_{f,i} \qbor \hat{b}_{f,i}
+	v_{f,i}^{k,l} = \rbr{\log_2(K) - \entropy{\V{\hat{b}}_f^{k,l}}} \hat{b}_{f,i}^{k,l} \qbor \rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}^{k,l}} \hat{b}_{f,i}^{k,l} \qbor \hat{b}_{f,i}^{k,l}.
+\end{equation}
+If the $\max_i \hat{b}_{f,i}$ is close to $\sfrac{1}{K}$, meaning that computed vector weights behaviors uniformly, then the factors $\rbr{\log_2(K) - \entropy{\V{\hat{b}}_f^{k,l}}}$ or $\rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}^{k,l}}$ may be used to decrease the ``importance'' of the vote.
+
+\subsubsection{Soft Voting}
+\begin{equation}
+	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \sum_{l=1}^{\Ann{R}} v_{f,i}^{k,l}
 \end{equation}
 
+\subsubsection{Hard Voting}
 \begin{equation}
-	\V{v}_f = \qmatrix{v_{f,1}, \cdots, v_{f,K}}
+	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \Set{\argmax_{1 \leq j \leq K} v_{f,j}^{k,l}}{j=i, \, 1 \leq l \leq \Ann{R}}
 \end{equation}
