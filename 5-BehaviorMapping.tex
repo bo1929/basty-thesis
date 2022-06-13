@@ -145,12 +145,20 @@ The contribution of votes of $\exptAnn_l$ to the committee formed for $\exptUnan
 \end{equation}
 If $\max_i \hat{b}_{f,i}$ is close to $\sfrac{1}{K}$, which means that the computed vector weights the behaviors uniformly, then the factors $\rbr{\log_2(K) - \entropy{\V{\hat{b}}_f^{k,l}}}$ or $\rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}^{k,l}}$ may be used to decrease the ``importance'' of the vote.
 
-\subsubsection{Soft Voting}
-\begin{equation}
-	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \sum_{l=1}^{\Ann{R}} v_{f,i}^{k,l}
-\end{equation}
+Now, after computing behavioral votes for each annotated and unannotated experiment pair, we can combine those votes for a single unannotated experiment $\exptUnann_k$  by forming a committee of annotated experiments $\exptAnn_1, \cdots, \exptAnn_{\Ann{R}}$.
+Predicted behavioral category at frame $k$ of $\exptUnann_k$, denoted by $\hat{y}^k_f$, is given by combined votes of the committee.
+To achieve this, we can follow two alternative voting scheme, namely hard voting (i.e., majority rule voting) or soft voting.
+
 
 \subsubsection{Hard Voting}
+In the hard voting scheme, $\hat{y}^k_f$ is given by the majority behavioral category of the $\argmax$ of the each annotated experiment's votes at frame $f$, and computed by the following formula:
 \begin{equation}
-	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \Set{\argmax_{1 \leq j \leq K} v_{f,j}^{k,l}}{j=i, \, 1 \leq l \leq \Ann{R}}
+	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \Set{\argmax_{1 \leq j \leq K} v_{f,j}^{k,l}}{j=i, \, 1 \leq l \leq \Ann{R}}.
 \end{equation}
+
+\subsubsection{Soft Voting}
+In contrast to majority voting (hard voting), soft voting scheme assigns the behavioral category as the $\argmax$ of the sum of each annotated experiment's vote vector, and $\hat{y}^k_f$ is given by
+\begin{equation}
+	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \sum_{l=1}^{\Ann{R}} v_{f,i}^{k,l}.
+\end{equation}
+
