@@ -1,7 +1,7 @@
 \chapter{Feature Extraction}
 
 \section{Overview of Feature Extraction}
-For a single experiment data, i.e., a single fruit fly recorded between ZT10 and ZT2 (zeitgeber time 10 and 2), feature extraction consists of four consecutive steps, where the input in one stage is the output of the previous one.
+For a single experiment data, i.e., a single fruit fly recorded between ZT10 and ZT2 (zeitgeber time 10 and 2), feature extraction consists of four consecutive steps,  where the input in one stage is the output of the previous one.
 The input of the first step is the raw output signal of the tracking and pose estimation model; in our case, the output of DeepLabCut, a toolbox for markerless pose estimation.
 The feature extraction steps are as follows:
 
@@ -106,7 +106,7 @@ To rotationally align each frame, we transformed body part coordinate values int
 Then, we performed a linear transformation to all pose values in order to place the spine at the origin, oriented along the $y$-axis.
 
 Alignment of the frames is an optional step in the behavioral mapping pipeline.
-It is potentially beneficial and reasonable to perform alignment when the cartesian pose values of the body parts are included as spatio-temporal features.
+It is potentially beneficial and reasonable to perform alignment when the Cartesian pose values of the body parts are included as spatio-temporal features.
 
 \subsection{Filtering and Imputation}
 Estimated pose values are highly noisy because of the reasons explained in Section~\ref{section:challanges}.
