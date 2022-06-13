@@ -51,12 +51,12 @@
 
 \NOTE{
 	If embedding is a disparate embedding, then we directly cluster each of them separately.
-	If a joint embedding or pair embedding will be clustered, then experiments need to be extracted from the embedding space first and then they need to be clustered separately.
+	If a joint embedding or pair embedding is clustered, then experiments need to be extracted from the embedding space first, and then they need to be clustered separately.
 }
 
 \subsection{Joint Clustering}
 \NOTE{
-	This is only applicable to joint and pair embeddings. We cluster all experiments in the behavioral embedding together.
+	This is only applicable to joint and pair embeddings. We cluster all the experiments in the behavioral embedding together.
 }
 
 \subsection{Crosswise Clustering}
@@ -90,7 +90,7 @@
 
 \section{Nearest Neighbor Analysis and Classification}
 One of our ultimate goals is to annotate an experiment using already annotated ones.
-In the previous sections and chapters, we described feature extraction, experiment outlining and computation of the behavioral embeddings.
+In previous sections and chapters, we described feature extraction, experiment outlining, and computation of behavioral embeddings.
 In this section, we describe a novel nearest neighbor based classification approach, which has to tackle following challenges:
 \begin{itemize}
 	\item sparsity of behavioral expressions,
@@ -98,12 +98,12 @@ In this section, we describe a novel nearest neighbor based classification appro
 	\item scarcity of annotated experiments, which are laborious to produce,
 	\item variation between experiments.
 \end{itemize}
-Our approach consists of two step, briefly stated as follows:
+Our approach consists of two steps, briefly stated as follows:
 \begin{enumerate}
 	\item computing behavioral weights of an unannotated experiment, using its semi-supervised pair embeddings for each annotated  experiment,
 	\item combining behavioral weights of the unannotated experiment with a annotated experiment committee by voting.
 \end{enumerate}
-The behavioral weights that we compute with a nearest neighbor based approach considers sparsity of behavioral expressions and imbalanced distribution of behavioral categories, as described in Section~\ref{section:behavioral-weights}.
+We compute the behavioral weights with our nearest neighbor based approach by considering sparsity of behavioral expressions and imbalanced distribution of behavioral categories, as described in Section~\ref{section:behavioral-weights}.
 In the Section~\ref{section:committee-by-voting}, we detail the committee by voting approach, which helps us to deal with variation between experiments by providing multiple ``views'' on observed behavioral expression that we attempt to annotate.
 
 \subsection{Behavioral Weights}\label{section:behavioral-weights}
@@ -163,8 +163,8 @@ The contribution of votes of $\exptAnn_l$ to the committee formed for $\exptUnan
 If $\max_i \hat{b}_{f,i}$ is close to $\sfrac{1}{K}$, which means that the computed vector weights the behaviors uniformly, then the factors $\rbr{\log_2(K) - \entropy{\V{\hat{b}}_f^{k,l}}}$ or $\rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}^{k,l}}$ may be used to decrease the ``importance'' of the vote.
 
 Now, after computing behavioral votes for each annotated and unannotated experiment pair, we can combine those votes for a single unannotated experiment $\exptUnann_k$  by forming a committee of annotated experiments $\exptAnn_1, \cdots, \exptAnn_{\Ann{R}}$.
-Predicted behavioral category at frame $k$ of $\exptUnann_k$, denoted by $\hat{y}^k_f$, is given by combined votes of the committee.
-To achieve this, we can follow two alternative voting scheme, namely hard voting (i.e., majority rule voting) or soft voting.
+The predicted behavioral category at frame $k$ of $\exptUnann_k$, denoted by $\hat{y}^k_f$, is given by combined votes of the committee.
+To achieve this, we can follow two alternative voting schemes, namely hard voting (i.e., majority rule voting) or soft voting.
 
 
 \subsubsection{Hard Voting}
@@ -174,7 +174,7 @@ In the hard voting scheme, $\hat{y}^k_f$ is given by the majority behavioral cat
 \end{equation}
 
 \subsubsection{Soft Voting}
-In contrast to majority voting (hard voting), soft voting scheme assigns the behavioral category as the $\argmax$ of the sum of each annotated experiment's vote vector, and $\hat{y}^k_f$ is given by
+In contrast to majority voting (hard voting), the soft voting scheme assigns the behavioral category as the $\argmax$ of the sum of each annotated experiment's vote vector, and $\hat{y}^k_f$ is given by
 \begin{equation}
 	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \sum_{l=1}^{\Ann{R}} v_{f,i}^{k,l}.
 \end{equation}
