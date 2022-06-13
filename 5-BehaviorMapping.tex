@@ -89,7 +89,24 @@
 }
 
 \section{Nearest Neighbor Analysis and Classification}
-\subsection{Behavioral Weights}
+One of our ultimate goals is to annotate an experiment using already annotated ones.
+In the previous sections and chapters, we described feature extraction, experiment outlining and computation of the behavioral embeddings.
+In this section, we describe a novel nearest neighbor based classification approach, which has to tackle following challenges:
+\begin{itemize}
+	\item sparsity of behavioral expressions,
+	\item imbalanced distribution of behavioral categories,
+	\item scarcity of annotated experiments, which are laborious to produce,
+	\item variation between experiments.
+\end{itemize}
+Our approach consists of two step, briefly stated as follows:
+\begin{enumerate}
+	\item computing behavioral weights of an unannotated experiment, using its semi-supervised pair embeddings for each annotated  experiment,
+	\item combining behavioral weights of the unannotated experiment with a annotated experiment committee by voting.
+\end{enumerate}
+The behavioral weights that we compute with a nearest neighbor based approach considers sparsity of behavioral expressions and imbalanced distribution of behavioral categories, as described in Section~\ref{section:behavioral-weights}.
+In the Section~\ref{section:committee-by-voting}, we detail the committee by voting approach, which helps us to deal with variation between experiments by providing multiple ``views'' on observed behavioral expression that we attempt to annotate.
+
+\subsection{Behavioral Weights}\label{section:behavioral-weights}
 Consider two experiments, an annotated one $\exptAnn$, and an unannotated one $\exptUnann$, and their semi-supervised pair embeddings, respectively $\Ann{\V{E}}=\qmatrix{\Ann{\V{e}}_1, \cdots \Ann{\V{e}_{\Ann{F}}}}$ and $\Unann{\V{E}}=\qmatrix{\Unann{\V{e}}_1, \cdots \Unann{\V{e}}_{\Unann{F}}}$, where $\Ann{F}$ and $\Unann{F}$ are the total numbers of data points, for example, frames, estimated as dormant and active.
 Given the true annotations $\Ann{\V{y}}$ of $\exptAnn$, and $K$ behavioral categories, the goal is to compute $\V{\hat{b}}_f=\qmatrix{\hat{b}_{f,1}, \cdots \hat{b}_{f,K}}$, representing the weights (in other words, the similarity score) of each behavioral category for $\exptUnann$, using $\Ann{\V{E}}, \Unann{\V{E}}$ and $\Ann{\V{y}}$.
 
@@ -127,9 +144,9 @@ Hence, we map the values of $b^\prime_{f,i}$ to $\sqbr{0,1}$ using either the $\
 \end{equation}
 The resulting behavioral weight vector $\V{\hat{b}}_f \in \sqbr{0,1}^K$ can be considered as a probability distribution.
 Here, the vector $\V{\hat{b}}_f$ represents the behavioral characteristics of the frame $f$ of $\exptUnann$ based on the behavioral repertoire of $\exptAnn$.
-The voting-like scheme, as described in Section~\ref{section:committee-voting}, incorporates the behavioral weight vectors of all annotated experiments to finalize the classification for $\exptUnann$.
+The voting-like scheme, as described in Section~\ref{section:committee-by-voting}, incorporates the behavioral weight vectors of all annotated experiments to finalize the classification for $\exptUnann$.
 
-\subsection{Experiment Committee by Voting}\label{section:committee-voting}
+\subsection{Experiment Committee by Voting}\label{section:committee-by-voting}
 Consider all experiments: unannotated experiments $\exptUnann_1, \cdots, \exptUnann_{\Unann{R}}$, and annotated experiments $\exptAnn_1, \cdots, \exptAnn_{\Ann{R}}$, where $\Unann{R}$ and $\Ann{R}$ are the number of experiments, respectively.
 The goal is to combine the behavioral weights of an unannotated experiment $\exptUnann_k$, calculated separately for each annotated experiment.
 
