@@ -2,8 +2,10 @@
 
 \section{Computing Behavioral Embeddings}
 \citet{mcinnes_umap_2020} \citet{mcinnes_hdbscan_2017} \citet{campello_density-based_2013}
+
 https://github.com/lmcinnes/umap/issues/135
-\subsection{Supervised Disparate Embeddings}
+\subsection{Disparate Embeddings}
+\subsubsection{Supervised}
 \NOTE{
 	We compute Supervised-UMAP embeddings separately for each experiment.
 	Computing supervised embeddings is only possible for annotated experiments.
@@ -11,21 +13,20 @@ https://github.com/lmcinnes/umap/issues/135
 	For instance, one annotation category, e.g. "grooming", can be consisted of two different clusters in the behavioral embedding space.
 	We can further investigate how high-level behavioral annotations contain different but similar behaviors.
 }
+\subsubsection{Unsupervised }
+\NOTE{
+	For each experiment, we compute a usual unsupervised embedding separately.
+}
 
-\subsection{Supervised Joint Embeddings}
+\subsection{Joint Embeddings}
+\subsubsection{Supervised }
 \NOTE{
 	We compute Supervised-UMAP embeddings of all annotated experiments together.
 	There is no specific benefit or use case (except visualization purposes) for computing this.
 	The resulting embedding is usually not homogeneous in terms of fly experiments.
 	Different flies do not mix well in the behavioral space.
 }
-
-\subsection{Unsupervised Disparate Embeddings}
-\NOTE{
-	For each experiment, we compute a usual unsupervised embedding separately.
-}
-
-\subsection{Unsupervised Joint Embedding}
+\subsubsection{Unsupervised}
 \NOTE{
 	We compute a single behavioral embedding using all experiments.
 	The problem with this approach is that embedding space is too crowded, and thus we can not find meaningful and homogeneous clusters right away.
