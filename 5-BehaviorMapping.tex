@@ -1,9 +1,36 @@
 \chapter{Behavior Mapping}
 
 \section{Computing Behavioral Embeddings}
-\citet{mcinnes_umap_2020} \citet{mcinnes_hdbscan_2017} \citet{campello_density-based_2013}
+\citet{belkin_laplacian_2003}
+\citet{maaten_visualizing_2008}
+\citet{tang_visualizing_2016}
+\citet{mcinnes_umap_2020}
 
 https://github.com/lmcinnes/umap/issues/135
+
+\begin{itemize}
+	\item Graph Construction
+	      \begin{enumerate}
+		      \item Construct a weighted $k$-nearest neighbor graph.
+		      \item Apply some transformation on the edge weights to envelop local distances.
+		      \item Deal with the incompatibility of the local metrics, i.e., disagreeing weights of the edges.
+	      \end{enumerate}
+	\item Graph Layout
+	      \begin{enumerate}
+		      \item Define an objective function that preservers desired characteristics of the $k$-nearest neighbor graph.
+		      \item Compute a low dimensional representation by optimizing defined objective function.
+	      \end{enumerate}
+\end{itemize}
+
+a kNN classifier trained on UMAP embeddings trained on t-SNE, largeVis and laplacian eigenmaps PCA, UMAP achieves higher accuracy for large k values as it captures non-local scales better.
+
+It can be argued that UMAP has captured more of the global and topo-
+logical structure of the datasets than its counterparts.
+
+stability.
+
+scales better with number of samples and embedding dimensionality and data dimensionality, much more faster.
+
 \subsection{Disparate Embeddings}
 \subsubsection{Supervised}
 \NOTE{
@@ -42,6 +69,7 @@ https://github.com/lmcinnes/umap/issues/135
 	Especially when the behavioral repertoire of the annotated and the unannotated are similar, resulting embedding is easy to interpret and use for clustering, etc.
 }
 \section{Soft Clustering of Behavioral Embeddings}
+\citet{mcinnes_hdbscan_2017} \citet{campello_density-based_2013}
 \NOTE{
 	We always use soft clustering feature of HDBSCAN, since it is very beneficial to have a composite assignment for a data-point.
 	For example, 0.7 grooming, 0.3 proboscis pumping may indicate that those two behaviors are simultaneously exhibited or a combination of both is exhibited etc.
