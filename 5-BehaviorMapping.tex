@@ -11,10 +11,10 @@ The latter category of algorithms achieves to preserve important local structure
 We use UMAP for its superior performance in many aspects.
 \citet{mcinnes_umap_2020} demonstrates that a $k$-nearest neighbor classifier trained on UMAP embeddings achieves higher accuracy for large $k$ values, compared to PCA, t-SNE, LargeVis and Laplacian Eigenmaps since it captures non-local scales markedly better and local scales comparably or better.
 Thus, it can be argued that UMAP has captured more of the global and topological structure of the benchmark datasets than its counterparts, t-SNE and LargeVis.
-Other reason for choosing UMAP over other alternatives is that it tends to produce more stable embeddings.
+Another reason for choosing UMAP over other alternatives is that it tends to produce more stable embeddings.
 It is capable of producing sub-sample embeddings which are very close to the full embedding even for sub-samples of $5\%$ of the dataset, outperforming the results of t-SNE and LargeVis.
 Finally, computational performance of UMAP scales well with the number of samples, the embedding dimensionality and the data dimensionality, compared to t-SNE LargeVis, and Eigenmaps, resulting significantly lower run-times on various datasets such as  COIL-20 \citep{nene_columbia_1996}, Fashion-MNIST \citep{xiao_fashion-mnist_2017}, and GoogleNews \citep{mikolov_distributed_2013}.
-Run-time performance of dimensionality reduction algorithm is an important concern in the behavioral mapping pipeline as the number of samples and the data dimensionality is often of the order of $10^6$ and $10^2$, respectively.
+Run-time performance of the dimensionality reduction algorithm is an important concern in the behavioral mapping pipeline, as the number of samples and the data dimensionality is often of the order of $10^6$ and $10^2$, respectively.
 
 UMAP and other non-linear dimensionality reduction algorithms that attempt to use a mathematical structure akin to a $k$-nearest neighbor graph to approximate a manifold, follow a similar basic structure as below \citep{mcinnes_umap_2020}.
 \begin{itemize}
@@ -37,15 +37,15 @@ We use the Hellinger distance \citep{hellinger_neue_1909} to quantify the simila
 \begin{equation}
 	\operatorname{Hellinger}(P,Q)={\frac {1}{\sqrt {2}}}\;{\sqrt {\sum _{i=1}^{k}({\sqrt {p_{i}}}-{\sqrt {q_{i}}})^{2}}}.
 \end{equation}
-Then, based on the Hellinger distances, UMAP constructs weighted $k$-NN graph using nearest neighbor descent \citep{dong_efficient_2011}.
+Then, based on the Hellinger distances, UMAP constructs a weighted $k$-NN graph using nearest neighbor descent \citep{dong_efficient_2011}.
 Then, the $k$-NN graph is modified by making edges directed and defining the new weights using local Riemannian metric of each data point.
 After this step, there exist two edges with disagreeing weights between nearest neighbors as the local metric differ.
 UMAP combines those weights by using $t$-conorm and the resulting weight can be interpreted as the probability of at least one of the two directed edges exists.
 
-Finally, UMAP uses a force directed graph layout algorithm in low dimensional space where attractive and repulsive forces are defined based on the gradients optimising the edge-wise cross-entropy between the original weighted graph and equivalent weighted graph induced by the embeddings.
+Finally, UMAP uses a force directed graph layout algorithm in low dimensional space where attractive and repulsive forces are defined based on the gradients, optimizing the edge-wise cross-entropy between the original weighted graph and equivalent weighted graph induced by the embeddings.
 The algorithm proceeds by iteratively applying attractive and repulsive forces at each edge or vertex.
-Since the ``true'' graph captures the topology of the source data, approximated graph also matches the overall topology of the data, and thus corresponds to a good low dimensional representation.
-Detailed mathematical and algorithmic description of the UMAP algorithm can be found in \citep{mcinnes_umap_2020}, and skipped here as it goes beyond the scope of this work.
+Since the ``true'' graph captures the topology of the source data, the approximated graph also matches the overall topology of the data, and thus corresponds to a good low dimensional representation.
+A detailed mathematical and algorithmic description of the UMAP algorithm can be found in \citep{mcinnes_umap_2020}, and skipped here as it goes beyond the scope of this work.
 
 \begin{comment}
 \begin{algorithm}[!htbp]
@@ -70,10 +70,10 @@ Detailed mathematical and algorithmic description of the UMAP algorithm can be f
 \end{comment}
 
 The algorithm described above is an unsupervised method, but can be easily extended to work in a supervised or semi-supervised manner.
-While we use a proper metric, e.g., Hellinger distance, defining the distance between set of points, one can also define a simple metric for categorical values to extend UMAP further for supervised and semi-supervised cases.
+While we use a proper metric, e.g., Hellinger distance, defining the distance between a set of points, one can also define a simple metric for categorical values to extend UMAP further for supervised and semi-supervised cases.
 We can obtain a second view on the source data by using a metric where distances for points in the same category, points in different categories, points without a category (for the semi-supervised case) are defined appropriately.
-A straightforward and simple example would be defining distances as follows: 1 if the points are in the same category, 0 if the points are in different categories, 0.5 if either of the points is uncategorised.
-One can combine a weighted graphs constructed using the two distance metrics (local metrics and defined metric for categorical values), and arrive at a shared view on the data.
+A straightforward and simple example would be defining distances as follows: 1 if the points are in the same category, 0 if the points are in different categories, 0.5 if either of the points is uncategorized.
+One can combine weighted graphs constructed using the two distance metrics (local metrics and defined metric for categorical values), and arrive at a shared view on the data.
 In the behavioral mapping pipeline, we benefit from unsupervised UMAP, and its supervised and semi-supervised extensions for different purposes.
 
 \subsection{Disparate Embeddings}
