@@ -164,7 +164,7 @@ To achieve this, we normalize the scores previously computed, $b_{f,i}$, as a fu
 where $N^{\plus}_i = \card*{\Set{f}{y^{\plus}_f=i}}$ is the number of frames annotated as behavioral category $i$.
 In the above equation, two different alternatives are given for this normalization step; a polynomial one and a logarithmic one, where $p$ and $k$ parameterize the relation between $N^{\plus}_i$ and $b^\prime_{f,i}$.
 For instance, if one is mostly interested in achieving high recall for frequently occurring behaviors, low $p$ values or using the logarithmic alternative might be more appropriate.
-It may be even desired to set $p=0$, and not considering the number of occurrences in some cases, see Section~\ref{chapter:employing-proposed-pipeline} for more details.
+It may be even desired to set $p=0$, and not considering the number of occurrences in some cases, see Section~\ref{section:employing-proposed-pipeline} for more details.
 
 The resulting vector $\V{b^{\prime}}_f \in \reals^K$ is dependent on the annotated experiment $\exptAnn$, and the vectors computed based on different annotated experiments are not comparable with each other.
 Hence, we map the values of $b^\prime_{f,i}$ to $\sqbr{0,1}$ using either the $\operatorname {softmax}$ function or $\textnormal{L}_1$ normalization as follows:

@@ -123,7 +123,7 @@ We observed that large window sizes may result in smoothing out some critical si
 A Rauch-Tung-Striebel Kalman smoother \citep{rauch_maximum_1965} is employed in the development stage.
 However, no significant performance improvement is observed, and hence later abandoned due to its computational cost and requirement of setting the various state parameters to reasonable values.
 
-The configuration and actual parameters of the imputation methods and the filters are given in Chapter~\ref{chapter:employing-proposed-pipeline}, together with some representative examples demonstrating the effect of preprocessing with different configurations.
+The configuration and actual parameters of the imputation methods and the filters are given in Chapter~\ref{section:employing-proposed-pipeline}, together with some representative examples demonstrating the effect of preprocessing with different configurations.
 
 \section{Computation of Spatio-temporal Features}
 After preprocessing of pose values, it is now feasible to go one step further towards learning stereotypical behaviors.
@@ -274,7 +274,7 @@ In addition to the above conventionally used normalization, we alternatively ado
 \begin{equation}
 	W^{0}_f\rbr{\V{s}_i, t^\prime} = \frac{W_f\rbr{\V{s}_i, t^\prime}^2}{a\rbr{f}}
 \end{equation}
-We observed substantial improvements using this power spectrum (see Section~\ref{chapter:employing-proposed-pipeline}).
+We observed substantial improvements using this power spectrum (see Section~\ref{section:employing-proposed-pipeline}).
 
 \subsubsection{Determining Spectrum Frequencies}
 We investigate two different approaches for computing a set of frequencies and, we include both of them in the behavior mapping pipeline.
