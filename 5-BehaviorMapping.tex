@@ -3,10 +3,13 @@
 \section{Behavioral Embeddings}
 
 \NOTE{Why do we generate embeddings? Motivation.}
+\citet{berman_mapping_2014, deangelis_manifold_2019, ali_timecluster_2019}
 
 Many dimensionality algorithms seek to preserve the pairwise distance structure among all the data samples, the well-known examples of such algorithms are PCA \citep{hotelling_analysis_1933}, and MDS \citep{kruskal_multidimensional_1964}.
 Alternatively, some algorithms favor the preservation of local distances over global distance, such as UMAP (Uniform Manifold Approximation \& Projection) \citep{mcinnes_umap_2020} t-SNE \citep{maaten_visualizing_2008}, Laplacian Eigenmaps \citep{belkin_laplacian_2003} and LargeVis \citep{tang_visualizing_2016}.
-The latter category of algorithms achieves to preserve important local structures, and helps to improve classification performance when used in combination with learning algorithms where the function is only approximated locally, e.g., $k$-nearest neighbor classifier \citep{mcinnes_umap_2020}. Similarly, it has been shown that manifold learning based dimensionality reduction algorithms can improve the clustering performance \citep{sainburg_parametric_2021}.
+The latter category of algorithms achieves to preserve important local structures, and helps to improve classification performance when used in combination with learning algorithms where the function is only approximated locally, e.g., $k$-nearest neighbor classifier \citep{mcinnes_umap_2020}.
+Similarly, it has been shown that manifold learning based dimensionality reduction algorithms can improve the clustering performance \citep{sainburg_parametric_2021}.
+Moreover, the trade-off of preserving local distances over global distances does not introduce any significant disadvantages in the latter stages of the behavioral pipeline.
 
 We use UMAP for its superior performance in many aspects.
 \citet{mcinnes_umap_2020} demonstrates that a $k$-nearest neighbor classifier trained on UMAP embeddings achieves higher accuracy for large $k$ values, compared to PCA, t-SNE, LargeVis and Laplacian Eigenmaps since it captures non-local scales markedly better and local scales comparably or better.
@@ -76,7 +79,9 @@ A straightforward and simple example would be defining distances as follows: 1 i
 One can combine weighted graphs constructed using the two distance metrics (local metrics and defined metric for categorical values), and arrive at a shared view on the data.
 In the behavioral mapping pipeline, we benefit from unsupervised UMAP, and its supervised and semi-supervised extensions for different purposes.
 
-\subsection{Disparate Embeddings}
+The behavioral embeddings exploited fall into three different categories, namely ``disparate embeddings'', ``joint embeddings'' and ``pair embeddings'', detailed descriptions and their applications are described respectively in  Section~\ref{section:disparate-embeddings}, Section~\ref{section:joint-embeddings}, and  Section~\ref{section:pair-embeddings} respectively.
+
+\subsection{Disparate Embeddings}\label{section:disparate-embeddings}
 \subsubsection{Supervised}
 \NOTE{
 	We compute Supervised-UMAP embeddings separately for each experiment.
@@ -90,7 +95,7 @@ In the behavioral mapping pipeline, we benefit from unsupervised UMAP, and its s
 	For each experiment, we compute a usual unsupervised embedding separately.
 }
 
-\subsection{Joint Embeddings}
+\subsection{Joint Embeddings}\label{section:joint-embeddings}
 \subsubsection{Supervised }
 \NOTE{
 	We compute Supervised-UMAP embeddings of all annotated experiments together.
@@ -105,7 +110,7 @@ In the behavioral mapping pipeline, we benefit from unsupervised UMAP, and its s
 	This embedding might be useful for visualization purposes.
 }
 
-\subsection{Pair Embeddings}
+\subsection{Pair Embeddings}\label{section:pair-embeddings}
 \NOTE{
 	This is the novel and most useful embedding approach that we finally utilize to label unannotated experiments using annotated ones.
 	We compute an embedding for each annotated and unannotated pair.
