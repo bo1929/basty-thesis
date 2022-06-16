@@ -1,13 +1,22 @@
 \chapter{Behavior Mapping}
 
-\section{Computing Behavioral Embeddings}
-\citet{belkin_laplacian_2003}
-\citet{maaten_visualizing_2008}
-\citet{tang_visualizing_2016}
-\citet{mcinnes_umap_2020}
+\section{Behavioral Embeddings}
 
 https://github.com/lmcinnes/umap/issues/135
 
+Many dimensionality algorithms seek to preserve the pairwise distance structure among all the data samples, the well-known examples of such algorithms are PCA \citep{hotelling_analysis_1933}, and MDS \citep{kruskal_multidimensional_1964}.
+Alternatively, some algorithms favor the preservation of local distances over global distance, such as UMAP (Uniform Manifold Approximation \& Projection) \citep{mcinnes_umap_2020} t-SNE \citep{maaten_visualizing_2008}, Laplacian Eigenmaps \citep{belkin_laplacian_2003} and LargeVis \citep{tang_visualizing_2016}.
+The latter category of algorithms achieves to preserve important local structures, and helps to improve classification performance when used in combination with learning algorithms where the function is only approximated locally, e.g., $k$-nearest neighbor classifier \citep{mcinnes_umap_2020}. Similarly, it has been shown that manifold learning based dimensionality reduction algorithms can improve the clustering performance \citep{sainburg_parametric_2021}.
+
+We use UMAP for its superior performance in many aspects.
+\citet{mcinnes_umap_2020} demonstrates that a $k$-nearest neighbor classifier trained on UMAP embeddings achieves higher accuracy for large $k$ values, compared to PCA, t-SNE, LargeVis and Laplacian Eigenmaps since it captures non-local scales markedly better and local scales comparably or better.
+Thus, it can be argued that UMAP has captured more of the global and topological structure of the benchmark datasets than its counterparts, t-SNE and LargeVis.
+Other reason for choosing UMAP over other alternatives is that it tends to produce more stable embeddings.
+It is capable of producing sub-sample embeddings which are very close to the full embedding even for sub-samples of $5\%$ of the dataset, outperforming the results of t-SNE and LargeVis.
+Finally, computational performance of UMAP scales well with the number of samples, the embedding dimensionality and the data dimensionality, compared to t-SNE LargeVis, and Eigenmaps, resulting significantly lower run-times on various datasets such as  COIL-20 \citep{nene_columbia_nodate}, Fashion-MNIST \citep{xiao_fashion-mnist_2017}, and GoogleNews \citep{mikolov_distributed_2013}.
+Run-time performance of dimensionality reduction algorithm is an important concern in the behavioral mapping pipeline as the number of samples and the data dimensionality is often of the order of $10^6$ and $10^2$, respectively.
+
+UMAP and other non-linear dimensionality reduction algorithms that attempt to use a mathematical structure akin to a $k$-nearest neighbour graph to approximate a manifold follows a similar basic structure as below, as described in \citet{mcinnes_umap_2020}.
 \begin{itemize}
 	\item Graph Construction
 	      \begin{enumerate}
@@ -21,15 +30,6 @@ https://github.com/lmcinnes/umap/issues/135
 		      \item Compute a low dimensional representation by optimizing defined objective function.
 	      \end{enumerate}
 \end{itemize}
-
-a kNN classifier trained on UMAP embeddings trained on t-SNE, largeVis and laplacian eigenmaps PCA, UMAP achieves higher accuracy for large k values as it captures non-local scales better.
-
-It can be argued that UMAP has captured more of the global and topo-
-logical structure of the datasets than its counterparts.
-
-stability.
-
-scales better with number of samples and embedding dimensionality and data dimensionality, much more faster.
 
 \subsection{Disparate Embeddings}
 \subsubsection{Supervised}
@@ -60,7 +60,7 @@ scales better with number of samples and embedding dimensionality and data dimen
 	This embedding might be useful for visualization purposes.
 }
 
-\subsection{Semi-supervised Pair Embeddings}
+\subsection{Pair Embeddings}
 \NOTE{
 	This is the novel and most useful embedding approach that we finally utilize to label unannotated experiments using annotated ones.
 	We compute an embedding for each annotated and unannotated pair.
@@ -68,7 +68,7 @@ scales better with number of samples and embedding dimensionality and data dimen
 	There are number of advantageous of this approach.
 	Especially when the behavioral repertoire of the annotated and the unannotated are similar, resulting embedding is easy to interpret and use for clustering, etc.
 }
-\section{Soft Clustering of Behavioral Embeddings}
+\section{Soft Clustering}
 \citet{mcinnes_hdbscan_2017} \citet{campello_density-based_2013}
 \NOTE{
 	We always use soft clustering feature of HDBSCAN, since it is very beneficial to have a composite assignment for a data-point.
