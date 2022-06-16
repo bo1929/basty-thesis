@@ -27,7 +27,7 @@ UMAP and other non-linear dimensionality reduction algorithms that attempt to us
 	\item Graph Layout
 	      \begin{enumerate}
 		      \item Define an objective function that preservers desired characteristics of the $k$-nearest neighbor graph.
-		      \item Compute a low dimensional representation by optimizing defined objective function.
+		      \item Compute a low dimensional representation by optimizing the defined objective function.
 	      \end{enumerate}
 \end{itemize}
 
@@ -130,7 +130,7 @@ In this section, we describe a novel nearest neighbor based classification appro
 Our approach consists of two steps, briefly stated as follows:
 \begin{enumerate}
 	\item computing behavioral weights of an unannotated experiment, using its semi-supervised pair embeddings for each annotated  experiment,
-	\item combining behavioral weights of the unannotated experiment with a annotated experiment committee by voting.
+	\item combining behavioral weights of the unannotated experiment with an annotated experiment committee by voting.
 \end{enumerate}
 We compute the behavioral weights with our nearest neighbor based approach by considering sparsity of behavioral expressions and imbalanced distribution of behavioral categories, as described in Section~\ref{section:behavioral-weights}.
 In the Section~\ref{section:committee-by-voting}, we detail the committee by voting approach, which helps us to deal with variation between experiments by providing multiple ``views'' on observed behavioral expression that we attempt to annotate. Finally, the post-processing of resulting predictions is described in the Section~\ref{section:postprocessing-predictions}.
