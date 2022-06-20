@@ -3,7 +3,7 @@
 \section{Behavioral Embeddings}
 The dynamic postural features are able to capture many different timescales, however its high-dimensional structure makes it challenging to directly exploit behavioral representations in analysis, learning and visualization.
 For example, behavioral representation matrix ($\V{\hat{W}}$) computed from dynamic postural features ($\V{W}$) with $20$ spatio-temporal features and $25$ timescales (i.e., frequency channels) has $20 \times 25 {=} 500$ columns.
-Since the correlation between different spatio-temporal features (e.g., distance between head and proboscis and cartesian pose values of proboscis) and different timescales are often strong, one may expect that the topological structure of the high dimensional behavioral representations ($\V{\hat{W}}$) can be accurately represented in a lower dimensional space.
+Since the correlation between different spatio-temporal features (e.g., distance between head and proboscis and cartesian pose values of proboscis) and different timescales are often strong (see Figure~\ref{figure:correlations-btw-features}), one may expect that the topological structure of the high dimensional behavioral representations ($\V{\hat{W}}$) can be accurately represented in a lower dimensional space.
 Therefore, we would like to find a low-dimensional embedding that captures the important features of the dataset.
 The embedding we compute should minimize local distortions, since trajectories pause near a repeatable position whenever a particular stereotyped behavior is observed \citep{berman_mapping_2014, deangelis_manifold_2019, ali_timecluster_2019}.
 
@@ -84,18 +84,12 @@ In the behavioral mapping pipeline, we benefit from unsupervised UMAP, and its s
 The behavioral embeddings exploited fall into three different categories, namely ``disparate embeddings'', ``joint embeddings'' and ``pair embeddings'', detailed descriptions and their applications are described respectively in  Section~\ref{section:disparate-embeddings}, Section~\ref{section:joint-embeddings}, and  Section~\ref{section:pair-embeddings} respectively.
 
 \subsection{Disparate Embeddings}\label{section:disparate-embeddings}
-\subsubsection{Supervised}
-\NOTE{
-	We compute Supervised-UMAP embeddings separately for each experiment.
-	Computing supervised embeddings is only possible for annotated experiments.
-	This is useful for exploring behavioral sub-categories.
-	For instance, one annotation category, e.g. "grooming", can be consisted of two different clusters in the behavioral embedding space.
-	We can further investigate how high-level behavioral annotations contain different but similar behaviors.
-}
-\subsubsection{Unsupervised }
-\NOTE{
-	For each experiment, we compute a usual unsupervised embedding separately.
-}
+UMAP may be used to embed high-dimensional behavioral representations of each experiment separately to obtain disparate behavioral embeddings. Treating each experiment separately is useful for several purposes.
+
+For example, using supervised UMAP for annotated experiments, we can explore behavioral sub-categories in annotations as annotations are very high-level, biased and general categorization of behaviors. For instance, one annotation category, e.g. "grooming", can be consisted of two different clusters in the behavioral embedding space, corresponding to "grooming of head" and "grooming of abdomen" (see Figure~\ref{figure:supervised-disparate-zoomin-annotations}).
+Defining very specific and low-level behavioral categories is not feasible and prone to error, a post-annotation analysis using disparate embeddings helps us to zoom in annotated behaviors.
+Another scenario of benefiting disparate embeddings is using unsupervised UMAP for annotated and/or unannotated experiments separately.
+We can visualize how behavioral repertoire is represented in the low dimensional embeddings space and analyze which features drives different regions and clusters of the behavioral embeddings (see Figure~\ref{figure:unsupervised-disparate-behavioral-regions}).
 
 \subsection{Joint Embeddings}\label{section:joint-embeddings}
 \subsubsection{Supervised }
@@ -188,7 +182,7 @@ We compute the behavioral weights with our nearest neighbor based approach by co
 In the Section~\ref{section:committee-by-voting}, we detail the committee by voting approach, which helps us to deal with variation between experiments by providing multiple ``views'' on observed behavioral expression that we attempt to annotate. Finally, the post-processing of resulting predictions is described in the Section~\ref{section:postprocessing-predictions}.
 
 \subsection{Behavioral Weights}\label{section:behavioral-weights}
-Consider two experiments, an annotated one $\exptAnn$, and an unannotated one $\exptUnann$, and their semi-supervised pair embeddings, respectively $\Ann{\V{E}}=\qmatrix{\Ann{\V{e}}_1, \cdots \Ann{\V{e}_{\Ann{F}}}}$ and $\Unann{\V{E}}=\qmatrix{\Unann{\V{e}}_1, \cdots \Unann{\V{e}}_{\Unann{F}}}$, where $\Ann{F}$ and $\Unann{F}$ are the total numbers of data points, for example, frames, estimated as dormant and active.
+Consider two experiments, an annotated one $\exptAnn$, and an unannotated one $\exptUnann$, and their semi-supervised pair embedding, respectively $\Ann{\V{E}}=\qmatrix{\Ann{\V{e}}_1, \cdots \Ann{\V{e}_{\Ann{F}}}}$ and $\Unann{\V{E}}=\qmatrix{\Unann{\V{e}}_1, \cdots \Unann{\V{e}}_{\Unann{F}}}$, where $\Ann{F}$ and $\Unann{F}$ are the total numbers of data points, i.e., frames estimated as dormant and active.
 Given the true annotations $\Ann{\V{y}}$ of $\exptAnn$, and $K$ behavioral categories, the goal is to compute $\V{\hat{b}}_f=\qmatrix{\hat{b}_{f,1}, \cdots \hat{b}_{f,K}}$, representing the weights (in other words, the similarity score) of each behavioral category for $\exptUnann$, using $\Ann{\V{E}}, \Unann{\V{E}}$ and $\Ann{\V{y}}$.
 
 The procedure start by querying $k$-nearest neighbors of $\exptUnann$'s each frame $f$ in the joint behavioral embedding space consisting of $\Ann{\V{E}}$ and $\Unann{\V{E}}$, using the $k$-d trees for efficiency \citep{bentley_multidimensional_1975}. $\NN{k}{f}$ denotes the set of indices of $\Unann{\V{e}}_f$'s $k$ nearest neighbors, and the $k$-NN weight $b_{f,i}$ for each query point (i.e., frame) $f$ of $\exptUnann$, and behavioral category $i$, is computed by
