@@ -1,7 +1,7 @@
 \chapter{Behavior Mapping}
 
 \section{Behavioral Embeddings}
-The dynamic postural features are able to capture many different timescales, however its high-dimensional structure makes it challenging to directly exploit behavioral representations in analysis, learning and visualization.
+The dynamic postural features are able to capture many different timescales, however its high-dimensional structure makes it challenging to directly exploit behavioral representations in analysis, learning, and visualization.
 For example, behavioral representation matrix ($\V{\hat{W}}$) computed from dynamic postural features ($\V{W}$) with $20$ spatio-temporal features and $25$ timescales (i.e., frequency channels) has $20 \times 25 {=} 500$ columns.
 Since the correlation between different spatio-temporal features (e.g., distance between head and proboscis and cartesian pose values of proboscis) and different timescales are often strong (see Figure~\ref{figure:correlations-btw-features}), one may expect that the topological structure of the high dimensional behavioral representations ($\V{\hat{W}}$) can be accurately represented in a lower dimensional space.
 Therefore, we would like to find a low-dimensional embedding that captures the important features of the dataset.
@@ -86,7 +86,7 @@ The behavioral embeddings exploited fall into three different categories, namely
 \subsection{Disparate Embeddings}\label{section:disparate-embeddings}
 UMAP may be used to embed high-dimensional behavioral representations of each experiment separately to obtain disparate behavioral embeddings. Treating each experiment separately is useful for several purposes.
 
-For example, using supervised UMAP for annotated experiments, we can explore behavioral sub-categories in annotations as annotations are very high-level, biased and general categorization of behaviors. For instance, one annotation category, e.g. "grooming", can be consisted of two different clusters in the behavioral embedding space, corresponding to "grooming of head" and "grooming of abdomen" (see Figure~\ref{figure:supervised-disparate-zoomin-annotations}).
+For example, using supervised UMAP for annotated experiments, we can explore behavioral sub-categories in annotations as annotations are very high-level, biased and general categorization of behaviors. For instance, one annotation category, e.g., "grooming", can be consisted of two different clusters in the behavioral embedding space, corresponding to "grooming of head" and "grooming of abdomen" (see Figure~\ref{figure:supervised-disparate-zoomin-annotations}).
 Defining very specific and low-level behavioral categories is not feasible and prone to error, a post-annotation analysis using disparate embeddings helps us to zoom in annotated behaviors.
 Another scenario of benefiting disparate embeddings is using unsupervised UMAP for annotated and/or unannotated experiments separately.
 We can visualize how behavioral repertoire is represented in the low dimensional embeddings space and analyze which features drives different regions and clusters of the behavioral embeddings (see Figure~\ref{figure:unsupervised-disparate-behavioral-regions}).
@@ -106,12 +106,12 @@ However, utilizing unsupervised joint embeddings becomes problematic as the numb
 \subsection{Pair Embeddings}\label{section:pair-embeddings}
 Using disparate embeddings does not allow one to embed an annotated and an unannotated experiment into a joint behavioral space, and joint embeddings poorly blend different experiments in a shared space.
 Instead, we propose a novel alternative approach to benefit from the semi-supervised dimensionality reduction capabilities of UMAP, while avoiding generating a hard-to-interpret embedding.
-In this approach, namely semi-supervised pair embeddings,	we compute an joint behavioral space for each annotated and unannotated pair, using the available annotations.
+In this approach, namely semi-supervised pair embeddings, we compute a joint behavioral space for each annotated and unannotated pair, using the available annotations.
 As a result, for $\Unann{R}$ unannotated experiments and  $\Unann{R}$ annotated experiments, a semi-supervised pair embedding will be generated for each $\Unann{R} \times \Ann{R}$ pair.
 
 For a single unannotated experiment, a semi-supervised behavioral embedding for each annotated experiment provides different ``views''.
 Especially when the behavioral repertoire of the annotated and the unannotated experiments are similar, the provided ``view'' turns out to be an accurate, easy-to-interpret low-dimensional representation of the exhibited behaviors of the unannotated experiment.
-When the behavioral repertoire and/or feature distribution are dissimilar, resulting embedding may not provide useful information about the unannotated experiment, but an advantage of this approach is that the other pair embeddings do not get distorted by poor matches.
+When the behavioral repertoire and/or feature distribution are dissimilar, the resulting embedding may not provide useful information about the unannotated experiment, but an advantage of this approach is that the other pair embeddings do not get distorted by poor matches.
 As described in Section~\ref{section:nearest-neighbors-classification}, semi-supervised pair embeddings are utilized to predict behavioral categories of unannotated experiments by combining multiple view acquired from annotated ones.
 
 \section{Soft Clustering}
