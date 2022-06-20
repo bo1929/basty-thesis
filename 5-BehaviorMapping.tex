@@ -101,22 +101,19 @@ Especially for the joint treatment of annotated experiments, supervised UMAP fai
 There are many factors contributing to this impairment of supervised joint embeddings, such as behavioral variations among flies and experiments,  differences in orientation while exhibiting similar behaviors, and broad definitions of annotation categories.
 Unless the number of jointly embedded experiments does not exceed several, unsupervised UMAP performs relatively well, and enables a fully unsupervised and unbiased analysis of behaviors.
 We can exploit unsupervised joint behavioral embeddings for visualization purposes to discover how different feature combinations are exhibited, and density-based clustering to extract similar behavioral bouts.
-
-\subsubsection{Unsupervised}
-\NOTE{
-	We compute a single behavioral embedding using all experiments.
-	The problem with this approach is that embedding space is too crowded, and thus we can not find meaningful and homogeneous clusters right away.
-	This embedding might be useful for visualization purposes.
-}
+However, utilizing unsupervised joint embeddings becomes problematic as the number of experiments increases, and behavioral space gets ``too crowded''.
 
 \subsection{Pair Embeddings}\label{section:pair-embeddings}
-\NOTE{
-	This is the novel and most useful embedding approach that we finally utilize to label unannotated experiments using annotated ones.
-	We compute an embedding for each annotated and unannotated pair.
-	For example, if there are $N_A$ annotated experiments and $N_U$ unannotated experiments, we compute $N_A \cdot N_U$ embeddings in total.
-	There are number of advantageous of this approach.
-	Especially when the behavioral repertoire of the annotated and the unannotated are similar, resulting embedding is easy to interpret and use for clustering, etc.
-}
+Using disparate embeddings does not allow one to embed an annotated and an unannotated experiment into a joint behavioral space, and joint embeddings poorly blend different experiments in a shared space.
+Instead, we propose a novel alternative approach to benefit from the semi-supervised dimensionality reduction capabilities of UMAP, while avoiding generating a hard-to-interpret embedding.
+In this approach, namely semi-supervised pair embeddings,	we compute an joint behavioral space for each annotated and unannotated pair, using the available annotations.
+As a result, for $\Unann{R}$ unannotated experiments and  $\Unann{R}$ annotated experiments, a semi-supervised pair embedding will be generated for each $\Unann{R} \times \Ann{R}$ pair.
+
+For a single unannotated experiment, a semi-supervised behavioral embedding for each annotated experiment provides different ``views''.
+Especially when the behavioral repertoire of the annotated and the unannotated experiments are similar, the provided ``view'' turns out to be an accurate, easy-to-interpret low-dimensional representation of the exhibited behaviors of the unannotated experiment.
+When the behavioral repertoire and/or feature distribution are dissimilar, resulting embedding may not provide useful information about the unannotated experiment, but an advantage of this approach is that the other pair embeddings do not get distorted by poor matches.
+As described in Section~\ref{section:nearest-neighbors-classification}, semi-supervised pair embeddings are utilized to predict behavioral categories of unannotated experiments by combining multiple view acquired from annotated ones.
+
 \section{Soft Clustering}
 \citet{mcinnes_hdbscan_2017} \citet{campello_density-based_2013}
 \NOTE{
@@ -166,7 +163,7 @@ We can exploit unsupervised joint behavioral embeddings for visualization purpos
 	As a result, for each frame, we end up with a behavioral score vector $\mathbf{y}=(y_\alpha)$.
 }
 
-\section{Nearest Neighbor Analysis and Classification}
+\section{Nearest Neighbor Analysis and Classification}\label{section:nearest-neighbors-classification}
 One of our ultimate goals is to annotate an experiment using already annotated ones.
 In previous sections and chapters, we described feature extraction, experiment outlining, and computation of behavioral embeddings.
 In this section, we describe a novel nearest neighbor based classification approach, which has to tackle following challenges:
