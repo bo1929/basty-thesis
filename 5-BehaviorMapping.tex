@@ -92,13 +92,16 @@ Another scenario of benefiting disparate embeddings is using unsupervised UMAP f
 We can visualize how behavioral repertoire is represented in the low dimensional embeddings space and analyze which features drives different regions and clusters of the behavioral embeddings (see Figure~\ref{figure:unsupervised-disparate-behavioral-regions}).
 
 \subsection{Joint Embeddings}\label{section:joint-embeddings}
-\subsubsection{Supervised }
-\NOTE{
-	We compute Supervised-UMAP embeddings of all annotated experiments together.
-	There is no specific benefit or use case (except visualization purposes) for computing this.
-	The resulting embedding is usually not homogeneous in terms of fly experiments.
-	Different flies do not mix well in the behavioral space.
-}
+Ideally, we would like to embed all experiments into a shared joint behavioral space, and using such an embedding would enable us to discover stereotypical and common behaviors among different flies.
+However, we observed that this is only possible to a certain extent and such joint embeddings tend to not mix well as the number of experiments increases.
+When we jointly compute a behavioral space using all available experiments,  the resulting embedding is usually not totally homogeneous in terms of flies and experiments.
+We observed that similar behaviors might end up embedded in different regions, and multiple clusters consisting of highly similar behaviors emerges (see Figure~\ref{figure:joint-behavioral-embeddings}).
+
+Especially for the joint treatment of annotated experiments, supervised UMAP fails to embed similar behaviors of different experiments closely and homogeneously.
+There are many factors contributing to this impairment of supervised joint embeddings, such as behavioral variations among flies and experiments,  differences in orientation while exhibiting similar behaviors, and broad definitions of annotation categories.
+Unless the number of jointly embedded experiments does not exceed several, unsupervised UMAP performs relatively well, and enables a fully unsupervised and unbiased analysis of behaviors.
+We can exploit unsupervised joint behavioral embeddings for visualization purposes to discover how different feature combinations are exhibited, and density-based clustering to extract similar behavioral bouts.
+
 \subsubsection{Unsupervised}
 \NOTE{
 	We compute a single behavioral embedding using all experiments.
