@@ -1,4 +1,6 @@
-% Package imports
+%%%%%%%%%%%%
+% Packages %
+%%%%%%%%%%%%
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{hyperref}
@@ -24,9 +26,76 @@
 \usepackage{lmodern}
 \usepackage{bm}
 \usepackage{comment}
+\usepackage{upgreek}
 \usepackage[
   warnings-off={
-  mathtools-colon,
-  mathtools-overbracket
-  }
-]{unicode-math}
+    mathtools-colon,
+    mathtools-overbracket
+    }
+  ]{unicode-math}
+
+%%%%%%%%%%%%%%%
+% Definitions %
+%%%%%%%%%%%%%%%
+\definecolor{lacivert}{rgb}{0.0, 0.00, 0.52}
+
+%%%%%%%%%%%%%%%%%%%%
+% Defined Commands %
+%%%%%%%%%%%%%%%%%%%%
+% \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+% \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\card}{\lvert}{\rvert}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\distance}{d}
+\DeclareMathSymbol{\omicron}{\mathord}{letters}{"6F}
+\DeclareMathSymbol{\sminus}{\mathbin}{AMSa}{"39}
+
+\newcommand{\plus}{\scalebox{0.5}{+}}
+\newcommand{\minus}{\scalebox{0.5}{-}}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\degrees}{^\circ}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\rangedots}{\mathinner{\ldotp \ldotp}}
+\newcommand{\concat}{\; \middle| \;}
+\newcommand\orient[1]{\operatorname{orient}(#1)}
+\newcommand\rbr[1]{\left(#1\right)}
+\newcommand\sqbr[1]{\left[#1\right]}
+\newcommand\cbr[1]{\left\{#1\right\}}
+\newcommand\abr[1]{\langle#1\rangle}
+\newcommand\set[1]{\left\{ \, #1 \, \right\}}
+\newcommand\Set[2]{\left\{ \, #1 \; \colon \; #2 \, \right\}}
+\newcommand{\V}[1]{\symrm{\symbf{#1}}}
+\newcommand{\dist}[2]{\distance \left( #1, #2 \right)}
+\newcommand{\NNi}[3]{{#1\mathrm{\textnormal{-}NN}}_#2 \left( #3 \right)}
+\newcommand{\NN}[2]{{#1\mathrm{\textnormal{-}NN}} \left( #2 \right)}
+\newcommand{\function}[2]{\operatorname{#1} \left( #2 \right)}
+\newcommand{\g}[1]{\operatorname{s} \left( #1 \right)}
+\newcommand{\Ann}[1]{#1^{\plus}}
+\newcommand{\Unann}[1]{#1^{\sminus}}
+\newcommand{\exptAnn}{\Ann{\symrm{expt}}}
+\newcommand{\exptUnann}{\Unann{\symrm{expt}}}
+\newcommand{\entropy}[1]{\symrm{H}\rbr{#1}}
+\newcommand{\qmatrix}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\qbor}{\quad \textnormal{or} \quad}
+\newcommand{\qbwhere}{\quad \textnormal{where} \quad}
+\newcommand{\dband}{\; \textnormal{and} \;}
+
+\let\bsim\sim 
+\renewcommand{\sim}{{\bsim}}
+\renewcommand{\d}[1]{\ensuremath{\operatorname{d}\!{#1}}}
+
+\newcommand{\TODO}[1]{\textcolor{red}{[\texttt{TODO:} #1]}}
+\newcommand{\NOTE}[1]{\textcolor{lacivert}{[\texttt{NOTE:} #1]}}
+\newcommand{\CITE}{\textcolor{purple}{[\texttt{CITE}]}}
+
+\algrenewcommand\algorithmiccomment[1]{\hfill \# \textit{#1}}
+
+%%%%%%%%%%%%
+% Settings %
+%%%%%%%%%%%%
+\bibliographystyle{unsrtnat}
+\onehalfspacing
