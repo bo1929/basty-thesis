@@ -258,12 +258,14 @@ In contrast to majority voting (hard voting), the soft voting scheme assigns the
 Finally, we post-process predicted annotations to improve our nearest neighbor based algorithm by incorporating a couple of assumptions on the temporal organization of the behaviors and physical constrains.
 
 We have sensible expectations about the durations of behavioral bouts of each behavioral category acquired by human annotators.
-For instance, a bout of proboscis's pumping-like movement should not be shorter than $200$ millisecond as bout duration distributions of annotations indicates.
+For instance, a bout of proboscis's pumping-like movement should not be shorter than $200$ millisecond, as bout duration distributions of annotations indicates.
 In addition to annotations, we may have reason about physical and biological constraints.
 An example is that grooming behavior, bout duration of grooming can not exceed a couple of minutes, probability of observing a grooming behavior lasted longer than $2$ minutes is extremely low \citep{qiao_automated_2018}.
-Considering such constraints and temporal expectations, we apply following post-processing procedures, and parameters should be determined based on the behavioral repertoire of interest.
-Each procedure is optional but should be applied in the given order.
+Considering such constraints and temporal expectations, we apply the following post-processing procedures, and parameters should be determined based on the behavioral repertoire of interest.
+Each procedure is optional, but should be applied in the given order.
 
 \subsubsection{Pruning Interrupting Bouts}
+
 \subsubsection{Elimination of Overly Short Bouts}
+
 \subsubsection{Elimination of Overly Long Bouts}
