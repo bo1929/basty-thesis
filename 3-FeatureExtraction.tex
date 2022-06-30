@@ -42,14 +42,14 @@ These additional procedures deal with occluded body parts of the fly, alignment 
 \subsection{Occluded Body Parts}\label{section:dealing-with-occluded-body-parts}
 As mentioned in the Section~\ref{section:challanges}, the two-dimensionality of the video recordings introduces several significant challenges,  one of which is the occluded body parts.
 There are many types of occlusions. One type is short occlusions that often results from postural changes. Imputation of the time series $\V{X}$ and $\V{Y}$ for such short occlusions is relatively easy since the number of consecutive missing data points is few.
-However, this is not the case for long occlusions, which usually occur when the fly is dormant for an extended period of time.
-Especially for the body parts with left and right counterparts, fly's orientation can result in one of the counterparts being occluded for long dormant epochs.
+However, this is not the case for long occlusions, which usually occur when the fly is dormancy for an extended period of time.
+Especially for the body parts with left and right counterparts, fly's orientation can result in one of the counterparts being occluded for long dormancy epochs.
 We use imputation and elimination of corresponding data-points to deal with the occlusions. Before describing those approaches, we define a criterion for being occluded.
 
 \subsubsection{Oriented Pose Values for Body Parts with Left \& Right Counterparts}
 If the fly is oriented perpendicular to the camera perspective, as in Figure~\ref{figure:perpendicular-orientation}, then one of the left and right body parts is often occluded.
 In other orientations (e.g., Figure~\ref{figure:parallel-horizontal-orientation} and Figure~\ref{figure:oblique-orientation}),  both of them or none of them might be occluded as well.
-However, in the conducted experiments, flies usually choose to stay dormant perpendicular to the camera perspective in long dormant epochs, as mentioned in Chapter~\ref{chapter:expt-data-collection}.
+However, in the conducted experiments, flies usually choose to stay dormancy perpendicular to the camera perspective in long dormancy epochs, as mentioned in Chapter~\ref{chapter:expt-data-collection}.
 In such cases, one can concede using only one of the left and right counterparts to construct pose values.
 Therefore, this optional step is included in the behavioral mapping pipeline to reduce pose values of body parts with left and right counterparts to a single value.
 

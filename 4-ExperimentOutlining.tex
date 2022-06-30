@@ -1,1 +1,26 @@
 \chapter{Experiment Outlining}
+Each experiment comprises sixteen hours of video recording spanning both awake and asleep epochs.
+Since we are only interested in the behavioral repertoire exhibited during sleep, time intervals where the animal is dormant, namely the dormancy epochs, should be detected before proceeding with the behavior mapping stage.
+We characterize dormancy epochs by lack of macro-activities, i.e., significant postural and locational changes, which can be qualified by displacement of the animal.
+After detecting and excluding intervals of macro-activities, we end up with time points where the fly is dormant.
+Yet, we need further process the dormancy epochs, as we are not interested in the time points where the fly is totally quiescent.
+Our major focus is on the micro-activity bouts manifested during a dormancy epoch.
+In order to detect those bouts, we should distinguish micro-activities exhibited during dormant epochs from macro-activities by quantifying them with a closer look at various body parts.
+
+In this stage, our ultimate goal is to extract bouts of micro-activities exhibited during the dormancy state.
+Extracted micro-activity bouts constitute the data points that are subject to behavior mapping.
+There are several benefits of reducing the data points to this subset of dormancy and micro-activity, compared to using the entire experiment for behavior mapping.
+Considering the high frame rate and long length of video recordings, computational requirements is an important concern in our pipeline.
+Since roughly at least $90\%$ of the frames are either totally quiescent or macro-activities, e.g., walking, this approach has the benefit of reducing the computational requirements significantly.
+Another critical point is that, quiescent, e.g., rest, frames contain only noise energy, and normalizing each frame amplifies me normalization amplifies this low-level noise energy, generating a uniform-like probability distribution for behavioral representation.
+Eliminating totally quiescent frames without any micro-activity avoids this.
+Also, as we are only interested in the behaviors exhibited during sleep, excluding macro-activity frames prevent domination of large number of frames with walking and macro-activities in the behavioral embedding space.
+
+
+introduce sections
+
+\section{Dormancy and Macro-activity Epochs}
+
+\section{Micro-activity Bouts}
+
+\section{Detecting Micro-activities \& Macro-activities}
