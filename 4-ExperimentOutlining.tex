@@ -1,4 +1,6 @@
 \chapter{Experiment Outlining}
+
+\section{Overview of Experiment Outlining}
 Each experiment comprises sixteen hours of video recording spanning both awake and asleep epochs.
 Since we are only interested in the behavioral repertoire exhibited during sleep, time intervals where the animal is dormant, namely the dormancy epochs, should be detected before proceeding with the behavior mapping stage.
 We characterize dormancy epochs by lack of macro-activities, i.e., significant postural and locational changes, which can be qualified by displacement of the animal.
@@ -12,15 +14,28 @@ Extracted micro-activity bouts constitute the data points that are subject to be
 There are several benefits of reducing the data points to this subset of dormancy and micro-activity, compared to using the entire experiment for behavior mapping.
 Considering the high frame rate and long length of video recordings, computational requirements is an important concern in our pipeline.
 Since roughly at least $90\%$ of the frames are either totally quiescent or macro-activities, e.g., walking, this approach has the benefit of reducing the computational requirements significantly.
-Another critical point is that, quiescent, e.g., rest, frames contain only noise energy, and normalizing each frame amplifies me normalization amplifies this low-level noise energy, generating a uniform-like probability distribution for behavioral representation.
+Another critical point is that, quiescent, e.g., rest, frames contain only noise energy, and normalizing each frame amplifies me normalization amplifies this low-level noise energy, generating a uniform-like probability distribution for behavioral representation \citep{todd_systematic_2017}.
 Eliminating totally quiescent frames without any micro-activity avoids this.
 Also, as we are only interested in the behaviors exhibited during sleep, excluding macro-activity frames prevent domination of large number of frames with walking and macro-activities in the behavioral embedding space.
 
-
 introduce sections
 
-\section{Dormancy and Macro-activity Epochs}
+\section{Quantifying Activities}
+\subsection{Dormancy and Macro-activity Epochs}
+When the fly is awake, many behaviors are manifested by featuring major postural change and displacement in different ways.
+We categorize this type of behaviors under the umbrella term of macro-activity.
+One can characterize macro-activities without considering its sub-categories by using the velocities, i.e., gradient features.
+In order to distinguish sub-categories of macro-activities, such as walking and rearing, more detailed and descriptive features are required.
+However, in our case, computing a single scalar value to capture overall movement of the fly results in sufficient performance for detecting macro-activity epochs. We define this feature value by summing gradient features for all time scales as follows:
+\begin{equation}
+	v_t = \sum_{\tau \in \mathcal{T}_G}{\sum_{i=1}^{N_G}{\V{M}^\mu_{t,\tau,i}}},
+\end{equation}
+where resulting velocity-based feature vector is $\V{v}=\qmatrix{v_1, \cdots, v_T}$. Essentially, high and low values of $v_t$ indicate macro-activity and dormancy, respectively. Micro-activities can not be detected using such a straightforward and general value, and therefore, can not be distinguished from dormancy by using only this quantity.
 
-\section{Micro-activity Bouts}
+\subsection{Micro-activity Bouts}
 
-\section{Detecting Micro-activities \& Macro-activities}
+\section{Detecting Activities}
+
+\subsection{Unsupervised Approach}
+
+\subsection{Weakly Supervised Approach}
