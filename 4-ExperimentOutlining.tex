@@ -59,13 +59,19 @@ After computing decision boundaries for the mixture of Gaussian distributions, t
 For example a reasonable choice would be $K=2$ and threshold $c=\mu_2$, or $K=3$ and threshold $c=\delta_2$.
 Classification is done by constructing following frame sets:
 \begin{align}
-	\Dormancy      & =\Set{t}{v_t<c, \ 1\leq t \leq T}, \\
+	\Dormancy      & =\Set{t}{v_t \leq c, \ 1\leq t \leq T}, \\
 	\MacroActivity & =\Set{t}{v_t<c, \ 1\leq t \leq T}.
 \end{align}
 
 We follow a similar approach for detecting micro-activities.
 Since we look for micro-activities in dormancy epochs, now we only consider the frames from the set $\Dormancy$.
 As micro-activity bouts are quantified by multiple feature vectors, we determine separate threshold values for each $\V{u}_i$, using the same approach with macro-activity detection, utilizing mixture of Gaussian distributions.
-
+After determining thresholds $c_i$ for each $\V{u}_i$, we construct following frame sets:
+\begin{align}
+	\Quiescent     & = \Set{t}{\bigwedge\nolimits_{i=1}^{N_G} u_{t,i} \leq c_i, \ t \in \Dormancy}, \\
+	\MicroActivity & = \Set{t}{\bigvee\nolimits_{i=1}^{N_G} u_{t,i} > c_i, \ t \in \Dormancy}.
+\end{align}
+For a frame to be outlined as micro-activity, it is sufficient if at least one feature is above corresponding threshold.
+This is due to the fact that, micro-activities is manifested by changes of only a small subset of body-parts locations.
 
 \subsection{Weakly Supervised Approach}
