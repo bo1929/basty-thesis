@@ -33,15 +33,15 @@ However, in our case, computing a single scalar value to capture overall movemen
 where the resulting velocity-based feature vector is $\V{v}=\rbr{v_1, \cdots, v_T}$. Essentially, high and low values of $v_t$ indicate macro-activity and dormancy, respectively. Micro-activities can not be detected using such a straightforward and general value, and therefore, can not be distinguished from dormancy by using only this quantity.
 
 \subsection{Micro-activity Bouts}
-Behaviors exhibited during dormancy epochs are not necessarily accompanied with postural changes and displacement of the animal's body.
-For instance, pumping-like movement of the proboscis or switch-like movement of haltere tends to happen independent of rest of the body.
-Thus, one need to consider more than a single scalar value as in the previous case of macro-activity.
+Behaviors exhibited during dormancy epochs are not necessarily accompanied by postural changes and displacement of the animal's body.
+For instance, pumping-like movement of the proboscis or switch-like movement of haltere tends to happen independent of the rest of the body.
+Thus, one need to consider more than a single scalar value, as in the previous case of macro-activity.
 For each snapshot feature $s_i$, we sum all frequency channels $f$, i.e., time scales, utilizing the dynamic postural feature tensor $W$, as follows:
 \begin{equation}
 	u_{t,i} = \sum_{\sfrac{1}{f} \in \mathcal{T}_G}{W_f^0\rbr{s_i,t}}.
 \end{equation}
 The resulting feature vectors, $\V{u}_i=\rbr{u_{i,1}, \cdots, u_{i,T}}$, are representative enough for capturing micro-activities as an umbrella category.
-Such micro-activities potentially occur independently from rest of the body.
+Such micro-activities potentially occur independently of the rest of the body.
 For example, using the snapshot feature of the distance between haltere and posterior thorax, we are able to detect the switch-like movement of haltere in dormancy epochs, even if the rest of the body is at rest.
 
 \section{Detecting Activities}
@@ -56,8 +56,8 @@ Consider a mixture of univariate Gaussian distributions with $K$ components, $z=
 \end{equation}
 where $k=1, \cdots, K-1$, $V$ denotes a random variable for values of $v_t$ and $\delta_k$ is the threshold value for the $k$th decision boundary.
 After computing decision boundaries for the mixture of Gaussian distributions, the macro-activity threshold is set to either one of the decision boundaries ($\delta_k$ for $k=1, \cdots, K-1$) or one of the means ($\mu_k$ for $k=1, \cdots, K$).
-For example a reasonable choice would be $K=2$ and threshold $c=\mu_2$, or $K=3$ and threshold $c=\delta_2$.
-Classification is done by constructing following frame sets:
+For example, a reasonable choice would be $K=2$ and threshold $c=\mu_2$, or $K=3$ and threshold $c=\delta_2$.
+Classification is done by constructing the following frame sets:
 \begin{align}
 	\Dormancy      & =\Set{t}{v_t \leq c, \ 1\leq t \leq T}, \\
 	\MacroActivity & =\Set{t}{v_t<c, \ 1\leq t \leq T}.
@@ -65,13 +65,13 @@ Classification is done by constructing following frame sets:
 
 We follow a similar approach for detecting micro-activities.
 Since we look for micro-activities in dormancy epochs, now we only consider the frames from the set $\Dormancy$.
-As micro-activity bouts are quantified by multiple feature vectors, we determine separate threshold values for each $\V{u}_i$, using the same approach with macro-activity detection, utilizing mixture of Gaussian distributions.
-After determining thresholds $c_i$ for each $\V{u}_i$, we construct following frame sets:
+As micro-activity bouts are quantified by multiple feature vectors, we determine separate threshold values for each $\V{u}_i$, using the same approach with macro-activity detection, utilizing a mixture of Gaussian distributions.
+After determining thresholds $c_i$ for each $\V{u}_i$, we construct the following frame sets:
 \begin{align}
 	\Quiescent     & = \Set{t}{\bigwedge\nolimits_{i=1}^{N_G} u_{t,i} \leq c_i, \ t \in \Dormancy}, \\
 	\MicroActivity & = \Set{t}{\bigvee\nolimits_{i=1}^{N_G} u_{t,i} > c_i, \ t \in \Dormancy}.
 \end{align}
-For a frame to be outlined as micro-activity, it is sufficient if at least one feature is above corresponding threshold.
-This is due to the fact that, micro-activities is manifested by changes of only a small subset of body-parts locations.
+For a frame to be outlined as micro-activity, it is sufficient if at least one feature is above the corresponding threshold.
+This is due to the fact that, micro-activities are manifested by changes of only a small subset of body-parts locations.
 
 \subsection{Weakly Supervised Approach}
