@@ -46,5 +46,26 @@ For example, using the snapshot feature of the distance between haltere and post
 
 \section{Detecting Activities}
 \subsection{Unsupervised Approach}
+The straightforward approach for detecting macro activities would be determining a global threshold based the distribution of the values of $\V{v}$.
+Instead of determining such a threshold value, denoted by $c$, we use treat the distribution of $\V{v}$ as a mixture of Gaussian distributions to detect an appropriate threshold value, separately for each experiment.
+This approach avoids the hassle of dealing with the varying distributions of $\V{v}$ among different experiments, and constitute a solid ground for threshold value.
+
+Consider a mixture of univariate Gaussian distributions with $K$ components, $z=1, \cdots, K$, sorted by their corresponding mean values $\mu_1, \cdots, \mu_K$, and with full covariance matrices. Then we can define $K-1$ many decision boundaries by:
+\begin{equation}
+	\CondProb{V=\delta_k}{z=k} = \CondProb{V=\delta_k}{z=k+1},
+\end{equation}
+where $k=1, \cdots, K-1$, $V$ denotes a random variable for values of $v_t$ and $\delta_k$ is the threshold value for the $k$th decision boundary.
+After computing decision boundaries for the mixture of Gaussian distributions, the macro-activity threshold is set to either one of the decision boundaries ($\delta_k$ for $k=1, \cdots, K-1$) or one of the means ($\mu_k$ for $k=1, \cdots, K$).
+For example a reasonable choice would be $K=2$ and threshold $c=\mu_2$, or $K=3$ and threshold $c=\delta_2$.
+Classification is done by constructing following frame sets:
+\begin{align}
+	\Dormancy      & =\Set{t}{v_t<c, \ 1\leq t \leq T}, \\
+	\MacroActivity & =\Set{t}{v_t<c, \ 1\leq t \leq T}.
+\end{align}
+
+We follow a similar approach for detecting micro-activities.
+Since we look for micro-activities in dormancy epochs, now we only consider the frames from the set $\Dormancy$.
+As micro-activity bouts are quantified by multiple feature vectors, we determine separate threshold values for each $\V{u}_i$, using the same approach with macro-activity detection, utilizing mixture of Gaussian distributions.
+
 
 \subsection{Weakly Supervised Approach}

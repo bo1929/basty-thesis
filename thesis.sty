@@ -46,6 +46,7 @@
 % \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
 % \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 \DeclarePairedDelimiter{\card}{\lvert}{\rvert}
+\mathchardef\mhyphen="2D
 
 \DeclareMathOperator*{\argmax}{arg\,max\,}
 \DeclareMathOperator*{\argmin}{arg\,min\,}
@@ -84,6 +85,12 @@
 \newcommand{\qbor}{\quad \textnormal{or} \quad}
 \newcommand{\qbwhere}{\quad \textnormal{where} \quad}
 \newcommand{\dband}{\; \textnormal{and} \;}
+\newcommand{\ProbP}{\operatorname{\text{I\kern-0.15em P}}}
+\newcommand{\CondProb}[2]{\ProbP \left( #1 \;\middle|\; #2 \right)}
+\newcommand{\Prob}[1]{\ProbP \left( #1 \right)}
+\newcommand{\Dormancy}{\symsf{Dormancy}}
+\newcommand{\vote}{\symsf{vote}}
+\newcommand{\MacroActivity}{\symsf{Macro\mhyphen activity}}
 
 \let\bsim\sim 
 \renewcommand{\sim}{{\bsim}}

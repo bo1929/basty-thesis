@@ -233,9 +233,9 @@ There exists a significant variation among the exhibited behavioral repertoires 
 An annotated experiment might lack some behavioral expressions or manifest some behaviors excessively.
 In such cases, if the behavioral weight vector $\V{\hat{b}}_f^{k,l}$ is not confident, i.e., weights of behavioral categories are close to each other, one may want to decrease its contribution to the voting.
 To achieve this, we propose two optional approaches; penalizing the behavioral weights with the entropy of the ``probability distribution'' $\V{\hat{b}}_f^{k,l}$, or with the uncertainty.
-The contribution of votes of $\exptAnn_l$ to the committee formed for $\exptUnann_k$ is $\symtt{\symbf{vote}}_f^{k,l} = \qmatrix{\symtt{vote}_{f,1}^{k,l}, \cdots, \symtt{vote}_{f,K}^{k,l}}$, and is given by
+The contribution of votes of $\exptAnn_l$ to the committee formed for $\exptUnann_k$ is $\symsf{\symbf{vote}}_f^{k,l} = \qmatrix{\vote_{f,1}^{k,l}, \cdots, \vote_{f,K}^{k,l}}$, and is given by
 \begin{equation}
-	\symtt{vote}_{f,i}^{k,l} = \rbr{\log_2(K) - \entropy{\V{\hat{b}}_f^{k,l}}} \hat{b}_{f,i}^{k,l} \qbor \rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}^{k,l}} \hat{b}_{f,i}^{k,l} \qbor \hat{b}_{f,i}^{k,l}.
+	\vote_{f,i}^{k,l} = \rbr{\log_2(K) - \entropy{\V{\hat{b}}_f^{k,l}}} \hat{b}_{f,i}^{k,l} \qbor \rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}^{k,l}} \hat{b}_{f,i}^{k,l} \qbor \hat{b}_{f,i}^{k,l}.
 \end{equation}
 If $\max_i \hat{b}_{f,i}$ is close to $\sfrac{1}{K}$, which means that the computed vector weights the behaviors uniformly, then the factors $\rbr{\log_2(K) - \entropy{\V{\hat{b}}_f^{k,l}}}$ or $\rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}^{k,l}}$ may be used to decrease the ``importance'' of the vote.
 
@@ -247,13 +247,13 @@ To achieve this, we can follow two alternative voting schemes, namely hard votin
 \subsubsection{Hard Voting}
 In the hard voting scheme, $\hat{y}^k_f$ is given by the majority behavioral category of the $\argmax$ of the each annotated experiment's votes at frame $f$, and computed by the following formula:
 \begin{equation}
-	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \Set{\argmax_{1 \leq j \leq K} { \symtt{vote}_{f,j}^{k,l}}}{j=i, \, 1 \leq l \leq \Ann{R}}.
+	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \Set{\argmax_{1 \leq j \leq K} { \vote_{f,j}^{k,l}}}{j=i, \, 1 \leq l \leq \Ann{R}}.
 \end{equation}
 
 \subsubsection{Soft Voting}
 In contrast to majority voting (hard voting), the soft voting scheme assigns the behavioral category as the $\argmax$ of the sum of each annotated experiment's vote vector, and $\hat{y}^k_f$ is given by
 \begin{equation}
-	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \sum_{l=1}^{\Ann{R}} \symtt{vote}_{f,i}^{k,l}.
+	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \sum_{l=1}^{\Ann{R}} \vote_{f,i}^{k,l}.
 \end{equation}
 
 \subsection{Post-processing}\label{section:postprocessing-predictions}
