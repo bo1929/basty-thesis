@@ -81,7 +81,7 @@
 \newcommand{\exptAnn}{\Ann{\symrm{expt}}}
 \newcommand{\exptUnann}{\Unann{\symrm{expt}}}
 \newcommand{\entropy}[1]{\symrm{H}\rbr{#1}}
-\newcommand{\qmatrix}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\qmatrix}[1]{\begin{bmatrix}#1\end{bmatrix}}
 \newcommand{\qbor}{\quad \textnormal{or} \quad}
 \newcommand{\qbwhere}{\quad \textnormal{where} \quad}
 \newcommand{\dband}{\; \textnormal{and} \;}
@@ -89,10 +89,15 @@
 \newcommand{\CondProb}[2]{\ProbP \left( #1 \;\middle|\; #2 \right)}
 \newcommand{\Prob}[1]{\ProbP \left( #1 \right)}
 \newcommand{\vote}{\symsf{vote}}
+\newcommand{\Vvote}{\symsf{\symbf{{vote}}}}
 \newcommand{\Dormancy}{\symsf{Dormancy}}
 \newcommand{\MacroActivity}{\symsf{Macro \mhyphen activity}}
-\newcommand{\Quiescent}{\symsf{Quiescent}}
+\newcommand{\Quiescence}{\symsf{Quiescence}}
 \newcommand{\MicroActivity}{\symsf{Micro \mhyphen activity}}
+\newcommand{\pAnn}{\symsf{pred \mhyphen a}}
+\newcommand{\VpAnn}{\symsf{\symbf{{pred \mhyphen a}}}}
+\newcommand{\tAnn}{\symsf{true \mhyphen a}}
+\newcommand{\VtAnn}{\symsf{\symbf{{true \mhyphen a}}}}
 
 \let\bsim\sim 
 \renewcommand{\sim}{{\bsim}}
@@ -101,6 +106,14 @@
 \newcommand{\TODO}[1]{\textcolor{red}{[\texttt{TODO:} #1]}}
 \newcommand{\NOTE}[1]{\textcolor{lacivert}{[\texttt{NOTE:} #1]}}
 \newcommand{\CITE}{\textcolor{purple}{[\texttt{CITE}]}}
+
+\newlength{\dhatheight}
+\newcommand{\doublehat}[1]{%
+    \settoheight{\dhatheight}{\ensuremath{\hat{#1}}}%
+    \addtolength{\dhatheight}{-0.35ex}%
+    \hat{\vphantom{\rule{1pt}{\dhatheight}}%
+    \smash{\hat{#1}}}
+}
 
 \algrenewcommand\algorithmiccomment[1]{\hfill \# \textit{#1}}
 

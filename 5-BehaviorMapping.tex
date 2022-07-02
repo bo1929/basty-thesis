@@ -236,15 +236,15 @@ There exists a significant variation among the exhibited behavioral repertoires 
 An annotated experiment might lack some behavioral expressions or manifest some behaviors excessively.
 In such cases, if the behavioral weight vector $\V{\hat{b}}_f^{k,l}$ is not confident, i.e., weights of behavioral categories are close to each other, one may want to decrease its contribution to the voting.
 To achieve this, we propose two optional approaches; penalizing the behavioral weights with the entropy of the ``probability distribution'' $\V{\hat{b}}_f^{k,l}$, or with the uncertainty.
-The contribution of votes of $\exptAnn_l$ to the committee formed for $\exptUnann_k$ is $\symsf{\symbf{vote}}_f^{k,l} = \qmatrix{\vote_{f,1}^{k,l}, \cdots, \vote_{f,K}^{k,l}}$, and is given by
+The contribution of votes of $\exptAnn_l$ to the committee formed for $\exptUnann_k$ is $\Vvote_f^{k,l} = \qmatrix{\vote_{f,1}^{k,l}, \cdots, \vote_{f,K}^{k,l}}$, and is given by
 \begin{equation}
 	\vote_{f,i}^{k,l} = \rbr{\log_2(K) - \entropy{\V{\hat{b}}_f^{k,l}}} \hat{b}_{f,i}^{k,l} \qbor \rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}^{k,l}} \hat{b}_{f,i}^{k,l} \qbor \hat{b}_{f,i}^{k,l}.
 \end{equation}
-If $\max_i \hat{b}_{f,i}$ is close to $\sfrac{1}{K}$, which means that the computed vector weights the behaviors uniformly, then the factors $\rbr{\log_2(K) - \entropy{\V{\hat{b}}_f^{k,l}}}$ or $\rbr{ 1 - \max_{1 \leq j \leq K} \tilde{b}_{f,j}^{k,l}}$ may be used to decrease the ``importance'' of the vote.
+If $\max_i \hat{b}_{f,i}$ is close to $\sfrac{1}{K}$, which means that the computed vector weights the behaviors uniformly, then the factors $\rbr{\log_2(K) - \entropy{\V{\hat{b}}_f^{k,l}}}$ or $\rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}^{k,l}}$ may be used to decrease the ``importance'' of the vote.
 
 Now, after computing behavioral votes for each annotated and unannotated experiment pair, we can combine those votes for a single unannotated experiment $\exptUnann_k$  by forming a committee of annotated experiments $\exptAnn_1, \cdots, \exptAnn_{\Ann{R}}$.
 The predicted behavioral category at frame $k$ of $\exptUnann_k$ is given by combined votes of the committee.
-The predicted behavioral category at frame $k$ of $\exptUnann_k$, denoted by $\tilde{y}^k_f$, is given by combined votes of the committee.
+The predicted behavioral category at frame $k$ of $\exptUnann_k$, denoted by $\hat{y}^k_f$, is given by combined votes of the committee.
 To obtain the overall aggregate view of the committee, we can follow two alternative voting schemes, namely hard voting (i.e., majority rule voting) or soft voting.
 At this point, we may want to have scores for each behavioral category rather than hard-labels.
 Such score information might be desired to capture complex and hierarchical structure of the behaviors.
@@ -254,26 +254,26 @@ Hence, one may also use the combined vote scores directly, without computing the
 \subsubsection{Hard Voting}
 In the hard voting scheme, predictions of a frame $f$ is given by the majority behavioral category of the $\argmax$ of the each annotated experiment's votes and computed by the following formula:
 \begin{equation}
-	\tilde{y}^k_f = \argmax_{1 \leq i \leq K} \Set{\argmax_{1 \leq j \leq K} { \vote_{f,j}^{k,l}}}{j=i, \, 1 \leq l \leq \Ann{R}}.
+	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \Set{\argmax_{1 \leq j \leq K} { \vote_{f,j}^{k,l}}}{j=i, \, 1 \leq l \leq \Ann{R}}.
 \end{equation}
 
 \subsubsection{Soft Voting}
-In contrast to majority voting (hard voting), the soft voting scheme assigns the behavioral category as the $\argmax$ of the sum of each annotated experiment's vote vector, and $\tilde{y}^k_f$ is given by
+In contrast to majority voting (hard voting), the soft voting scheme assigns the behavioral category as the $\argmax$ of the sum of each annotated experiment's vote vector, and $\hat{y}^k_f$ is given by
 \begin{equation}
-	\tilde{y}^k_f = \argmax_{1 \leq i \leq K} \sum_{l=1}^{\Ann{R}} \vote_{f,i}^{k,l}.
+	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \sum_{l=1}^{\Ann{R}} \vote_{f,i}^{k,l}.
 \end{equation}
 
 \subsection{Post-processing}\label{section:postprocessing-predictions}
 Finally, we post-process predicted annotations to improve our nearest neighbor based algorithm by incorporating a couple of assumptions on the temporal organization of the behaviors and physical constrains.
-Before applying post-processing procedures, the frames in the sets $\MacroActivity$ and $\Quiescent$ should be recovered, as we only predicted the annotations of the frames in the set $\MicroActivity$.
+Before applying post-processing procedures, the frames in the sets $\MacroActivity$ and $\Quiescence$ should be recovered, as we only predicted the annotations of the frames in the set $\MicroActivity$.
 Without having a temporally continuous vector of annotations, post-processing would lead unintended consequences and erroneous results.
-Let $\V{\hat{y}^k}=\rbr{\hat{y}^k_1, \cdots, \hat{y}^k_T}$ be the $\exptUnann_k$'s vector of predicted annotations for entire experiment, defined as follows:
+Let $\VpAnn^k=\rbr{\hat{y}^k_1, \cdots, \hat{y}^k_T}$ be the $\exptUnann_k$'s vector of predicted annotations for entire experiment, defined as follows:
 \begin{equation}
-	\hat{y}^k_t =
+	\pAnn^k_t =
 	\begin{cases}
-		0             & \textnormal{if } t \in \Quiescent_k,                              \\
-		\tilde{y}^k_f & \textnormal{if } t \in \MicroActivity_k \textnormal{ and } t=t_f, \\
-		K+1           & \textnormal{if } t \in \MacroActivity_k.
+		0           & \textnormal{if } t \in \Quiescence_k,                             \\
+		\hat{y}^k_f & \textnormal{if } t \in \MicroActivity_k \textnormal{ and } t=t_f, \\
+		K+1         & \textnormal{if } t \in \MacroActivity_k.
 	\end{cases}
 \end{equation}
 This vector of annotations spans an entire experiment of $k$, and consists of detailed annotations of behavioral subcategories during dormancy, the general category of macro-activities, and quiescence.
@@ -294,27 +294,27 @@ For instance, a bout of proboscis's pumping-like movement should not be shorter 
 In addition to annotations, we may have reason about physical and biological constraints.
 An example is that grooming behavior, bout duration of grooming can not exceed a couple of minutes, probability of observing a grooming behavior lasted longer than $2$ minutes is extremely low \citep{qiao_automated_2018}.
 Considering such constraints and temporal expectations, we apply the following post-processing procedures, and parameters should be determined based on the behavioral repertoire of interest.
+Post-processing procedures are especially helpful for avoiding misleading classification of the time points with erroneous tracking of body parts.
 Each procedure is optional, but should be applied in the given order.
 
-\subsubsection{Pruning Interrupting Bouts}
+\subsubsection{Pruning Interrupting Bouts}\label{section:pruning-interrupting-bouts}
+We prune short intervals interrupting possibly long and continuous behavioral bouts.
+Given a window size $\tau$, the majority behavioral category in the surrounding window around a time point $t$ is assigned that point by:
 \begin{equation}
-	\hat{y}^k_t = \argmax_y \card{\Set{t^\prime}{\hat{y}^k_{t^\prime}=y, \ \max\cbr{1, t-\tau} \leq t^\prime \leq \min\cbr{t+\tau, T}}}
+	\pAnn^k_t = \argmax_{\symsf{a}} \card{\Set{t^\prime}{\pAnn^k_{t^\prime}=\symsf{a}, \ \max\cbr{1, t-\tau} \leq t^\prime \leq \min\cbr{t+\tau, T}}}.
 \end{equation}
+The window size $\tau$ is typically less than $1$ second.
 
-\subsubsection{Elimination of Overly Short Bouts}
+\subsubsection{Elimination of Overly Long and Overly Short Bouts}
+We eliminate behavioral bouts whose durations are extremely short or extremely long, and hence, contradicting with physical constraints and our temporal expectations.
+For each behavioral category $i$, we define two thresholds $\delta^{\symrm{short}}_i$ and $\delta^{\symrm{long}}_i$, namely upper bound and lower bound.
+Then, the behavioral bouts whose duration longer or shorter than the corresponding thresholds, are set to quiescence.
 \begin{equation}
-	\hat{y}^k_t=
+	\hat{\pAnn}^k_t=
 	\begin{cases}
-		0           & \mathsf{bout}^0_t - \mathsf{bout}^1_t < \delta, \\
-		\hat{y}^k_t & \textnormal{otherwise},
+		0         & \mathsf{bout}^0_t - \mathsf{bout}^1_t < \delta^{\symrm{short}}_{\pAnn^k_t}, \\
+		0         & \mathsf{bout}^0_t - \mathsf{bout}^1_t > \delta^{\symrm{long}}_{\pAnn^k_t},  \\
+		\pAnn^k_t & \textnormal{otherwise},
 	\end{cases}
 \end{equation}
-
-\subsubsection{Elimination of Overly Long Bouts}
-\begin{equation}
-	\hat{y}^k_t=
-	\begin{cases}
-		0           & \mathsf{bout}^0_t - \mathsf{bout}^1_t > \delta, \\
-		\hat{y}^k_t & \textnormal{otherwise},
-	\end{cases}
-\end{equation}
+For each behavioral category $i$, the thresholds $\delta^{\symrm{short}}_i$ ($\delta^{\symrm{long}}_i$) should be greater (smaller) than the window size $\tau$ used in Section~\ref{section:pruning-interrupting-bouts}.
