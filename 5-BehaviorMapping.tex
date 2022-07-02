@@ -3,6 +3,11 @@
 \section{Overview of Behavior Mapping}
 Our ultimate goal is to have fine-grained categorization of the behaviors observed during dormancy. Thus, it is not sufficient to outline experiments and construct the sets $\MicroActivity$ and $\MacroActivity$. Behavior mapping stage is the most critical and novel part of the pipeline, and in this stage we discover and predict stereotypical behaviors by mapping each frame in the sets $\MicroActivity$.
 
+\NOTE{Describe approaches and use cases.}
+\NOTE{Discuss predicted and annotated $\MicroActivity$ sets.}
+\NOTE{Summarize mapping.}
+\NOTE{Introduce sections.}
+
 \section{Behavioral Embeddings}
 The dynamic postural features are able to capture many different timescales, however its high-dimensional structure makes it challenging to directly exploit behavioral representations in analysis, learning, and visualization.
 For example, behavioral representation matrix ($\V{\hat{W}}$) computed from dynamic postural features ($\V{W}$) with $20$ spatio-temporal features and $25$ timescales (i.e., frequency channels) has $20 \times 25 {=} 500$ columns.
@@ -84,7 +89,18 @@ A straightforward and simple example would be defining distances as follows: 1 i
 One can combine weighted graphs constructed using the two distance metrics (local metrics and defined metric for categorical values), and arrive at a shared view on the data.
 In the behavioral mapping pipeline, we benefit from unsupervised UMAP, and its supervised and semi-supervised extensions for different purposes.
 
-The behavioral embeddings exploited fall into three different categories, namely ``disparate embeddings'', ``joint embeddings'' and ``pair embeddings'', detailed descriptions and their applications are described respectively in  Section~\ref{section:disparate-embeddings}, Section~\ref{section:joint-embeddings}, and  Section~\ref{section:pair-embeddings} respectively.
+The utilized behavioral embeddings fall into three different categories, namely ``disparate embeddings'', ``joint embeddings'' and ``pair embeddings'', detailed descriptions and their applications are described respectively in  Section~\ref{section:disparate-embeddings}, Section~\ref{section:joint-embeddings}, and  Section~\ref{section:pair-embeddings} respectively.
+
+The resulting behavioral embedding
+\begin{equation}
+	\V{E}=\qmatrix{\V{e}_1, \cdots \V{e}_{F}} \in F \times N,
+\end{equation}
+which is a low-dimensional representation of
+\begin{equation}
+	\mathrm{row}_{t_f} \V{\hat{W}} \in \mathbb{R}^{F \times \rbr{ N_S\card*{\mathcal{T}_S}}} \ \rbr{t_f \in \MicroActivity},
+\end{equation}
+where and $N << \rbr{ N_S\card*{\mathcal{T}_S}}$ and $F$ is the numbers frames estimated as dormant and active, being equal to $\card{\MicroActivity}$.
+Each frame $f$, corresponds to a time point $t_f\in \MicroActivity$.
 
 \subsection{Disparate Embeddings}\label{section:disparate-embeddings}
 UMAP may be used to embed high-dimensional behavioral representations of each experiment separately to obtain disparate behavioral embeddings. Treating each experiment separately is useful for several purposes.
@@ -117,7 +133,6 @@ Especially when the behavioral repertoire of the annotated and the unannotated e
 When the behavioral repertoire and/or feature distribution are dissimilar, the resulting embedding may not provide useful information about the unannotated experiment, but an advantage of this approach is that the other pair embeddings do not get distorted by poor matches.
 As described in Section~\ref{section:nearest-neighbors-classification}, semi-supervised pair embeddings are utilized to predict behavioral categories of unannotated experiments by combining multiple view acquired from annotated ones.
 
-\begin{comment}
 \section{Soft Clustering}
 \citet{mcinnes_hdbscan_2017} \citet{campello_density-based_2013}
 \NOTE{
@@ -155,8 +170,6 @@ As described in Section~\ref{section:nearest-neighbors-classification}, semi-sup
 	\end{equation}
 	So for each cluster, we end up with a vector $\mathbf{m}=(m_\alpha)$, represent it behavioral composition.
 }
-
-\subsection{Computing Behavioral Scores}
 \NOTE{
 	Behavioral score of unannotated experiment will be computed using clustering membership score and behavioral composition mapping of those clusters.
 	For example, using semi-supervised pair embeddings and crosswise clustering; one can compute behavioral scores for a frame as follows;
@@ -166,7 +179,6 @@ As described in Section~\ref{section:nearest-neighbors-classification}, semi-sup
 	where $C$ is the number of clusters, $\mathbf{m}^c$ is the behavioral composition of the cluster $c$.
 	As a result, for each frame, we end up with a behavioral score vector $\mathbf{y}=(y_\alpha)$.
 }
-\end{comment}
 
 \section{Nearest Neighbor Analysis and Classification}\label{section:nearest-neighbors-classification}
 One of our ultimate goals is to annotate an experiment using already annotated ones.
@@ -187,8 +199,8 @@ We compute the behavioral weights with our nearest neighbor based approach by co
 In the Section~\ref{section:committee-by-voting}, we detail the committee by voting approach, which helps us to deal with variation between experiments by providing multiple ``views'' on observed behavioral expression that we attempt to annotate. Finally, the post-processing of resulting predictions is described in the Section~\ref{section:postprocessing-predictions}.
 
 \subsection{Behavioral Weights}\label{section:behavioral-weights}
-Consider two experiments, an annotated one $\exptAnn$, and an unannotated one $\exptUnann$, and their semi-supervised pair embedding, respectively $\Ann{\V{E}}=\qmatrix{\Ann{\V{e}}_1, \cdots \Ann{\V{e}_{\Ann{F}}}}$ and $\Unann{\V{E}}=\qmatrix{\Unann{\V{e}}_1, \cdots \Unann{\V{e}}_{\Unann{F}}}$, where $\Ann{F}$ and $\Unann{F}$ are the total numbers of data points, i.e., frames estimated as dormant and active. Each frame $f$, corresponds to a time point $t_f\in \MicroActivity$.
-Given the true annotations $\Ann{\V{y}}$ of the frames in the $\MicroActivity$ set of $\exptAnn$, and $K$ behavioral categories, the goal is to compute $\V{\hat{b}}_f=\qmatrix{\hat{b}_{f,1}, \cdots \hat{b}_{f,K}}$, representing the weights (in other words, the similarity score) of each behavioral category for $\exptUnann$, using $\Ann{\V{E}}, \Unann{\V{E}}$ and $\Ann{\V{y}}$.
+Consider two experiments, an annotated one $\exptAnn$, and an unannotated one $\exptUnann$, and their semi-supervised pair embedding, respectively $\Ann{\V{E}}=\qmatrix{\Ann{\V{e}}_1, \cdots \Ann{\V{e}_{\Ann{F}}}}$ and $\Unann{\V{E}}=\qmatrix{\Unann{\V{e}}_1, \cdots \Unann{\V{e}}_{\Unann{F}}}$.
+Given the true annotations $\Ann{\V{y}}$ of the frames in the $\Ann{\MicroActivity}$ set of $\exptAnn$, and $K$ behavioral categories, the goal is to compute $\V{\hat{b}}_f=\qmatrix{\hat{b}_{f,1}, \cdots \hat{b}_{f,K}}$, representing the weights (in other words, the similarity score) of each behavioral category for $\exptUnann$, using $\Ann{\V{E}}, \Unann{\V{E}}$ and $\Ann{\V{y}}$.
 
 The procedure start by querying $k$-nearest neighbors of $\exptUnann$'s each frame $f$ in the joint behavioral embedding space consisting of $\Ann{\V{E}}$ and $\Unann{\V{E}}$, using the $k$-d trees for efficiency \citep{bentley_multidimensional_1975}. $\NN{k}{f}$ denotes the set of indices of $\Unann{\V{e}}_f$'s $k$ nearest neighbors, and the $k$-NN weight $b_{f,i}$ for each query point (i.e., frame) $f$ of $\exptUnann$, and behavioral category $i$, is computed by
 \begin{equation}
@@ -270,9 +282,9 @@ In contrast to majority voting (hard voting), the soft voting scheme assigns the
 Finally, we post-process predicted annotations to improve our nearest neighbor based algorithm by incorporating a couple of assumptions on the temporal organization of the behaviors and physical constrains.
 Before applying post-processing procedures, the frames in the sets $\MacroActivity$ and $\Quiescence$ should be recovered, as we only predicted the annotations of the frames in the set $\MicroActivity$.
 Without having a temporally continuous vector of annotations, post-processing would lead unintended consequences and erroneous results.
-Let $\VpAnn^k=\rbr{\hat{y}^k_1, \cdots, \hat{y}^k_T}$ be the $\exptUnann_k$'s vector of predicted annotations for entire experiment, defined as follows:
+Let $\VpredAnn^k=\rbr{\hat{y}^k_1, \cdots, \hat{y}^k_T}$ be the $\exptUnann_k$'s vector of predicted annotations for entire experiment, defined as follows:
 \begin{equation}
-	\pAnn^k_t =
+	\predAnn^k_t =
 	\begin{cases}
 		0           & \textnormal{if } t \in \Quiescence_k,                             \\
 		\hat{y}^k_f & \textnormal{if } t \in \MicroActivity_k \textnormal{ and } t=t_f, \\
@@ -304,7 +316,7 @@ Each procedure is optional, but should be applied in the given order.
 We prune short intervals interrupting possibly long and continuous behavioral bouts.
 Given a window size $\tau$, the majority behavioral category in the surrounding window around a time point $t$ is assigned that point by:
 \begin{equation}
-	\pAnn^k_t = \argmax_{\symsf{a}} \card{\Set{t^\prime}{\pAnn^k_{t^\prime}=\symsf{a}, \ \max\cbr{1, t-\tau} \leq t^\prime \leq \min\cbr{t+\tau, T}}}.
+	\predAnn^k_t = \argmax_{\symsf{a}} \card{\Set{t^\prime}{\predAnn^k_{t^\prime}=\symsf{a}, \ \max\cbr{1, t-\tau} \leq t^\prime \leq \min\cbr{t+\tau, T}}}.
 \end{equation}
 The window size $\tau$ is typically less than $1$ second.
 
@@ -313,11 +325,11 @@ We eliminate behavioral bouts whose durations are extremely short or extremely l
 For each behavioral category $i$, we define two thresholds $\delta^{\symrm{short}}_i$ and $\delta^{\symrm{long}}_i$, namely upper bound and lower bound.
 Then, the behavioral bouts whose duration longer or shorter than the corresponding thresholds, are set to quiescence.
 \begin{equation}
-	\hat{\pAnn}^k_t=
+	\hat{\predAnn}^k_t=
 	\begin{cases}
-		0         & \mathsf{bout}^0_t - \mathsf{bout}^1_t < \delta^{\symrm{short}}_{\pAnn^k_t}, \\
-		0         & \mathsf{bout}^0_t - \mathsf{bout}^1_t > \delta^{\symrm{long}}_{\pAnn^k_t},  \\
-		\pAnn^k_t & \textnormal{otherwise},
+		0            & \mathsf{bout}^0_t - \mathsf{bout}^1_t < \delta^{\symrm{short}}_{\predAnn^k_t}, \\
+		0            & \mathsf{bout}^0_t - \mathsf{bout}^1_t > \delta^{\symrm{long}}_{\predAnn^k_t},  \\
+		\predAnn^k_t & \textnormal{otherwise},
 	\end{cases}
 \end{equation}
 For each behavioral category $i$, the thresholds $\delta^{\symrm{short}}_i$ ($\delta^{\symrm{long}}_i$) should be greater (smaller) than the window size $\tau$ used in Section~\ref{section:pruning-interrupting-bouts}.
