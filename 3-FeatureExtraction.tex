@@ -16,10 +16,12 @@ Matrices $\V{X} \in \mathbb{R}^{T \times N}$ and $\V{Y} \in \mathbb{R}^{T \times
 This multivariate time series matrices $\V{X}$ and $\V{Y}$ are the raw input data that goes into the first step of the feature extraction.
 Note that the number of body parts, $N$, must be the same among all experiments conducted with different fruit flies, but the number of time stamps, $T$, might differ.
 Each column of the $\V{X}=\qmatrix{\V{x}_1, \cdots, \V{x}_N}^\top$ and $\V{Y}=\qmatrix{\V{y}_1, \cdots, \V{y}_N}^\top$ can be written respectively as follows:
-\begin{align}
-	\V{y}_i & = (y_{i,1}, y_{i,2}, \dots, y_{i,t-1}, y_{i,t}, y_{i,t+1}, \dots, y_{i,T}), \\
-	\V{x}_i & = (x_{i,1}, x_{i,2}, \dots, x_{i,t-1}, x_{i,t}, x_{i,t+1}, \dots, x_{i,T}).
-\end{align}
+\begin{equation}
+	\begin{aligned}
+		\V{y}_i & = (y_{i,1}, y_{i,2}, \dots, y_{i,t-1}, y_{i,t}, y_{i,t+1}, \dots, y_{i,T}), \\
+		\V{x}_i & = (x_{i,1}, x_{i,2}, \dots, x_{i,t-1}, x_{i,t}, x_{i,t+1}, \dots, x_{i,T}).
+	\end{aligned}
+\end{equation}
 
 Here $i$ denotes the index of the body part, e.g., leg tip or proboscis.
 
@@ -72,10 +74,12 @@ Except directly comparing the prediction confidence scores as in the last proced
 If the number of such time points is acceptable, then directly comparing the prediction scores for those time points is convenient and handy.
 
 After applying the above procedures for a left and right counterpart pair $i$ and $j$, we can define oriented multivariate time series as
-\begin{align*}
-	\V{X}^{\omicron} & = \rbr{\qmatrix{\rbr{\V{x}_k}_{k \notin \bigcup_{\set{i,j} \in \mathcal{O}} \set{i,j}}}^\top \concat \qmatrix{\rbr{\orient{\V{x}_i, \V{x}_j}}_{\set{i,j} \in \mathcal{O}}}^\top}, \\
-	\V{Y}^{\omicron} & = \rbr{\qmatrix{\rbr{\V{y}_k}_{k \notin \bigcup_{\set{i,j} \in \mathcal{O}} \set{i,j}}}^\top \concat \qmatrix{\rbr{\orient{\V{y}_i, \V{y}_j}}_{\set{i,j} \in \mathcal{O}}}^\top},
-\end{align*}
+\begin{equation}
+	\begin{aligned}
+		\V{X}^{\omicron} & = \rbr{\qmatrix{\rbr{\V{x}_k}_{k \notin \bigcup_{\set{i,j} \in \mathcal{O}} \set{i,j}}}^\top \concat \qmatrix{\rbr{\orient{\V{x}_i, \V{x}_j}}_{\set{i,j} \in \mathcal{O}}}^\top}, \\
+		\V{Y}^{\omicron} & = \rbr{\qmatrix{\rbr{\V{y}_k}_{k \notin \bigcup_{\set{i,j} \in \mathcal{O}} \set{i,j}}}^\top \concat \qmatrix{\rbr{\orient{\V{y}_i, \V{y}_j}}_{\set{i,j} \in \mathcal{O}}}^\top},
+	\end{aligned}
+\end{equation}
 where $\mathcal{O}$ is the set of index pairs of left and right counterparts and $\bigcup_{\set{i,j} \in \mathcal{O}} \set{i,j}$ is the union of all indexes of such body parts pairs.
 Applying described procedures for each left and right counterparts results in computing $\V{X}^{\omicron}$ and $\V{Y}^{\omicron}$.
 This oriented versions of original data matrices can be used instead of $\V{X}$ and $\V{Y}$ in the rest of the pipeline, if desired.
@@ -176,17 +180,21 @@ Then, similar to the change of distance features, the angular velocities are app
 
 \subsection{Cartesian Pose Values of Body Parts}
 Cartesian pose values of a body part $i$ are straightforwardly given by the $x$ and $y$ coordinate values as follows:
-\begin{align}
-	x^{i}_t & = x_{i,t}, \\
-	y^{i}_t & = y_{i,t}.
-\end{align}
+\begin{equation}
+	\begin{aligned}
+		x^{i}_t & = x_{i,t}, \\
+		y^{i}_t & = y_{i,t}.
+	\end{aligned}
+\end{equation}
 
 Note that for a single body part, two feature values are generated.
 Corresponding gradient features, namely the body part velocities along each cartesian component, are computed by
-\begin{align}
-	\dot{x}^{i}_t & = \begin{cases} \frac{x^{i}_{t+1} - x^{i}_{t}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{x^{i}_{t+1} - x^{i}_{t-1}}{2\Delta t} & \textnormal{otherwise}, \end{cases} \\
-	\dot{y}^{i}_t & = \begin{cases} \frac{y^{i}_{t+1} - y^{i}_{t}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{y^{i}_{t+1} - y^{i}_{t-1}}{2\Delta t} & \textnormal{otherwise}. \end{cases}
-\end{align}
+\begin{equation}
+	\begin{aligned}
+		\dot{x}^{i}_t & = \begin{cases} \frac{x^{i}_{t+1} - x^{i}_{t}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{x^{i}_{t+1} - x^{i}_{t-1}}{2\Delta t} & \textnormal{otherwise}, \end{cases} \\
+		\dot{y}^{i}_t & = \begin{cases} \frac{y^{i}_{t+1} - y^{i}_{t}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{y^{i}_{t+1} - y^{i}_{t-1}}{2\Delta t} & \textnormal{otherwise}. \end{cases}
+	\end{aligned}
+\end{equation}
 
 In order to compute overall two-dimensional velocity of a body part, one can always use the distance between the origin and corresponding body part.
 
@@ -292,11 +300,13 @@ for $i=1,2,\dots,N_f$, and their corresponding wavelet scales are computed by $a
 
 \subsection{Constructing Dynamic Postural Feature Tensors}
 Let $\mathcal{T}_S=\set{\sfrac{1}{f_{\textnormal{min}}}, \cdots \sfrac{1}{f_{\textnormal{max}}}}$ and $\mathcal{T}_G=\set{\tau_{\textnormal{min}}, \cdots, \tau_{\textnormal{max}}}$ denote the time-scale sets respectively for wavelet transforms of snapshot features and moving statistics of gradient features. Then corresponding feature tensors are given as follows:
-\begin{align}
-	\V{W}        & = \rbr{W^0_{f}\rbr{\V{s}_i, t}}_{1 \leq t \leq T, \, \sfrac{1}{f} \in \mathcal{T}_S, \, 1 \leq i \leq N_S}, \\
-	\V{M}^\mu    & = \rbr{\mu_\tau\rbr{g_{i,t}}}_{1\leq t \leq T, \, \tau \in \mathcal{T}_G, \, 1 \leq i \leq  N_G},           \\
-	\V{M}^\sigma & = \rbr{\sigma_\tau\rbr{g_{i,t}}}_{1\leq t \leq T, \, \tau \in \mathcal{T}_G, 1 \leq i \leq N_G}.
-\end{align}
+\begin{equation}
+	\begin{aligned}
+		\V{W}        & = \rbr{W^0_{f}\rbr{\V{s}_i, t}}_{1 \leq t \leq T, \, \sfrac{1}{f} \in \mathcal{T}_S, \, 1 \leq i \leq N_S}, \\
+		\V{M}^\mu    & = \rbr{\mu_\tau\rbr{g_{i,t}}}_{1\leq t \leq T, \, \tau \in \mathcal{T}_G, \, 1 \leq i \leq  N_G},           \\
+		\V{M}^\sigma & = \rbr{\sigma_\tau\rbr{g_{i,t}}}_{1\leq t \leq T, \, \tau \in \mathcal{T}_G, 1 \leq i \leq N_G}.
+	\end{aligned}
+\end{equation}
 
 The resulting extended feature tensors of dynamic postural representations are $\V{W} \in \mathbb{R}^{T \times \card*{\mathcal{T}_s} \times N_S}$, $\V{M}^\mu \in \mathbb{R}^{T \times \card*{\mathcal{T}_v} \times N_G}$ and $\V{M}^\sigma \in \mathbb{R}^{T \times \card*{\mathcal{T}_v} \times N_G}$.
 
