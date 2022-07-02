@@ -1,6 +1,7 @@
 \chapter{Behavior Mapping}
 
 \section{Overview of Behavior Mapping}
+Our ultimate goal is to have fine-grained categorization of the behaviors observed during dormancy. Thus, it is not sufficient to outline experiments and construct the sets $\MicroActivity$ and $\MacroActivity$. Behavior mapping stage is the most critical and novel part of the pipeline, and in this stage we discover and predict stereotypical behaviors by mapping each frame in the sets $\MicroActivity$.
 
 \section{Behavioral Embeddings}
 The dynamic postural features are able to capture many different timescales, however its high-dimensional structure makes it challenging to directly exploit behavioral representations in analysis, learning, and visualization.
@@ -116,6 +117,7 @@ Especially when the behavioral repertoire of the annotated and the unannotated e
 When the behavioral repertoire and/or feature distribution are dissimilar, the resulting embedding may not provide useful information about the unannotated experiment, but an advantage of this approach is that the other pair embeddings do not get distorted by poor matches.
 As described in Section~\ref{section:nearest-neighbors-classification}, semi-supervised pair embeddings are utilized to predict behavioral categories of unannotated experiments by combining multiple view acquired from annotated ones.
 
+\begin{comment}
 \section{Soft Clustering}
 \citet{mcinnes_hdbscan_2017} \citet{campello_density-based_2013}
 \NOTE{
@@ -164,6 +166,7 @@ As described in Section~\ref{section:nearest-neighbors-classification}, semi-sup
 	where $C$ is the number of clusters, $\mathbf{m}^c$ is the behavioral composition of the cluster $c$.
 	As a result, for each frame, we end up with a behavioral score vector $\mathbf{y}=(y_\alpha)$.
 }
+\end{comment}
 
 \section{Nearest Neighbor Analysis and Classification}\label{section:nearest-neighbors-classification}
 One of our ultimate goals is to annotate an experiment using already annotated ones.
