@@ -95,11 +95,11 @@ The resulting behavioral embedding
 \begin{equation}
 	\V{E}=\qmatrix{\V{e}_1, \cdots \V{e}_{F}} \in F \times N,
 \end{equation}
-which is a low-dimensional representation of
+is a low-dimensional representation of
 \begin{equation}
 	\mathrm{row}_{t_f} \V{\hat{W}} \in \mathbb{R}^{F \times \rbr{ N_S\card*{\mathcal{T}_S}}} \ \rbr{t_f \in \MicroActivity},
 \end{equation}
-where and $N << \rbr{ N_S\card*{\mathcal{T}_S}}$ and $F$ is the numbers frames estimated as dormant and active, being equal to $\card{\MicroActivity}$.
+where and $N << \rbr{ N_S\card*{\mathcal{T}_S}}$ and $F$ is the numbers of frames estimated as dormant and active, being equal to $\card{\MicroActivity}$.
 Each frame $f$, corresponds to a time point $t_f\in \MicroActivity$.
 
 \subsection{Disparate Embeddings}\label{section:disparate-embeddings}
@@ -243,7 +243,7 @@ Consider all experiments: unannotated experiments $\exptUnann_1, \cdots, \exptUn
 The goal is to combine the behavioral weights of an unannotated experiment $\exptUnann_k$, calculated separately for each annotated experiment.
 
 Let $\V{\hat{b}}_f^{k,l}$ denote the behavioral weights of $\exptUnann_k$ computed with $\exptAnn_l$.
-Each annotated experiment contributes to the overall behavioral score of $\exptUnann_k$; in other words,annotated experiments, forming a committee,  vote according to $\V{\hat{b}}_f^{k,l}$.
+Each annotated experiment contributes to the overall behavioral score of $\exptUnann_k$; in other words, annotated experiments, forming a committee,  vote according to $\V{\hat{b}}_f^{k,l}$.
 Each annotated experiment provides a different view to the behavioral repertoire, as in the case of pair embeddings (see Section~\ref{section:pair-embeddings}).
 Before describing hard voting and soft voting approaches, there is one more step to discuss.
 
@@ -263,11 +263,11 @@ The predicted behavioral category at frame $k$ of $\exptUnann_k$, denoted by $\h
 To obtain the overall aggregate view of the committee, we can follow two alternative voting schemes, namely hard voting (i.e., majority rule voting) or soft voting.
 At this point, we may want to have scores for each behavioral category rather than hard-labels.
 Such score information might be desired to capture complex and hierarchical structure of the behaviors.
-Behaviors are sometimes occur simultaneously, and sometimes observed behaviors might manifest similarities to more than one behavioral category \citep{berman_predictability_2016}.
+Behaviors sometimes occur simultaneously, and sometimes observed behaviors might manifest similarities to more than one behavioral category \citep{berman_predictability_2016}.
 Hence, one may also use the combined vote scores directly, without computing the $\argmax$.
 
 \subsubsection{Hard Voting}
-In the hard voting scheme, predictions of a frame $f$ is given by the majority behavioral category of the $\argmax$ of the each annotated experiment's votes and computed by the following formula:
+In the hard voting scheme, prediction of a frame $f$ is given by the majority behavioral category of the $\argmax$ of the each annotated experiment's votes and computed by the following formula:
 \begin{equation}
 	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \Set{\argmax_{1 \leq j \leq K} { \vote_{f,j}^{k,l}}}{j=i, \, 1 \leq l \leq \Ann{R}}.
 \end{equation}
@@ -282,7 +282,7 @@ In contrast to majority voting (hard voting), the soft voting scheme assigns the
 Finally, we post-process predicted annotations to improve our nearest neighbor based algorithm by incorporating a couple of assumptions on the temporal organization of the behaviors and physical constrains.
 Before applying post-processing procedures, the frames in the sets $\MacroActivity$ and $\Quiescence$ should be recovered, as we only predicted the annotations of the frames in the set $\MicroActivity$.
 Without having a temporally continuous vector of annotations, post-processing would lead unintended consequences and erroneous results.
-Let $\VpredAnn^k=\rbr{\hat{y}^k_1, \cdots, \hat{y}^k_T}$ be the $\exptUnann_k$'s vector of predicted annotations for entire experiment, defined as follows:
+Let $\VpredAnn^k=\rbr{\hat{y}^k_1, \cdots, \hat{y}^k_T}$ be the $\exptUnann_k$'s vector of predicted annotations for the entire experiment, defined as follows:
 \begin{equation}
 	\predAnn^k_t =
 	\begin{cases}
@@ -294,7 +294,7 @@ Let $\VpredAnn^k=\rbr{\hat{y}^k_1, \cdots, \hat{y}^k_T}$ be the $\exptUnann_k$'s
 This vector of annotations spans an entire experiment of $k$, and consists of detailed annotations of behavioral subcategories during dormancy, the general category of macro-activities, and quiescence.
 
 Before discussing the post-processing, we first need to define behavioral bouts.
-Informally, a behavioral bout is a segment of time, which the same behavioral category is continuously observed.
+Informally, a behavioral bout is a segment of time, in which the same behavioral category is continuously observed.
 We can formally define a behavioral bout for a given $\hat{y}^k_t$ as follows:
 \begin{equation}
 	\begin{aligned}
@@ -316,9 +316,9 @@ Each procedure is optional, but should be applied in the given order.
 We prune short intervals interrupting possibly long and continuous behavioral bouts.
 Given a window size $\tau$, the majority behavioral category in the surrounding window around a time point $t$ is assigned that point by:
 \begin{equation}
-	\predAnn^k_t = \argmax_{\symsf{a}} \card{\Set{t^\prime}{\predAnn^k_{t^\prime}=\symsf{a}, \ \max\cbr{1, t-\tau} \leq t^\prime \leq \min\cbr{t+\tau, T}}}.
+	\hat{\predAnn^k_t} = \argmax_{\symsf{a}} \card{\Set{t^\prime}{\predAnn^k_{t^\prime}=\symsf{a}, \ \max\cbr{1, t-\tau} \leq t^\prime \leq \min\cbr{t+\tau, T}}}.
 \end{equation}
-The window size $\tau$ is typically less than $1$ second.
+The window size $\tau$ is typically less than a second.
 
 \subsubsection{Elimination of Overly Long and Overly Short Bouts}
 We eliminate behavioral bouts whose durations are extremely short or extremely long, and hence, contradicting with physical constraints and our temporal expectations.
