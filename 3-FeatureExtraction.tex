@@ -55,6 +55,31 @@ However, in the conducted experiments, flies usually choose to stay dormancy per
 In such cases, one can concede using only one of the left and right counterparts to construct pose values.
 Therefore, this optional step is included in the behavioral mapping pipeline to reduce pose values of body parts with left and right counterparts to a single value.
 
+\begin{figure}[ht!]
+	\centering
+	\begin{subfigure}[b]{0.265\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/FlyOrientation-ParallelHorizontal.png}
+		\caption{\label{figure:parallel-horizontal-orientation}}
+	\end{subfigure}%
+	% \hfill
+	% \centering
+	% \begin{subfigure}[ht!]{0.24\linewidth}
+	% 	\centering\includegraphics[width=\linewidth]{figures/FlyOrientation-ParallelVertical.png}
+	% 	\caption{\label{figure:parallel-vertical-orientation}}
+	% \end{subfigure}%
+	\hfill
+	\begin{subfigure}[b]{0.24\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/FlyOrientation-Oblique.png}
+		\caption{\label{figure:oblique-orientation}}
+	\end{subfigure}%
+	\hfill
+	\begin{subfigure}[b]{0.24\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/FlyOrientation-Perpendicular.png}
+		\caption{\label{figure:perpendicular-orientation}}
+	\end{subfigure}
+	\caption{Orientations.}
+\end{figure}
+
 We use prediction scores to determine which body part should be used to compute oriented pose values.
 Let $i$ and $j$ be a pair of body parts which are left and right counterparts of each other, e.g., left haltere and right haltere.
 Then, one can use the $\V{l}_i$ and $\V{l}_j$ to predict if one of them is occluded at a particular time step $t$.
@@ -104,7 +129,7 @@ The conditions described above are useful not only for occluded body parts, but 
 \subsection{Aligning Different Orientations}
 It may be desired to align different orientations and postures in some cases.
 For instance, it is not possible to interpret vertical and horizontal replacements of body parts separately without aligning them into a reference frame.
-Because flies can position themselves in different orientations while exhibiting similar actions, as it can be seen from the Figure~\ref{figure:parallel-horizontal-orientation} and Figure~\ref{figure:parallel-vertical-orientation}.
+Because flies can position themselves in different orientations while exhibiting similar actions, as it can be seen from the Figure~\ref{figure:parallel-horizontal-orientation}. % and Figure~\ref{figure:parallel-vertical-orientation}.
 
 To rotationally align each frame, we transformed body part coordinate values into an egocentric reference frame centered in the middle of the fly's spine, e.g., a line along the thorax.
 Then, we performed a linear transformation to all pose values in order to place the spine at the origin, oriented along the $y$-axis.
@@ -166,6 +191,25 @@ The corresponding gradient feature, namely the change of distance between body p
 	\dot{d}^{i,j}_t = \begin{cases} \frac{\abs*{d^{i,j}_{t+1} - d^{i,j}_{t}}}{\Delta t} & \textnormal{if } $t=0$ \textnormal{ or } $t=T$, \\ \frac{\abs*{d^{i,j}_{t+1} - d^{i,j}_{t-1}}}{2\Delta t} & \textnormal{otherwise}, \end{cases}
 \end{equation}
 where $\Delta t$ is the sampling period, and it is equal to $\sfrac{1}{\textnormal{FPS}}$ seconds.
+
+\begin{figure}[ht!]
+	\centering
+	\begin{subfigure}[ht!]{0.333\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/ExampleTrajectory-ProboscisPumping.pdf}
+		\caption{}
+	\end{subfigure}%
+	\centering
+	\begin{subfigure}[ht!]{0.333\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/ExampleTrajectory-PosturalAdjustment.pdf}
+		\caption{}
+	\end{subfigure}%
+	\centering
+	\begin{subfigure}[ht!]{0.333\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/ExampleTrajectory-HaltereSwitch_3.pdf}
+		\caption{}
+	\end{subfigure}%
+	\caption{}
+\end{figure}
 
 \subsection{Joint Angles Between Body Parts}
 Given a triplet of body parts $\rbr{i,j,k}$, the angle between $i$ and $k$ around $j$ is calculated using the two-argument $\operatorname{arctangent}$ function as given below,

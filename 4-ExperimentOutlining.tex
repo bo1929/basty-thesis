@@ -38,7 +38,8 @@ For instance, pumping-like movement of the proboscis or switch-like movement of 
 Thus, one need to consider more than a single scalar value, as in the previous case of macro-activity.
 For each snapshot feature $s_i$, we sum all frequency channels $f$, i.e., time scales, utilizing the dynamic postural feature tensor $W$, as follows:
 \begin{equation}
-	u_{t,i} = \sum_{\sfrac{1}{f} \in \mathcal{T}_G}{W_f^0\rbr{s_i,t}}.
+	u_{t,i} = \sum_{\sfrac{1}{f} \in \mathcal{T}_G}{W_f^0\rbr{s_i,t}} \qbor
+	u_{t,i} = \max_{\sfrac{1}{f} \in \mathcal{T}_G}{W_f^0\rbr{s_i,t}}.
 \end{equation}
 The resulting feature vectors, $\V{u}_i=\rbr{u_{i,1}, \cdots, u_{i,T}}$, are representative enough for capturing micro-activities as an umbrella category.
 Such micro-activities potentially occur independently of the rest of the body.

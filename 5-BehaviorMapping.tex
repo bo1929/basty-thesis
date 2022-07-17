@@ -15,6 +15,12 @@ Since the correlation between different spatio-temporal features (e.g., distance
 Therefore, we would like to find a low-dimensional embedding that captures the important features of the dataset.
 The embedding we compute should minimize local distortions, since trajectories pause near a repeatable position whenever a particular stereotyped behavior is observed \citep{berman_mapping_2014, deangelis_manifold_2019, ali_timecluster_2019}.
 
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.70\linewidth]{figures/FeatureCorrelations-FlyF1DAnn-XY_labels.pdf}
+	\caption{\label{figure:correlations-btw-features}}
+\end{figure}
+
 Many dimensionality algorithms seek to preserve the pairwise distance structure among all the data samples, the well-known examples of such algorithms are PCA \citep{hotelling_analysis_1933}, and MDS \citep{kruskal_multidimensional_1964}.
 Alternatively, some algorithms favor the preservation of local distances over global distance, such as UMAP (Uniform Manifold Approximation \& Projection) \citep{mcinnes_umap_2020} t-SNE \citep{maaten_visualizing_2008}, Laplacian Eigenmaps \citep{belkin_laplacian_2003} and LargeVis \citep{tang_visualizing_2016}.
 The latter category of algorithms achieves to preserve important local structures, and helps to improve classification performance when used in combination with learning algorithms where the function is only approximated locally, e.g., $k$-nearest neighbor classifier \citep{mcinnes_umap_2020}.
@@ -110,11 +116,25 @@ Defining very specific and low-level behavioral categories is not feasible and p
 Another scenario of benefiting disparate embeddings is using unsupervised UMAP for annotated and/or unannotated experiments separately.
 We can visualize how behavioral repertoire is represented in the low dimensional embeddings space and analyze which features drives different regions and clusters of the behavioral embeddings (see Figure~\ref{figure:unsupervised-disparate-behavioral-regions}).
 
+\begin{figure}[ht!]
+	\centering
+	\begin{subfigure}[ht!]{0.5\linewidth}
+		\centering\includegraphics[height=5cm]{figures/FlyF15-08182021173222_UnsupervisedDisparateEmbedding.pdf}
+		\caption{\label{figure:unsupervised-disparate-behavioral-regions}}
+	\end{subfigure}%
+	\hfill
+	\centering
+	\begin{subfigure}[ht!]{0.5\linewidth}
+		\centering\includegraphics[height=5cm]{figures/FlyF15-08182021173222_SupervisedDisparateEmbedding.pdf}
+		\caption{\label{figure:supervised-disparate-zoomin-annotations}}
+	\end{subfigure}%
+\end{figure}
+
 \subsection{Joint Embeddings}\label{section:joint-embeddings}
 Ideally, we would like to embed all experiments into a shared joint behavioral space, and using such an embedding would enable us to discover stereotypical and common behaviors among different flies.
 However, we observed that this is only possible to a certain extent and such joint embeddings tend to not mix well as the number of experiments increases.
 When we jointly compute a behavioral space using all available experiments,  the resulting embedding is usually not totally homogeneous in terms of flies and experiments.
-We observed that similar behaviors might end up embedded in different regions, and multiple clusters consisting of highly similar behaviors emerges (see Figure~\ref{figure:joint-behavioral-embeddings}).
+We observed that similar behaviors might end up embedded in different regions, and multiple clusters consisting of highly similar behaviors emerges.
 
 Especially for the joint treatment of annotated experiments, supervised UMAP fails to embed similar behaviors of different experiments closely and homogeneously.
 There are many factors contributing to this impairment of supervised joint embeddings, such as behavioral variations among flies and experiments,  differences in orientation while exhibiting similar behaviors, and broad definitions of annotation categories.
@@ -132,6 +152,21 @@ For a single unannotated experiment, a semi-supervised behavioral embedding for 
 Especially when the behavioral repertoire of the annotated and the unannotated experiments are similar, the provided ``view'' turns out to be an accurate, easy-to-interpret low-dimensional representation of the exhibited behaviors of the unannotated experiment.
 When the behavioral repertoire and/or feature distribution are dissimilar, the resulting embedding may not provide useful information about the unannotated experiment, but an advantage of this approach is that the other pair embeddings do not get distorted by poor matches.
 As described in Section~\ref{section:nearest-neighbors-classification}, semi-supervised pair embeddings are utilized to predict behavioral categories of unannotated experiments by combining multiple view acquired from annotated ones.
+
+\begin{figure}[ht!]
+	\centering
+	\begin{subfigure}[ht!]{0.5\linewidth}
+		\centering\includegraphics[height=5cm]{figures/FlyF15-08182021173222_FlyM4-03062020153616-SemisupervisedPairEmbedding.pdf}
+		\caption{}
+	\end{subfigure}%
+	\hfill
+	\centering
+	\begin{subfigure}[ht!]{0.5\linewidth}
+		\centering\includegraphics[height=5cm]{figures/FlyF15-08182021173222_FlyM4-03062020153616-SemisupervisedPairEmbedding-JointChart.pdf}
+		\caption{}
+	\end{subfigure}%
+	\caption{}
+\end{figure}
 
 \section{Soft Clustering}
 \citet{mcinnes_hdbscan_2017} \citet{campello_density-based_2013}

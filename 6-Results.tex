@@ -2,16 +2,54 @@
 
 \section{Employing Proposed Pipeline}\label{section:employing-proposed-pipeline}
 
+\begin{figure}[ht!]
+	\centering
+	\centering\includegraphics[width=0.675\linewidth]{figures/OutliningPerformance-Supervised.pdf}
+	\caption{}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering
+	\begin{subfigure}[ht!]{0.675\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/AUC_ROC-DActfiltered.pdf}
+		\caption{}
+	\end{subfigure}%
+
+	\centering
+	\begin{subfigure}[ht!]{0.9\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/PRC_ROC-DActfiltered.pdf}
+		\caption{}
+	\end{subfigure}%
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering
+	\begin{subfigure}[ht!]{0.9\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/BehavioralWeightDistributions_perBehavior.pdf}
+		\caption{}
+	\end{subfigure}%
+
+	\centering
+	\begin{subfigure}[ht!]{0.55\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/BehavioralWeight-RepertoireDifference.pdf}
+		\caption{}
+	\end{subfigure}%
+	\centering
+	\begin{subfigure}[ht!]{0.45\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/Entropy-RepertoireDifference.pdf}
+		\caption{}
+	\end{subfigure}%
+\end{figure}
 \section{Analyzing Behavioral Repertoire}\label{section:analyzing-behavioral-repertoire}
 
 \begin{figure}[ht!]
 	\centering
-	\begin{subfigure}[ht!]{0.85\linewidth}
+	\begin{subfigure}[ht!]{0.9\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Velocity-WT-1T.pdf}
 		\caption{}
 	\end{subfigure}%
 
-	\begin{subfigure}[ht!]{0.85\linewidth}
+	\begin{subfigure}[ht!]{0.9\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Velocity-SD-1T.pdf}
 		\caption{}
 	\end{subfigure}%
@@ -19,35 +57,57 @@
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.70\linewidth]{figures/FeatureCorrelations-FlyF1DAnn.pdf}
-	\caption{\label{figure:correlations-btw-features}}
+	\begin{subfigure}[b]{0.70\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/ActivityBinned-Ann-WT-5T.pdf}
+		\caption{}
+	\end{subfigure}%
+	\centering
+	\begin{subfigure}[b]{0.30\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{figures/FractionTime-Microactivity.pdf}
+		\caption{\label{figure:fraction-of-time-with-microactivity}}
+	\end{subfigure}%
+
+	\centering
+	\begin{subfigure}[ht!]{0.80\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{figures/TimeSpent-perBehavior-Ann.pdf}
+		\caption{}
+	\end{subfigure}%
 \end{figure}
 
 \begin{figure}[ht!]
 	\centering
-	\begin{subfigure}[ht!]{0.24\linewidth}
-		\centering\includegraphics[width=\linewidth]{example-image-a}
-		\caption{\label{figure:supervised-disparate-zoomin-annotations}}
+	\begin{subfigure}[ht!]{0.90\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{figures/FeatureDistributions_perBehavior-Ann.pdf}
+		\caption{}
 	\end{subfigure}%
-	\hfill
+
 	\centering
-	\begin{subfigure}[ht!]{0.24\linewidth}
-		\centering\includegraphics[width=\linewidth]{example-image-a}
-		\caption{\label{figure:unsupervised-disparate-behavioral-regions}}
+	\begin{subfigure}[ht!]{0.90\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{figures/BoutDurationDistributions-Ann.pdf}
+		\caption{}
 	\end{subfigure}%
 \end{figure}
 
 \begin{figure}[ht!]
 	\centering
-	\begin{subfigure}[ht!]{0.24\linewidth}
-		\centering\includegraphics[width=\linewidth]{example-image-a}
+	\begin{subfigure}[ht!]{0.975\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/Heatmap_BehavioralUsage-Ann.pdf}
 		\caption{}
 	\end{subfigure}%
-	\hfill
+
 	\centering
-	\begin{subfigure}[ht!]{0.24\linewidth}
-		\centering\includegraphics[width=\linewidth]{example-image-a}
+	\begin{subfigure}[ht!]{0.975\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/CumulativeLine_BehavioralUsage-Ann.pdf}
 		\caption{}
 	\end{subfigure}%
-	\caption{\label{figure:joint-behavioral-embeddings}}
+
+	\centering
+	\begin{subfigure}[ht!]{0.775\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/MeanCumRofC_BehavioralUsage-Ann.pdf}
+		\caption{}
+	\end{subfigure}%
 \end{figure}
