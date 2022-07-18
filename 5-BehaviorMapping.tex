@@ -316,6 +316,8 @@ In contrast to majority voting (hard voting), the soft voting scheme assigns the
 	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \sum_{l=1}^{\Ann{R}} \vote_{f,i}^{k,l}.
 \end{equation}
 
+\subsubsection{Behavioral Scores}
+
 \subsection{Post-processing}\label{section:postprocessing-predictions}
 Finally, we post-process predicted annotations to improve our nearest neighbor based algorithm by incorporating a couple of assumptions on the temporal organization of the behaviors and physical constrains.
 Before applying post-processing procedures, the frames in the sets $\MacroActivity$ and $\Quiescence$ should be recovered, as we only predicted the annotations of the frames in the set $\MicroActivity$.

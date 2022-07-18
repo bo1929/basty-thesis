@@ -8,7 +8,7 @@ The feature extraction steps are as follows:
 \begin{enumerate}
 	\item Constructing pose values and preprocessing; dealing with occluded body parts, alignment of different orientations, filtering, and imputation.
 	\item Computing spatio-temporal features, such as distances between body parts, velocity, and angular velocity from body part positions.
-	\item Computing dynamic postural features by extending spatio-temporal features to multiple time scales using wavelet transformation and sliding window statistics.
+	\item Computing dynamic postural features by extending spatio-temporal features to multiple timescales using wavelet transformation and sliding window statistics.
 	\item Computing normalized high-dimensional behavioral representations.
 \end{enumerate}
 
@@ -325,15 +325,15 @@ So resulting normalized transformation, which is also used to generate the spect
 \end{equation}
 
 In addition to the above conventionally used normalization, we alternatively adopted the normalization proposed by \citet{liu_rectification_2007}. According to this alternative adjustment, the wavelet power spectrum should be equal to the transform coefficient squared divided by the scale it associates.
-\begin{equation}
+\begin{equation}\label{equation:wavelet-normalization}
 	W^{0}_f\rbr{\V{s}_i, t^\prime} = \frac{W_f\rbr{\V{s}_i, t^\prime}^2}{a\rbr{f}}
 \end{equation}
-We observed substantial improvements using this power spectrum (see Section~\ref{section:employing-proposed-pipeline}).
+We observed substantial improvements using this power spectrum.
 
 \subsubsection{Determining Spectrum Frequencies}
 We investigate two different approaches for computing a set of frequencies and, we include both of them in the behavior mapping pipeline.
 One set is dyadically spaced frequencies between $f_{\textnormal{min}}$ and $f_{\textnormal{max}}$ via
-\begin{equation}
+\begin{equation}\label{equation:dyadically-spaced-spectrum}
 	f_i = f_{\textnormal{max}} 2^{-\frac{i-1}{N_f-1}\log{\frac{f_{\textnormal{max}}}{f_{\textnormal{min}}}}},
 \end{equation}
 where $f_{\textnormal{max}} = \sfrac{FPS}{2} \textnormal{ Hz}$ is the Nyquist frequency.
