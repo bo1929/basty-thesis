@@ -68,7 +68,7 @@
 	\caption[Histogram of entropy values and box-plot of the behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.]{Histogram of entropy values and box-plot of behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.
 		Here behavioral repertoire of FlyF1-03082020 is predicted separately with two different annotated experiments, namely FlyF14-08172021 and FlyM13-08172021.
 		Behavioral scores and entropy values are computed for the haltere switch behavior.
-		The latter one lacks the haltere switch behavior, and as a result behavioral scores tends to have higher entropy.
+		The latter one lacks the haltere switch behavior, and as a result behavioral scores tend to have higher entropy.
 		Results demonstrates ability of the proposed pipeline to detect and discover new unannotated behavioral categories using behavioral scores.}
 \end{figure}
 
@@ -78,37 +78,33 @@
 	\centering
 	\begin{subfigure}[ht!]{0.95\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Velocity-WT-1T.pdf}
-		\caption{}
+		\caption{Wild type.}
 	\end{subfigure}%
 
 	\begin{subfigure}[ht!]{0.95\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Velocity-SD-1T.pdf}
-		\caption{}
+		\caption{Sleep deprived.}
 	\end{subfigure}%
+	\caption[Overall displacement values over entire experiments.]{Overall displacement values over entire experiments.
+		Displacement of the body reveals long dormancy and sleep epochs, and macro-activities.
+		Displacement values are computed as described in Equation~\ref{equation:displacement}, and smoothed with a rolling mean of 1 minute window.}
 \end{figure}
 
 \begin{figure}[ht!]
-	\centering
-	\begin{subfigure}[b]{0.70\linewidth}
-		\centering\includegraphics[width=\linewidth]{figures/ActivityBinned-Ann-WT-5T.pdf}
-		\caption{}
-	\end{subfigure}%
-	\centering
-	\begin{subfigure}[b]{0.30\linewidth}
-		\centering
-		\includegraphics[width=\linewidth]{figures/FractionTime-Microactivity.pdf}
-		\caption{}
-	\end{subfigure}%
+	\centering\includegraphics[width=\linewidth]{figures/ActivityBinned-Ann-WT-5T.pdf}
+	\caption[Binned temporal heatmap of activities.]{Binned temporal heatmap of activities.
+		Each bin is 5 minutes, corresponding to 900 frames.
+		Activity value is computed as the ratio of number of annotated frames and total number of frames in the bin.}
+\end{figure}
 
+\begin{figure}[ht!]
 	\centering
 	\begin{subfigure}[ht!]{0.95\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/TimeSpent-perBehavior-Ann.pdf}
 		\caption{}
 	\end{subfigure}%
-\end{figure}
 
-\begin{figure}[ht!]
 	\centering
 	\begin{subfigure}[ht!]{0.95\linewidth}
 		\centering
@@ -142,4 +138,12 @@
 		\centering\includegraphics[width=\linewidth]{figures/MeanCumRofC_BehavioralUsage-Ann.pdf}
 		\caption{}
 	\end{subfigure}%
+
+	\centering
+	\begin{subfigure}[b]{0.45\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{figures/FractionTime-Microactivity.pdf}
+		\caption{Fraction of time spent with micro-activities in dormant epochs.}
+	\end{subfigure}%
+
 \end{figure}

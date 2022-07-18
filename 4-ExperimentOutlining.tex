@@ -27,7 +27,7 @@ We categorize this type of behaviors under the umbrella term of macro-activity, 
 One can characterize macro-activities without considering its sub-categories by using the velocities, i.e., gradient features.
 In order to distinguish sub-categories of macro-activities, such as walking and rearing, more detailed and descriptive features are required.
 However, in our case, computing a single scalar value to capture overall movement of the fly results in sufficient performance for detecting macro-activity epochs. We define this feature value by summing gradient features for all time scales, utilizing the dynamic postural feature tensor $M^\mu$, as follows:
-\begin{equation}
+\begin{equation}\label{equation:displacement}
 	v_t = \sum_{\tau \in \mathcal{T}_G}{\sum_{i=1}^{N_G}{\mu_\tau\rbr{g_i,t}}},
 \end{equation}
 where the resulting velocity-based feature vector is $\V{v}=\rbr{v_1, \cdots, v_T}$. Essentially, high and low values of $v_t$ indicate macro-activity and dormancy, respectively. Micro-activities can not be detected using such a straightforward and general value, and therefore, can not be distinguished from dormancy by using only this quantity.
