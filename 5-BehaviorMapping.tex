@@ -18,7 +18,7 @@ The embedding we compute should minimize local distortions, since trajectories p
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.70\linewidth]{figures/FeatureCorrelations-FlyF1DAnn-XY_labels.pdf}
-	\caption{\label{figure:correlations-btw-features}}
+	\caption[Spearman's correlation coefficient between each feature value of behavioral representations.]{Spearman's correlation coefficient between each feature value of behavioral representations. Features are clustered and grouped based on the absolute value of the correlation values. \label{figure:correlations-btw-features}}
 \end{figure}
 
 Many dimensionality algorithms seek to preserve the pairwise distance structure among all the data samples, the well-known examples of such algorithms are PCA \citep{hotelling_analysis_1933}, and MDS \citep{kruskal_multidimensional_1964}.
@@ -116,18 +116,19 @@ Defining very specific and low-level behavioral categories is not feasible and p
 Another scenario of benefiting disparate embeddings is using unsupervised UMAP for annotated and/or unannotated experiments separately.
 We can visualize how behavioral repertoire is represented in the low dimensional embeddings space and analyze which features drives different regions and clusters of the behavioral embeddings (see Figure~\ref{figure:unsupervised-disparate-behavioral-regions}).
 
-\begin{figure}[ht!]
+\begin{figure}[htb!]
 	\centering
-	\begin{subfigure}[ht!]{0.5\linewidth}
+	\begin{subfigure}[b]{0.5\linewidth}
 		\centering\includegraphics[height=5cm]{figures/FlyF15-08182021173222_UnsupervisedDisparateEmbedding.pdf}
-		\caption{\label{figure:unsupervised-disparate-behavioral-regions}}
+		\caption{Unsupervised. \label{figure:unsupervised-disparate-behavioral-regions}}
 	\end{subfigure}%
 	\hfill
 	\centering
-	\begin{subfigure}[ht!]{0.5\linewidth}
+	\begin{subfigure}[b]{0.5\linewidth}
 		\centering\includegraphics[height=5cm]{figures/FlyF15-08182021173222_SupervisedDisparateEmbedding.pdf}
-		\caption{\label{figure:supervised-disparate-zoomin-annotations}}
+		\caption{Supervised. \label{figure:supervised-disparate-zoomin-annotations}}
 	\end{subfigure}%
+	\caption[Supervised and unsupervised embeddings of FlyF15-08182021173222.]{Two dimensional supervised and unsupervised behavioral embeddings of FlyF15-08182021173222. Both embeddings reveals variations within annotated behavioral categories.}
 \end{figure}
 
 \subsection{Joint Embeddings}\label{section:joint-embeddings}
@@ -153,21 +154,22 @@ Especially when the behavioral repertoire of the annotated and the unannotated e
 When the behavioral repertoire and/or feature distribution are dissimilar, the resulting embedding may not provide useful information about the unannotated experiment, but an advantage of this approach is that the other pair embeddings do not get distorted by poor matches.
 As described in Section~\ref{section:nearest-neighbors-classification}, semi-supervised pair embeddings are utilized to predict behavioral categories of unannotated experiments by combining multiple view acquired from annotated ones.
 
-\begin{figure}[ht!]
+\begin{figure}[htb!]
 	\centering
-	\begin{subfigure}[ht!]{0.5\linewidth}
+	\begin{subfigure}[b]{0.5\linewidth}
 		\centering\includegraphics[height=5cm]{figures/FlyF15-08182021173222_FlyM4-03062020153616-SemisupervisedPairEmbedding.pdf}
-		\caption{}
+		\caption{Only unannotated experiment.}
 	\end{subfigure}%
 	\hfill
 	\centering
-	\begin{subfigure}[ht!]{0.5\linewidth}
+	\begin{subfigure}[b]{0.5\linewidth}
 		\centering\includegraphics[height=5cm]{figures/FlyF15-08182021173222_FlyM4-03062020153616-SemisupervisedPairEmbedding-JointChart.pdf}
-		\caption{}
+		\caption{Unannotated and annotated experiments.}
 	\end{subfigure}%
-	\caption{}
+	\caption[Semi-supervised pair embeddings with an annotated and an unannotated experiments.]{Semi-supervised pair embeddings with an annotated and an unannotated experiments. FlyM4-03062020 (annotated) provides a ``view'' on the behavioral repertoire of the FlyF15-08182021 (unannotated).}
 \end{figure}
 
+\begin{comment}
 \section{Soft Clustering}
 \citet{mcinnes_hdbscan_2017} \citet{campello_density-based_2013}
 \NOTE{
@@ -214,6 +216,7 @@ As described in Section~\ref{section:nearest-neighbors-classification}, semi-sup
 	where $C$ is the number of clusters, $\mathbf{m}^c$ is the behavioral composition of the cluster $c$.
 	As a result, for each frame, we end up with a behavioral score vector $\mathbf{y}=(y_\alpha)$.
 }
+\end{comment}
 
 \section{Nearest Neighbor Analysis and Classification}\label{section:nearest-neighbors-classification}
 One of our ultimate goals is to annotate an experiment using already annotated ones.

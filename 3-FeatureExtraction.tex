@@ -57,9 +57,9 @@ Therefore, this optional step is included in the behavioral mapping pipeline to 
 
 \begin{figure}[ht!]
 	\centering
-	\begin{subfigure}[b]{0.265\linewidth}
+	\begin{subfigure}[b]{0.325\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/FlyOrientation-ParallelHorizontal.png}
-		\caption{\label{figure:parallel-horizontal-orientation}}
+		\caption{Parallel.\label{figure:parallel-horizontal-orientation}}
 	\end{subfigure}%
 	% \hfill
 	% \centering
@@ -68,16 +68,16 @@ Therefore, this optional step is included in the behavioral mapping pipeline to 
 	% 	\caption{\label{figure:parallel-vertical-orientation}}
 	% \end{subfigure}%
 	\hfill
-	\begin{subfigure}[b]{0.24\linewidth}
+	\begin{subfigure}[b]{0.3\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/FlyOrientation-Oblique.png}
-		\caption{\label{figure:oblique-orientation}}
+		\caption{Oblique.\label{figure:oblique-orientation}}
 	\end{subfigure}%
 	\hfill
-	\begin{subfigure}[b]{0.24\linewidth}
+	\begin{subfigure}[b]{0.3\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/FlyOrientation-Perpendicular.png}
-		\caption{\label{figure:perpendicular-orientation}}
+		\caption{Perpendicular.\label{figure:perpendicular-orientation}}
 	\end{subfigure}
-	\caption{Orientations.}
+	\caption[Three examples demonstrating the different orientations viewed by the camera.]    {Three examples demonstrating the different orientations viewed by the camera. Orientations similar to Figure~\ref{figure:oblique-orientation} and Figure~\ref{figure:perpendicular-orientation} results in occluded body parts and hence erroneous tracking.}
 \end{figure}
 
 We use prediction scores to determine which body part should be used to compute oriented pose values.
@@ -194,21 +194,23 @@ where $\Delta t$ is the sampling period, and it is equal to $\sfrac{1}{\textnorm
 
 \begin{figure}[ht!]
 	\centering
-	\begin{subfigure}[ht!]{0.333\linewidth}
+	\begin{subfigure}[ht!]{0.32\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/ExampleTrajectory-ProboscisPumping.pdf}
-		\caption{}
+		\caption{Pumping-like movement of the proboscis.}
 	\end{subfigure}%
+	\hfill
 	\centering
-	\begin{subfigure}[ht!]{0.333\linewidth}
+	\begin{subfigure}[ht!]{0.32\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/ExampleTrajectory-PosturalAdjustment.pdf}
-		\caption{}
+		\caption{Postural adjustment and movement of the thorax.}
 	\end{subfigure}%
+	\hfill
 	\centering
-	\begin{subfigure}[ht!]{0.333\linewidth}
+	\begin{subfigure}[ht!]{0.32\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/ExampleTrajectory-HaltereSwitch_3.pdf}
-		\caption{}
+		\caption{Switch-like movement of the haltere.}
 	\end{subfigure}%
-	\caption{}
+	\caption{Three spatio-temporal feature examples describing kinematics of different behaviors.}
 \end{figure}
 
 \subsection{Joint Angles Between Body Parts}

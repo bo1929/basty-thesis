@@ -1,55 +1,87 @@
 \chapter{Results}
 
-\section{Employing Proposed Pipeline}\label{section:employing-proposed-pipeline}
+\section{Employing the Pipeline and  Evaluation}\label{section:employing-proposed-pipeline}
 
 \begin{figure}[ht!]
 	\centering
-	\centering\includegraphics[width=0.675\linewidth]{figures/OutliningPerformance-Supervised.pdf}
-	\caption{}
+	\begin{subfigure}[ht!]{0.495\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/OutliningPerformance-Supervised.pdf}
+		\caption{Supervised detection.}
+	\end{subfigure}%
+	\hfill
+	\begin{subfigure}[ht!]{0.495\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/OutliningPerformance-Unsupervised.pdf}
+		\caption{Unsupervised detection.}
+	\end{subfigure}%
+	\caption[Performance summary of experiment outlining and micro-activity detection.]{Performance summary of experiment outlining and micro-activity detection.
+		Red line indicates the macro average of accuracy scores achieved for each split.
+		High recall scores are desired for behavioral categories, as opposed to quiescent frames.
+		Supervised and unsupervised detections are given respectively in the left subfigure and in the right subfigure.}
 \end{figure}
 
 \begin{figure}[ht!]
 	\centering
-	\begin{subfigure}[ht!]{0.675\linewidth}
+	\begin{subfigure}[ht!]{0.495\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/AUC_ROC-DActfiltered.pdf}
-		\caption{}
+		\caption{AUC scores for $\MicroActivity$ set. \label{figure:AUC-ROC-Act}}
+	\end{subfigure}%
+	\hfill
+	\begin{subfigure}[ht!]{0.495\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/AUC_ROC-DAnnfiltered.pdf}
+		\caption{AUC scores for annotated frames. \label{figure:AUC-ROC-Ann}}
 	\end{subfigure}%
 
-	\centering
-	\begin{subfigure}[ht!]{0.9\linewidth}
+	\begin{subfigure}[ht!]{0.95\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/PRC_ROC-DActfiltered.pdf}
-		\caption{}
+		\caption{ROC and precision-recall curves for frames detected as micro-activity. \label{figure:ROC-PRC-Act}}
 	\end{subfigure}%
+
+	\begin{subfigure}[ht!]{0.95\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/PRC_ROC-DAnnfiltered.pdf}
+		\caption{ROC and precision-recall curves for annotated frames. \label{figure:ROC-PRC-Ann}}
+	\end{subfigure}%
+	\caption[Performance summary of behavior mapping demonstrated using receiver operating characteristic curve, precision-recall curve, and area under curve scores.
+	]{Performance summary of behavior mapping demonstrated using receiver operating characteristic curve, precision-recall curve, and area under curve scores.
+		The red line indicates the macro average of AUC scores for each split.
+		Weighted average of ROC and precision-recall curves computed by interpolation.
+		Scores and curves for both frames estimated as micro-activity and annotated frames are given respectively in Figures~\ref{figure:AUC-ROC-Act}, ~\ref{figure:ROC-PRC-Act} and in Figures~\ref{figure:AUC-ROC-Ann}, ~\ref{figure:ROC-PRC-Ann}.}
 \end{figure}
 
 \begin{figure}[ht!]
 	\centering
-	\begin{subfigure}[ht!]{0.9\linewidth}
-		\centering\includegraphics[width=\linewidth]{figures/BehavioralWeightDistributions_perBehavior.pdf}
-		\caption{}
-	\end{subfigure}%
+	\includegraphics[width=\linewidth]{figures/BehavioralScoresDistributions_perBehavior.pdf}
+	\caption[Distributions of behavioral score values of each behavioral category for all splits.]{Distributions of behavioral score values of each behavioral category for all splits.
+		Each box-plot column demonstrates the behavioral score distributions of target behaviors for the corresponding annotation.}
+\end{figure}
 
+\begin{figure}[ht!]
 	\centering
 	\begin{subfigure}[ht!]{0.55\linewidth}
-		\centering\includegraphics[width=\linewidth]{figures/BehavioralWeight-RepertoireDifference.pdf}
-		\caption{}
+		\centering\includegraphics[width=\linewidth]{figures/BehavioralScores-RepertoireDifference.pdf}
+		\caption{Behavioral score values.}
 	\end{subfigure}%
 	\centering
 	\begin{subfigure}[ht!]{0.45\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Entropy-RepertoireDifference.pdf}
-		\caption{}
+		\caption{Entropy values.}
 	\end{subfigure}%
+	\caption[Histogram of entropy values and box-plot of the behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.]{Histogram of entropy values and box-plot of behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.
+		Here behavioral repertoire of FlyF1-03082020 is predicted separately with two different annotated experiments, namely FlyF14-08172021 and FlyM13-08172021.
+		Behavioral scores and entropy values are computed for the haltere switch behavior.
+		The latter one lacks the haltere switch behavior, and as a result behavioral scores tends to have higher entropy.
+		Results demonstrates ability of the proposed pipeline to detect and discover new unannotated behavioral categories using behavioral scores.}
 \end{figure}
+
 \section{Analyzing Behavioral Repertoire}\label{section:analyzing-behavioral-repertoire}
 
 \begin{figure}[ht!]
 	\centering
-	\begin{subfigure}[ht!]{0.9\linewidth}
+	\begin{subfigure}[ht!]{0.95\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Velocity-WT-1T.pdf}
 		\caption{}
 	\end{subfigure}%
 
-	\begin{subfigure}[ht!]{0.9\linewidth}
+	\begin{subfigure}[ht!]{0.95\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Velocity-SD-1T.pdf}
 		\caption{}
 	\end{subfigure}%
@@ -65,11 +97,11 @@
 	\begin{subfigure}[b]{0.30\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/FractionTime-Microactivity.pdf}
-		\caption{\label{figure:fraction-of-time-with-microactivity}}
+		\caption{}
 	\end{subfigure}%
 
 	\centering
-	\begin{subfigure}[ht!]{0.80\linewidth}
+	\begin{subfigure}[ht!]{0.95\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/TimeSpent-perBehavior-Ann.pdf}
 		\caption{}
@@ -78,14 +110,14 @@
 
 \begin{figure}[ht!]
 	\centering
-	\begin{subfigure}[ht!]{0.90\linewidth}
+	\begin{subfigure}[ht!]{0.95\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/FeatureDistributions_perBehavior-Ann.pdf}
 		\caption{}
 	\end{subfigure}%
 
 	\centering
-	\begin{subfigure}[ht!]{0.90\linewidth}
+	\begin{subfigure}[ht!]{0.95\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/BoutDurationDistributions-Ann.pdf}
 		\caption{}
@@ -106,7 +138,7 @@
 	\end{subfigure}%
 
 	\centering
-	\begin{subfigure}[ht!]{0.775\linewidth}
+	\begin{subfigure}[ht!]{0.825\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/MeanCumRofC_BehavioralUsage-Ann.pdf}
 		\caption{}
 	\end{subfigure}%
