@@ -10,14 +10,14 @@ We use oriented pose vales for body parts with left and right counterparts, as d
 We set the low confidence score threshold to detect occluded body parts to $0.075$.
 Moving median window size $\tau$ is $15$ frames, ($0.5$ seconds) and threshold $\tau$ set to $15$ microns. If the position of a body part exceeds the median of the window centered around it by $\tau$, it is marked as occluded, as described in Section~\ref{section:detecting-occlusions}
 Linear interpolation is used for imputation of marked frames.
-After that, firstly, a median filter of size $6$ frames, and then a boxcar filter of size $6$ frames is applied to reduce the tracking noise and smooth the signal, without smoothing, behaviors exhibited by rapid movements.
+After that, firstly, a median filter of size $6$ frames, and then a boxcar filter of size $6$ frames is applied to reduce the tracking noise and smooth the signal, without smoothing behaviors exhibited by rapid movements.
 Aligning different orientations and transforming the frames to be egocentric did not result in performance improvement in our case, hence, we continued without making frames egocentric.
 
 Then, we computed snapshot features and gradient features as described in Section~\ref{section:spatiotemporal-fetaures}, and given in the Table~\ref{table:spatiotemporal-features}.
 In order to generate postural dynamics, wavelet transformation is applied to snapshot features at $20$ different frequency channels dyadically spaced between $1$ Hz and $20$ Hz (see Equation~\ref{equation:dyadically-spaced-spectrum} for determining spectrum frequencies).
 Then different timescales are normalized as given in Equation~\ref{equation:wavelet-normalization}.
-Finally flattening and $\textnormal{L}_1$ frame normalization, results in $13 \times 20 = 260$ dimensional behavioral representation matrix $\V{\hat{W}}$.
-Similarly for gradient features, moving mean values are computed for a single timescale which is $33$ milliseconds, resulting in $9 \times 1 = 9$ dimensional behavioral representation matrix $\V{\hat{M}}^\mu$.
+After flattening and $\textnormal{L}_1$ frame normalization, we ended up with a $13 \times 20 = 260$ dimensional behavioral representation matrix $\V{\hat{W}}$.
+Similarly for gradient features, moving mean values are computed for a single timescale which is $33$ milliseconds, resulting in $9 \times 1 = 9$ dimensional behavioral representation matrix $\V{\hat{M}}^\mu$, which is only used for experiment outlining and constructing $\Dormancy$ set.
 
 \begin{table}[htb!]
 	\begin{adjustbox}{width=1\textwidth}
@@ -33,23 +33,40 @@ Similarly for gradient features, moving mean values are computed for a single ti
 			                                         & (average) leg joints and origin                &                                                \\
 			                                         & (average) leg joints and thorax                &                                                \\
 			\cmidrule(lr){2-2}\cmidrule(lr){3-3}
-			\multirow{3}{*}{Cartesian components of} & haltere                                        & thorax                                         \\
-			                                         & proboscis                                      & head                                           \\
-			                                         & thorax                                         & proboscis                                      \\
+			\multirow{3}{*}{Cartesian components of} & haltere                                        & head                                           \\
+			                                         & head                                           & proboscis                                      \\
+			                                         & thorax                                         & thorax                                         \\
 			\bottomrule
 		\end{tabular}
 	\end{adjustbox}
 	\caption{Computed spatio-temporal features. \label{table:spatiotemporal-features}}
 \end{table}
 
-\begin{figure}[ht!]
+After constructing behavioral representation matrices, experiment outlining stage of our pipeline takes place.
+Here reported recall scores are for the frame set $\MicroActivity$, and it is desired to achieve high recall scores, except for the ``quiescent and other'' category.
+We evaluate both unsupervised and supervised approaches.
+
+For unsupervised experiment outlining, the threshold $c$ is set to decision boundary $\lambda_1$ of two Gaussian components for construction of $\Dormancy$ set.
+Similarly, thresholds $c_i$ for each $\V{u}_i$ value are the first decision boundaries of $3$ Gaussian components, sorted by their means.
+Resulting detection performance is quite poor for switch-like behavior of haltere, since this behavior occurs very subtly and it is similar to quiescent frames.
+8 out of 11 splits, has recall score less than $0.5$.
+Also, recall scores for two of sleep deprived experiment splits (FlyF19SDs) is below $0.15$, which makes it impossible to proceed with a successful mapping.
+
+In the supervised approach, a random forest of decision trees \citep{breiman_random_2001} is utilized with $10$ estimators, where the maximum depth of each tree is $5$ and the criterion is Gini impurity.
+For grooming, recall is always greater than $0.97$, which implies that we do not lose insignificant amount of annotated frames.
+Similarly, the recall score of feeding drops below $0.95$ only once.
+For proboscis pumping, 6 out of 11 splits have recall score greater than $0.9$, and performance is relatively poor for two splits ($0.61$ and $0.56$ recall).
+Again, haltere switch is the most challenging behavioral category, but recall is often greater than $0.75$ as opposed to unsupervised approach.
+Considering its superior performance over unsupervised approach, we proceed to behavior mapping by employing supervised outlining.
+
+\begin{figure}[t]
 	\centering
-	\begin{subfigure}[ht!]{0.495\linewidth}
+	\begin{subfigure}[b]{0.495\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/OutliningPerformance-Supervised.pdf}
 		\caption{Supervised detection.}
 	\end{subfigure}%
 	\hfill
-	\begin{subfigure}[ht!]{0.495\linewidth}
+	\begin{subfigure}[b]{0.495\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/OutliningPerformance-Unsupervised.pdf}
 		\caption{Unsupervised detection.}
 	\end{subfigure}%
@@ -58,8 +75,6 @@ Similarly for gradient features, moving mean values are computed for a single ti
 		High recall scores are desired for behavioral categories, as opposed to quiescent frames.
 		Supervised and unsupervised detections are given respectively in the left subfigure and in the right subfigure.}
 \end{figure}
-
-Experiment Outlining
 
 \begin{figure}[htb!]
 	\centering

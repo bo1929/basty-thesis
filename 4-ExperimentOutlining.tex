@@ -47,9 +47,9 @@ For example, using the snapshot feature of the distance between haltere and post
 
 \section{Detecting Activities}
 \subsection{Unsupervised Approach}
-The straightforward approach for detecting macro activities would be determining a global threshold based the distribution of the values of $\V{v}$.
-Instead of determining such a threshold value, denoted by $c$, we use treat the distribution of $\V{v}$ as a mixture of Gaussian distributions to detect an appropriate threshold value, separately for each experiment.
-This approach avoids the hassle of dealing with the varying distributions of $\V{v}$ among different experiments, and constitute a solid ground for threshold value.
+The straightforward approach for detecting macro activities would be determining a global threshold based the distribution of the values of $\V{v}$ and $\V{u}$.
+Instead of determining such a threshold value, denoted by $c$, we use treat the distribution of $\V{v}$ and $\V{u}$ as a mixture of Gaussian distributions to detect an appropriate threshold value, separately for each experiment.
+This approach avoids the hassle of dealing with the varying distributions of $\V{v}$ and $\V{u}$ among different experiments, and constitute a solid ground for threshold value.
 
 Consider a mixture of univariate Gaussian distributions with $K$ components, $z=1, \cdots, K$, sorted by their corresponding mean values $\mu_1, \cdots, \mu_K$, and with full covariance matrices. Then we can define $K-1$ many decision boundaries by:
 \begin{equation}
@@ -62,7 +62,7 @@ Classification is done by constructing the following frame sets:
 \begin{equation}
 	\begin{aligned}
 		\Dormancy      & =\Set{t}{v_t \leq c, \ 1\leq t \leq T}, \\
-		\MacroActivity & =\Set{t}{v_t<c, \ 1\leq t \leq T}.
+		\MacroActivity & =\Set{t}{v_t>c, \ 1\leq t \leq T}.
 	\end{aligned}
 \end{equation}
 
