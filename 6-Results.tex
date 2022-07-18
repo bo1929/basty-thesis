@@ -56,14 +56,14 @@
 
 \begin{figure}[ht!]
 	\centering
-	\begin{subfigure}[ht!]{0.55\linewidth}
+	\begin{subfigure}[h]{0.55\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/BehavioralScores-RepertoireDifference.pdf}
 		\caption{Behavioral score values.}
 	\end{subfigure}%
 	\centering
-	\begin{subfigure}[ht!]{0.45\linewidth}
+	\begin{subfigure}[h]{0.45\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Entropy-RepertoireDifference.pdf}
-		\caption{Entropy values.}
+		\caption{Entropy values, red line is the mean.}
 	\end{subfigure}%
 	\caption[Histogram of entropy values and box-plot of the behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.]{Histogram of entropy values and box-plot of behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.
 		Here behavioral repertoire of FlyF1-03082020 is predicted separately with two different annotated experiments, namely FlyF14-08172021 and FlyM13-08172021.
@@ -94,30 +94,31 @@
 	\centering\includegraphics[width=\linewidth]{figures/ActivityBinned-Ann-WT-5T.pdf}
 	\caption[Binned temporal heatmap of activities.]{Binned temporal heatmap of activities.
 		Each bin is 5 minutes, corresponding to 900 frames.
-		Activity value is computed as the ratio of number of annotated frames and total number of frames in the bin.}
+		Activity value is computed as the ratio of the number of annotated frames and total number of frames in that bin.}
 \end{figure}
 
 \begin{figure}[ht!]
 	\centering
 	\begin{subfigure}[ht!]{0.95\linewidth}
 		\centering
-		\includegraphics[width=\linewidth]{figures/TimeSpent-perBehavior-Ann.pdf}
-		\caption{}
-	\end{subfigure}%
-
-	\centering
-	\begin{subfigure}[ht!]{0.95\linewidth}
-		\centering
 		\includegraphics[width=\linewidth]{figures/FeatureDistributions_perBehavior-Ann.pdf}
-		\caption{}
+		\caption{Summation of all frequency channels of behavioral representation value for each spatio-temporal feature.}
 	\end{subfigure}%
 
 	\centering
 	\begin{subfigure}[ht!]{0.95\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/BoutDurationDistributions-Ann.pdf}
-		\caption{}
+		\caption{Kernel density estimations of bout durations for each behavioral category. Variance of bout durations within and across behavioral categories demonstrates the rich behavioral repertoire.}
 	\end{subfigure}%
+
+	\centering
+	\begin{subfigure}[ht!]{0.95\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{figures/TimeSpent-perBehavior-Ann.pdf}
+		\caption{Time spent with each behavioral category for all experiments.}
+	\end{subfigure}%
+	\caption{Summary of behavioral repertoires of different fly, demonstrated using both spatial and temporal characteristics.}
 \end{figure}
 
 \begin{figure}[ht!]
@@ -143,7 +144,7 @@
 	\begin{subfigure}[b]{0.45\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/FractionTime-Microactivity.pdf}
-		\caption{Fraction of time spent with micro-activities in dormant epochs.}
+		\caption{Fraction of time spent with micro-activities in dormant epochs, comparing wild type experiments and sleep deprived experiments.}
 	\end{subfigure}%
 
 \end{figure}
