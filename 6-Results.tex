@@ -58,7 +58,7 @@ We evaluate both unsupervised and supervised approaches, recall scores and the a
 		\caption{Unsupervised detection.}
 	\end{subfigure}%
 	\caption[Performance summary of experiment outlining and micro-activity detection.]{Performance summary of experiment outlining and micro-activity detection.
-		Red line indicates the macro average of accuracy scores achieved for each split.
+		The red line indicates the macro average of accuracy scores achieved for each split.
 		High recall scores are desired for behavioral categories, as opposed to quiescent frames.
 		Supervised and unsupervised detections are given respectively in the left subfigure and in the right subfigure. \label{figure:outlining-performance}}
 \end{figure}
@@ -163,21 +163,21 @@ Considering all splits together, we achieve a macro average of $0.8$ AUC score w
 		Results demonstrate the ability of the proposed pipeline to detect and discover unseen unannotated behavioral categories using behavioral scores.}
 \end{figure}
 
-As discussed in the Chapter~\ref{chapter:introduction}, behavioral repertoire of the fruit fly is much richer than the behavioral categories that we considered.
+As discussed in the Chapter~\ref{chapter:introduction}, the behavioral repertoire of the fruit fly is much richer than the behavioral categories that we considered.
 Moreover, there exists a great amount of variation among flies behavioral repertoire and behavioral visits (see Section~\ref{section:analyzing-behavioral-repertoire}).
-Thus, we also investigate our pipeline's ability of detection unseen behavioral categories by utilizing behavioral scores.
+Thus, we also investigate our pipeline's ability of detection of unseen behavioral categories by utilizing behavioral scores.
 Such an ability is important for avoiding misleading the user of the pipeline. It may also be desired to reconsider defined and annotated behavioral categories, and may further lead to interesting biological observations.
 To this end, we consider the following experimental setting: behavior mapping of an unannotated experiment (FlyF1-03082020) is done separately for two annotated experiments, namely FlyF14-0817202 and FlyM13-08172021.
 Then, behavioral scores of the FlyF1-03082020's frames with haltere switch annotation is compared between FlyF14-0817202 guided mapping and FlyM13-08172021 guided mapping.
 As it can be seen from the Figure~\ref{figure:time-spent-in-behaviors}, FlyF1-03082020 and FlyF14-0817202 spent ${\sim}4$ minutes by exhibiting switch like haltere movement behavior, whereas FlyM13-08172021 spent no more than $5$ seconds.
 Therefore, compared to FlyF14-0817202, haltere switch is an unseen and lacking behavioral category for FlyM13-08172021.
 We expect to identify this using behavioral scores.
-Indeed, behavioral scores reflect difference in the behavioral repertoires of the annotated flies.
+Indeed, behavioral scores reflect the difference in the behavioral repertoires of the annotated flies.
 As it can be seen in the Figure~\ref{figure:repertoire-score-comparison}, behavioral scores obtained based on FlyF14-0817202's behavioral repertoire are much more confident about the correct behavioral category, whereas behavioral scores obtained based on FlyM13-08172021's behavioral repertoire are more uniform-like and total score is often shared among multiple behavioral categories.
 Using the entropy of the behavioral score, one can quantify existing of unseen and new behavioral categories in a more systematic way.
 In the Figure~\ref{figure:repertoire-entropy-comparsion}, we compare entropy distributions of the behavioral scores obtained using annotated experiments FlyM13-08172021 and FlyF14-0817202.
-We can immediately see that scores obtained based on the FlyM13-08172021's repertoire have higher entropy, with mean $0.41$, wheres for the other one mean is $0.15$.
-For instance, if the entropy of a frame's score is greater than $0.2$ it may be recommended to visit them and investigate the reason.
+We can immediately see that scores obtained based on the FlyM13-08172021's repertoire have higher entropy, with mean $0.41$, whereas for the other one mean is $0.15$.
+For instance, if the entropy of a frame's score is greater than $0.2$, it may be recommended to visit them and investigate the reason.
 Accordingly, extending or re-considering behavioral annotations can be necessary.
 
 

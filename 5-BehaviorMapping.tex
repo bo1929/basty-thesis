@@ -89,7 +89,7 @@ A detailed mathematical and algorithmic description of the UMAP algorithm can be
 \end{comment}
 
 The algorithm described above is an unsupervised method, but it can be easily extended to work in a supervised or semi-supervised manner.
-Although we use a proper metric, e.g., Hellinger distance, defining the distance between a set of points, one can also define a simple metric for categorical values to extend UMAP further for supervised and semi-supervised cases.
+Although we use a useful metric, e.g., Hellinger distance, defining the distance between a set of points, one can also define a simple metric for categorical values to extend UMAP further for supervised and semi-supervised cases.
 We can obtain a second view on the source data by using a metric where distances for points in the same  and different categories as well as points without a category (for the semi-supervised case) are defined appropriately.
 A straightforward and simple example would be defining distances as follows: 1 if the points are in the same category, 0 if the points are in different categories, 0.5 if either of the points is uncategorized.
 One can combine weighted graphs constructed using the two distance metrics (local metrics and defined metric for categorical values), and arrive at a shared view on the data.
