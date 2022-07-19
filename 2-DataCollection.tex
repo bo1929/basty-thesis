@@ -7,7 +7,7 @@ In this section, we describe how the sleep experiments are conducted and fly vid
 
 A custom imaging setup was used to perform high-resolution characterization of sleep-related behaviors in flies. This set up includes a custom 3D printed chamber (7.2X4.3X2.4 mm [WxHxL]) that is placed in front of an IR sensitive (Flir) 30 FPS camera with telecentric lens (Edmund Optics).
 
-\begin{figure}[ht!]
+\begin{figure}[b!]
 	\centering
 	\includegraphics[width=0.75\linewidth]{figures/ExperimentalSetup.pdf}
 	\caption[An illustration of the experimental setup which is used to perform high-resolution imaging of experiments.]{An illustration of the experimental setup which is used to perform high-resolution imaging of experiments.}
@@ -25,6 +25,29 @@ Over 20 body parts are first labeled in 1654 images from 28 animals (16 female, 
 We used a ResNet-50 based neural network with a batch size of 4 and 200k training iterations.
 Rest of the settings were kept default.
 The resulting network has a test error of 3.67 pixels.
+
+\begin{table}[htb!]
+	\begin{adjustbox}{width=1\textwidth}
+		\begin{tabular}{c c c c}
+			\toprule
+			\multicolumn{1}{c}{\textbf{Experiment Name}} & \multicolumn{1}{c}{\textbf{Experiment Type}} & \multicolumn{1}{c}{\textbf{Fly Gender}} & \multicolumn{1}{c}{\textbf{\# of Frames}} \\
+			\cmidrule(lr){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}
+			FlyF1-03082020164520                         & wild type sleep                              & female                                  & 1727979                                   \\
+			FlyF11-01182022175505                        & wild type sleep                              & female                                  & 1727979                                   \\
+			FlyF14-08172021175459                        & wild type sleep                              & female                                  & 1727979                                   \\
+			FlyF15-08182021173222                        & wild type sleep                              & female                                  & 1727979                                   \\
+			FlyF8-08112021174107                         & wild type sleep                              & female                                  & 1727979                                   \\
+			FlyM13-08172021175457                        & wild type sleep                              & male                                    & 1727979                                   \\
+			FlyM4-03062020153616                         & wild type sleep                              & male                                    & 1727979                                   \\
+			FlyF19SD-11052021164243                      & sleep deprived                               & female                                  & 2159979                                   \\
+			FlyF19SD-11152020170647                      & sleep deprived                               & female                                  & 2159979                                   \\
+			FlyF41SD-11192021170807                      & sleep deprived                               & female                                  & 2159979                                   \\
+			FlyF52SD-11242021161943                      & sleep deprived                               & female                                  & 2159979                                   \\
+			\bottomrule
+		\end{tabular}
+	\end{adjustbox}
+	\caption{Collected experiment data details. \label{table:experiment-details}}
+\end{table}
 
 \begin{figure}[ht!]
 	\centering
