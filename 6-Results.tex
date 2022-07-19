@@ -46,7 +46,7 @@ After constructing behavioral representation matrices, the experiment outlining 
 Here reported recall scores are for the frame set $\MicroActivity$, and it is desired to achieve high recall scores, except for the ``quiescent and other'' category.
 We evaluate both unsupervised and supervised approaches, recall scores and the accuracy is given in the Figure~\ref{figure:outlining-performance}.
 
-\begin{figure}[thb!]
+\begin{figure}[htb!]
 	\centering
 	\begin{subfigure}[b]{0.495\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/OutliningPerformance-Supervised.pdf}
@@ -86,7 +86,7 @@ Then, with the generated behavioral embeddings, nearest neighbors analysis is pe
 In each semi-supervised embedding, we computed $25$ nearest annotated neighbors of the frames, and contributions of the neighbors are weighted disproportional to its distance, using the Euclidean distance, as formally given in the Equation~\ref{equation:nn-weights}.
 After that, weights are normalized with the $\log_2$ number of occurrences of behavioral category of contributing neighbors, and then $\textnormal{L}_1$ normalized to make behavioral weights sum up to $1$ (see Equation ~\ref{equation:behavioral-weight-occurence-normalization}, ~\ref{equation:behavioral-weight-activation}). Finally, we summed each behavioral weight, obtained from a different ``view'' (i.e., annotated experiment), and $\textnormal{L}_1$ normalized again to end up with the final behavioral score values.
 
-\begin{figure}[ht!]
+\begin{figure}[htb!]
 	\centering
 	\includegraphics[width=\linewidth]{figures/BehavioralScoresDistributions_perBehavior.pdf}
 	\caption[Distributions of behavioral score values of each behavioral category for all splits.]{Distributions of behavioral score values of each behavioral category for all splits.
@@ -105,47 +105,73 @@ Postural adjustment category wrongly has the highest median score for feeding.
 Frames with feeding behavior annotation often misidentified as postural adjustment, grooming, and proboscis pumping.
 As proboscis movement is common both for feeding and proboscis pumping, confusion with the proboscis pumping is expected for feeding.
 
-\begin{figure}[h]
+\begin{figure}[htb!]
 	\centering
-	\begin{subfigure}[b]{0.495\linewidth}
-		\centering\includegraphics[width=\linewidth]{figures/AUC_ROC-DActfiltered.pdf}
-		\caption{AUC scores for $\MicroActivity$ set. \label{figure:AUC-ROC-Act}}
-	\end{subfigure}%
-	\hfill
-	\begin{subfigure}[b]{0.495\linewidth}
-		\centering\includegraphics[width=\linewidth]{figures/AUC_ROC-DAnnfiltered.pdf}
-		\caption{AUC scores for annotated frames. \label{figure:AUC-ROC-Ann}}
-	\end{subfigure}%
-
-	\begin{subfigure}[b]{0.95\linewidth}
+	\begin{subfigure}[b]{0.99\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/PRC_ROC-DActfiltered.pdf}
 		\caption{ROC and precision-recall curves for frames detected as micro-activity. \label{figure:ROC-PRC-Act}}
 	\end{subfigure}%
 
-	\begin{subfigure}[b]{0.95\linewidth}
+	\begin{subfigure}[b]{0.99\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/PRC_ROC-DAnnfiltered.pdf}
 		\caption{ROC and precision-recall curves for annotated frames. \label{figure:ROC-PRC-Ann}}
 	\end{subfigure}%
-	\caption[Performance summary of behavior mapping demonstrated using receiver operating characteristic curve, precision-recall curve, and area under curve scores.
-	]{Performance summary of behavior mapping demonstrated using receiver operating characteristic curve, precision-recall curve, and area under curve scores.
-		The red line indicates the macro average of AUC scores for each split.
+	\caption[Performance summary of behavior mapping demonstrated using receiver operating characteristic curve and precision-recall curve.
+	]{Performance summary of behavior mapping demonstrated using receiver operating characteristic curve and precision-recall curve.
 		Weighted average of ROC and precision-recall curves computed by interpolation.
-		Scores and curves for both frames estimated as micro-activity and annotated frames are given respectively in Figures~\ref{figure:AUC-ROC-Act}, ~\ref{figure:ROC-PRC-Act} and in Figures~\ref{figure:AUC-ROC-Ann}, ~\ref{figure:ROC-PRC-Ann}. \label{figure:ROC-PRC-AUC}}
+		Curves for both frames estimated as micro-activity and annotated frames are given respectively in Figures~\ref{figure:ROC-PRC-Act}, ~\ref{figure:ROC-PRC-Ann}. \label{figure:ROC-PRC}}
 \end{figure}
 
-Using behavioral computed behavioral scores, we computed precision recall and receiver operating characteristic curves for each split, and also computed interpreted weighted averages of curves, see Figure~\ref{figure:ROC-PRC-AUC}.
+\begin{figure}[htb!]
+	\centering
+	\begin{subfigure}[b]{0.5\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/AUC_ROC-DActfiltered.pdf}
+		\caption{AUC scores for $\MicroActivity$ set. \label{figure:AUC-ROC-Act}}
+	\end{subfigure}%
+	\hfill
+	\begin{subfigure}[b]{0.5\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/AUC_ROC-DAnnfiltered.pdf}
+		\caption{AUC scores for annotated frames. \label{figure:AUC-ROC-Ann}}
+	\end{subfigure}%
+	\caption[Performance summary of behavior mapping with area under curve scores of ROC.]
+	{Performance summary of behavior mapping with area under curve scores of ROC.
+		The red line indicates the macro average of AUC scores for each split.
+		Scores for both frames estimated as micro-activity and annotated frames are given respectively in Figures~\ref{figure:AUC-ROC-Act}, ~\ref{figure:AUC-ROC-Ann}.
+		\label{figure:AUC}}
+
+\end{figure}
+
+Using behavioral computed behavioral scores, we computed precision recall and receiver operating characteristic curves for each split, and also computed interpreted weighted averages of curves, see Figure~\ref{figure:ROC-PRC} and Figure~\ref{figure:AUC}.
 Evaluations are done by considering two subsets of frames, the first subset is the frames annotated as one of the behavioral categories and the other one is the $\MicroActivity$ set.
 The latter one contains false positive micro-activity frames, which is quantified as the recall score of quiescent and other category.
 False positive micro-activity frames affects haltere switch detection performance most, for instance, its weighted mean precision decreases by ${\sim}0.5$ for fixed recall at ${\sim}0.65$.
 This performance difference also shows the importance of achieving low recall for quiescent and other category in the experiment outlining stage.
 Since the evaluation is done with the $\MicroActivity$ set is more realistic, the following comments are made on considering it.
+
 The most robust detection is achieved for proboscis pumping and postural adjustment behavioral categories, respectively achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
 The maximum $\textnormal{F-}1$ score achieved for grooming is $0.60$ for FlyF1-03082020164520 split, whereas $\textnormal{F-}1$ of haltere switch behavioral category do not exceed $0.4$.
 AUC scores for the proboscis pumping often exceeds $0.95$, implying robust detection for almost all the splits.
 We observe that detection performance vary greatly among different experiments. This variation can be due to a number of reasons, but most likely reasons are related to tracking performance and annotation quality, and as well as behavioral repertoires of flies.
 Considering all splits together, we achieve a macro average of $0.8$ AUC score with a one-versus-rest approach.
 
-\begin{figure}[h!]
+As discussed in the Chapter~\ref{chapter:introduction}, the behavioral repertoire of the fruit fly is much richer than the behavioral categories that we considered.
+Moreover, there exists a great amount of variation among flies behavioral repertoire and behavioral visits (see Section~\ref{section:analyzing-behavioral-repertoire}).
+Thus, we also investigate our pipeline's ability of detection of unseen behavioral categories by utilizing behavioral scores.
+Such an ability is important for avoiding misleading the user of the pipeline. It may also be desired to reconsider defined and annotated behavioral categories, and may further lead to interesting biological observations.
+To this end, we consider the following experimental setting: behavior mapping of an unannotated experiment (FlyF1-03082020) is done separately for two annotated experiments, namely FlyF14-0817202 and FlyM13-08172021.
+Then, behavioral scores of the FlyF1-03082020's frames with haltere switch annotation is compared between FlyF14-0817202 guided mapping and FlyM13-08172021 guided mapping.
+As it can be seen from the Figure~\ref{figure:time-spent-in-behaviors}, FlyF1-03082020 and FlyF14-0817202 spent ${\sim}4$ minutes by exhibiting switch like haltere movement behavior, whereas FlyM13-08172021 spent no more than $5$ seconds.
+Therefore, compared to FlyF14-0817202, haltere switch is an unseen and lacking behavioral category for FlyM13-08172021.
+We expect to identify this using behavioral scores.
+Indeed, behavioral scores reflect the difference in the behavioral repertoires of the annotated flies.
+As it can be seen in the Figure~\ref{figure:repertoire-score-comparison}, behavioral scores obtained based on FlyF14-0817202's behavioral repertoire are much more confident about the correct behavioral category, whereas behavioral scores obtained based on FlyM13-08172021's behavioral repertoire are more uniform-like and total score is often shared among multiple behavioral categories.
+Using the entropy of the behavioral score, one can quantify existing of unseen and new behavioral categories in a more systematic way.
+In the Figure~\ref{figure:repertoire-entropy-comparison}, we compare entropy distributions of the behavioral scores obtained using annotated experiments FlyM13-08172021 and FlyF14-0817202.
+We can immediately see that scores obtained based on the FlyM13-08172021's repertoire have higher entropy, with mean $0.41$, whereas for the other one mean is $0.15$.
+For instance, if the entropy of a frame's score is greater than $0.2$, it may be recommended to visit them and investigate the reason.
+Accordingly, extending or re-considering behavioral annotations can be necessary.
+
+\begin{figure}[hbt!]
 	\centering
 	\begin{subfigure}[b]{0.55\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/BehavioralScores-RepertoireDifference.pdf}
@@ -163,27 +189,15 @@ Considering all splits together, we achieve a macro average of $0.8$ AUC score w
 		Results demonstrate the ability of the proposed pipeline to detect and discover unseen unannotated behavioral categories using behavioral scores.\label{figure:repertoire-difference}}
 \end{figure}
 
-As discussed in the Chapter~\ref{chapter:introduction}, the behavioral repertoire of the fruit fly is much richer than the behavioral categories that we considered.
-Moreover, there exists a great amount of variation among flies behavioral repertoire and behavioral visits (see Section~\ref{section:analyzing-behavioral-repertoire}).
-Thus, we also investigate our pipeline's ability of detection of unseen behavioral categories by utilizing behavioral scores.
-Such an ability is important for avoiding misleading the user of the pipeline. It may also be desired to reconsider defined and annotated behavioral categories, and may further lead to interesting biological observations.
-To this end, we consider the following experimental setting: behavior mapping of an unannotated experiment (FlyF1-03082020) is done separately for two annotated experiments, namely FlyF14-0817202 and FlyM13-08172021.
-Then, behavioral scores of the FlyF1-03082020's frames with haltere switch annotation is compared between FlyF14-0817202 guided mapping and FlyM13-08172021 guided mapping.
-As it can be seen from the Figure~\ref{figure:time-spent-in-behaviors}, FlyF1-03082020 and FlyF14-0817202 spent ${\sim}4$ minutes by exhibiting switch like haltere movement behavior, whereas FlyM13-08172021 spent no more than $5$ seconds.
-Therefore, compared to FlyF14-0817202, haltere switch is an unseen and lacking behavioral category for FlyM13-08172021.
-We expect to identify this using behavioral scores.
-Indeed, behavioral scores reflect the difference in the behavioral repertoires of the annotated flies.
-As it can be seen in the Figure~\ref{figure:repertoire-score-comparison}, behavioral scores obtained based on FlyF14-0817202's behavioral repertoire are much more confident about the correct behavioral category, whereas behavioral scores obtained based on FlyM13-08172021's behavioral repertoire are more uniform-like and total score is often shared among multiple behavioral categories.
-Using the entropy of the behavioral score, one can quantify existing of unseen and new behavioral categories in a more systematic way.
-In the Figure~\ref{figure:repertoire-entropy-comparsion}, we compare entropy distributions of the behavioral scores obtained using annotated experiments FlyM13-08172021 and FlyF14-0817202.
-We can immediately see that scores obtained based on the FlyM13-08172021's repertoire have higher entropy, with mean $0.41$, whereas for the other one mean is $0.15$.
-For instance, if the entropy of a frame's score is greater than $0.2$, it may be recommended to visit them and investigate the reason.
-Accordingly, extending or re-considering behavioral annotations can be necessary.
-
-
 \section{Analyzing Behavioral Repertoire}\label{section:analyzing-behavioral-repertoire}
+In this section, we analyze the collected data of sleep experiments to discover how behaviors that we are interested in exhibited.
+Starting from a broad perspective, the most brief description of sleep experiments can be done by quantifying the displacement of the flies placed in the chamber.
+In the Figure~\ref{figure:displacement}, we plot velocity-based feature vectors $\V{u}$ between ZT10-ZT02 and ZT10-ZT06, respectively for each wild type sleep and sleep-deprived experiments.
+We observe that the long dormancy epochs are interrupted by relatively short macro activity bouts during the sleep.
+In addition to short macro activity bouts, we observe very small displacements all over the night, which indicates there exists micro-activities other than major positional and postural changes.
+Hence, a more fine-grained analysis and closer look is necessary, as this work attempts to achieve.
 
-\begin{figure}[ht!]
+\begin{figure}[htb!]
 	\centering
 	\begin{subfigure}[ht!]{0.95\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Velocity-WT-1T.pdf}
@@ -196,49 +210,55 @@ Accordingly, extending or re-considering behavioral annotations can be necessary
 	\end{subfigure}%
 	\caption[Overall displacement values over entire experiments.]{Overall displacement values over entire experiments.
 		Displacement of the body reveals long dormancy and sleep epochs, and macro-activities.
-		Displacement values are computed as described in Equation~\ref{equation:displacement}, and smoothed with a rolling mean of 1-minute window.}
+		Displacement values are computed as described in Equation~\ref{equation:displacement}, and smoothed with a rolling mean of 1-minute window.\label{figure:displacement}}
 \end{figure}
 
-\begin{figure}[ht!]
+In the Figure~\ref{figure:heatmap-microactivity}.
+
+\begin{figure}[htb!]
 	\centering\includegraphics[width=\linewidth]{figures/ActivityBinned-Ann-WT-5T.pdf}
 	\caption[Binned temporal heatmap of activities.]{Binned temporal heatmap of activities.
 		Each bin is $5$ minutes, corresponding to $900$ frames.
-		Activity value is computed as the ratio of the number of annotated frames and total number of frames in that bin.}
+		Activity value is computed as the ratio of the number of annotated frames and total number of frames in that bin. \label{figure:heatmap-microactivity}}
 \end{figure}
 
-\begin{figure}[ht!]
+In the Figure~\ref{figure:summary-behavior-characteristics}.
+
+\begin{figure}[htb!]
 	\centering
-	\begin{subfigure}[ht!]{0.95\linewidth}
+	\begin{subfigure}[b]{0.95\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/FeatureDistributions_perBehavior-Ann.pdf}
 		\caption{Summation of all frequency channels of behavioral representation value for each spatio-temporal feature.}
 	\end{subfigure}%
 
 	\centering
-	\begin{subfigure}[ht!]{0.95\linewidth}
+	\begin{subfigure}[b]{0.95\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/BoutDurationDistributions-Ann.pdf}
 		\caption{Kernel density estimations of bout durations for each behavioral category. Variance of bout durations within and across behavioral categories demonstrates the rich behavioral repertoire.}
 	\end{subfigure}%
 
 	\centering
-	\begin{subfigure}[ht!]{0.95\linewidth}
+	\begin{subfigure}[htb!]{0.95\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/TimeSpent-perBehavior-Ann.pdf}
 		\caption{Time spent with each behavioral category for all experiments. \label{figure:time-spent-in-behaviors}}
 	\end{subfigure}%
-	\caption{Summary of behavioral repertoires of different fly, demonstrated using both spatial and temporal characteristics.}
+	\caption{Summary of behavioral repertoires of different fly, demonstrated using both spatial and temporal characteristics. \label{figure:summary-behavior-characteristics}}
 \end{figure}
 
-\begin{figure}[ht!]
+In the Figure~\ref{figure:temporal-organization-behavior}.
+
+\begin{figure}[htb!]
 	\centering
-	\begin{subfigure}[ht!]{0.975\linewidth}
+	\begin{subfigure}[b]{0.975\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Heatmap_BehavioralUsage-Ann.pdf}
 		\caption{Rate of behavioral visits during the sleep within each $0.05$ sleep percentage bin. Each row is normalized to sum up to $1$.}
 	\end{subfigure}%
 
 	\centering
-	\begin{subfigure}[ht!]{0.975\linewidth}
+	\begin{subfigure}[b]{0.975\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/CumulativeLine_BehavioralUsage-Ann.pdf}
 		\centering\includegraphics[width=\linewidth]{figures/MeanCumRofC_BehavioralUsage-Ann.pdf}
 		\caption{Cumulative behavioral visits for each behavior, behaviors with less than 2 bouts are excluded.}
@@ -246,7 +266,7 @@ Accordingly, extending or re-considering behavioral annotations can be necessary
 
 	\caption[Demonstration of behavioral visits during the sleep.]{Demonstration of behavioral visits during the sleep.
 		Ethograms of flies are aligned by dividing the longest dormant epoch to $100$ bin, corresponding to the sleep percentages.
-		Number of behavioral visits are normalized by the total number of bouts for each fly and behavioral category, separately.}
+		Number of behavioral visits are normalized by the total number of bouts for each fly and behavioral category, separately. \label{figure:temporal-organization-behavior}}
 
 	% \centering
 	% \begin{subfigure}[b]{0.45\linewidth}
