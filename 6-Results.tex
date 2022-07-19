@@ -136,10 +136,10 @@ As proboscis movement is common both for feeding and proboscis pumping, confusio
 Using behavioral computed behavioral scores, we computed precision recall and receiver operating characteristic curves for each split, and also computed interpreted weighted averages of curves, see Figure~\ref{figure:ROC-PRC-AUC}.
 Evaluations are done by considering two subsets of frames, the first subset is the frames annotated as one of the behavioral categories and the other one is the $\MicroActivity$ set.
 The latter one contains false positive micro-activity frames, which is quantified as the recall score of quiescent and other category.
-False positive micro-activity frames affects haltere switch detection performance most, for instance, its weighted mean precision decreases by $~0.5$ for fixed recall at $0.65$.
+False positive micro-activity frames affects haltere switch detection performance most, for instance, its weighted mean precision decreases by ${\sim}0.5$ for fixed recall at ${\sim}0.65$.
 This performance difference also shows the importance of achieving low recall for quiescent and other category in the experiment outlining stage.
 Since the evaluation is done with the $\MicroActivity$ set is more realistic, the following comments are made on considering it.
-The most robust detection is achieved for proboscis pumping and postural adjustment behavioral categories, respectively, achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
+The most robust detection is achieved for proboscis pumping and postural adjustment behavioral categories, respectively achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
 The maximum $\textnormal{F-}1$ score achieved for grooming is $0.60$ for FlyF1-03082020164520 split, whereas $\textnormal{F-}1$ of haltere switch behavioral category do not exceed $0.4$.
 AUC scores for the proboscis pumping often exceeds $0.95$, implying robust detection for almost all the splits.
 We observe that detection performance vary greatly among different experiments. This variation can be due to a number of reasons, but most likely reasons are related to tracking performance and annotation quality, and as well as behavioral repertoires of flies.
@@ -149,12 +149,12 @@ Considering all splits together, we achieve a macro average of $0.8$ AUC score w
 	\centering
 	\begin{subfigure}[b]{0.55\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/BehavioralScores-RepertoireDifference.pdf}
-		\caption{Behavioral score values.}
+		\caption{Behavioral score values, before $\textnormal{L-}1$ normalization. \label{figure:repertoire-score-comparison}}
 	\end{subfigure}%
 	\centering
 	\begin{subfigure}[b]{0.45\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Entropy-RepertoireDifference.pdf}
-		\caption{Entropy values. The red line, is the mean.}
+		\caption{Entropy values. The red line, is the mean. \label{figure:repertoire-entropy-comparison}}
 	\end{subfigure}%
 	\caption[Histogram of entropy values and box-plot of the behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.]{Histogram of entropy values and box-plot of behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.
 		Here, behavioral repertoire of FlyF1-03082020 is predicted separately with two different annotated experiments, namely FlyF14-08172021 and FlyM13-08172021.
@@ -162,6 +162,24 @@ Considering all splits together, we achieve a macro average of $0.8$ AUC score w
 		The latter one lacks the haltere switch behavior, and as a result behavioral scores tend to have higher entropy.
 		Results demonstrate the ability of the proposed pipeline to detect and discover unseen unannotated behavioral categories using behavioral scores.}
 \end{figure}
+
+As discussed in the Chapter~\ref{chapter:introduction}, behavioral repertoire of the fruit fly is much richer than the behavioral categories that we considered.
+Moreover, there exists a great amount of variation among flies behavioral repertoire and behavioral visits (see Section~\ref{section:analyzing-behavioral-repertoire}).
+Thus, we also investigate our pipeline's ability of detection unseen behavioral categories by utilizing behavioral scores.
+Such an ability is important for avoiding misleading the user of the pipeline. It may also be desired to reconsider defined and annotated behavioral categories, and may further lead to interesting biological observations.
+To this end, we consider the following experimental setting: behavior mapping of an unannotated experiment (FlyF1-03082020) is done separately for two annotated experiments, namely FlyF14-0817202 and FlyM13-08172021.
+Then, behavioral scores of the FlyF1-03082020's frames with haltere switch annotation is compared between FlyF14-0817202 guided mapping and FlyM13-08172021 guided mapping.
+As it can be seen from the Figure~\ref{figure:time-spent-in-behaviors}, FlyF1-03082020 and FlyF14-0817202 spent ${\sim}4$ minutes by exhibiting switch like haltere movement behavior, whereas FlyM13-08172021 spent no more than $5$ seconds.
+Therefore, compared to FlyF14-0817202, haltere switch is an unseen and lacking behavioral category for FlyM13-08172021.
+We expect to identify this using behavioral scores.
+Indeed, behavioral scores reflect difference in the behavioral repertoires of the annotated flies.
+As it can be seen in the Figure~\ref{figure:repertoire-score-comparison}, behavioral scores obtained based on FlyF14-0817202's behavioral repertoire are much more confident about the correct behavioral category, whereas behavioral scores obtained based on FlyM13-08172021's behavioral repertoire are more uniform-like and total score is often shared among multiple behavioral categories.
+Using the entropy of the behavioral score, one can quantify existing of unseen and new behavioral categories in a more systematic way.
+In the Figure~\ref{figure:repertoire-entropy-comparsion}, we compare entropy distributions of the behavioral scores obtained using annotated experiments FlyM13-08172021 and FlyF14-0817202.
+We can immediately see that scores obtained based on the FlyM13-08172021's repertoire have higher entropy, with mean $0.41$, wheres for the other one mean is $0.15$.
+For instance, if the entropy of a frame's score is greater than $0.2$ it may be recommended to visit them and investigate the reason.
+Accordingly, extending or re-considering behavioral annotations can be necessary.
+
 
 \section{Analyzing Behavioral Repertoire}\label{section:analyzing-behavioral-repertoire}
 
@@ -207,7 +225,7 @@ Considering all splits together, we achieve a macro average of $0.8$ AUC score w
 	\begin{subfigure}[ht!]{0.95\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/TimeSpent-perBehavior-Ann.pdf}
-		\caption{Time spent with each behavioral category for all experiments.}
+		\caption{Time spent with each behavioral category for all experiments. \label{figure:time-spent-in-behaviors}}
 	\end{subfigure}%
 	\caption{Summary of behavioral repertoires of different fly, demonstrated using both spatial and temporal characteristics.}
 \end{figure}

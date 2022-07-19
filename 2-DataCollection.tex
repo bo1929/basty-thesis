@@ -20,6 +20,11 @@ Individual chambers are sealed with a 7x7 mm acrylic windows.
 Windows are coated with SigmaCote to prevent flies from ventral or dorsal postural positions. 5-7 day old female and male flies are used in the experiments.
 
 \section{Pose Estimation and Tracking}
+A recently developed deep neural network based software, DeepLabCut was used to achieve markerless pose estimation.
+Over 20 body parts are first labeled in 1654 images from 28 animals (16 female, 12 male) to train the model with a 95/5 train/test split.
+We used a ResNet-50 based neural network with a batch size of 4 and 200k training iterations.
+Rest of the settings were kept default.
+The resulting network has a test error of 3.67 pixels.
 
 \begin{figure}[ht!]
 	\centering
