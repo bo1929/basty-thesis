@@ -149,7 +149,7 @@ This performance difference also shows the importance of achieving low recall fo
 Since the evaluation is done with the $\MicroActivity$ set is more realistic, the following comments are made on considering it.
 
 The most robust detection is achieved for proboscis pumping and postural adjustment behavioral categories, respectively, achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
-The maximum $\textnormal{F-}1$ score achieved for grooming is $0.60$ for FlyF1-03082020164520 split, whereas $\textnormal{F-}1$ of haltere switch behavioral category do not exceed $0.4$.
+The maximum $\textnormal{F-}1$ score achieved for grooming is $0.60$ for FlyF1-03082020164520 split, whereas $\textnormal{F-}1$ score of haltere switch behavioral category do not exceed $0.4$.
 AUC scores for the proboscis pumping often exceeds $0.95$, implying robust detection for almost all the splits.
 We observe that detection performance vary greatly among different experiments. This variation can be due to a number of reasons, but most likely reasons are related to tracking performance and annotation quality, and as well as behavioral repertoires of flies.
 Considering all splits together, we achieve a macro average of $0.8$ AUC score with a one-versus-rest approach.
@@ -169,7 +169,7 @@ Using the entropy of the behavioral score, one can quantify existing of unseen a
 In the Figure~\ref{figure:repertoire-entropy-comparison}, we compare entropy distributions of the behavioral scores obtained using annotated experiments FlyM13-08172021 and FlyF14-0817202.
 We can immediately see that scores obtained based on the FlyM13-08172021's repertoire have higher entropy, with mean $0.41$, whereas for the other one mean is $0.15$.
 For instance, if the entropy of a frame's score is greater than $0.2$, it may be recommended to visit them and investigate the reason.
-Accordingly, extending or re-considering behavioral annotations can be necessary.
+Accordingly, behavioral annotations can be extended.
 
 \begin{figure}[hbt!]
 	\centering
@@ -230,6 +230,13 @@ In the Figure~\ref{figure:feature-distributions}, we see how behavioral categori
 As expected, proboscis related features play a significant role in characterizing feeding and proboscis pumping.
 Similarly, features related to leg and thorax are more apparent for grooming and postural adjustment.
 
+Behaviors differs in terms of bout durations as well.
+Kernel density estimations of bout duration distributions for each behavioral category is given in the Figure~\ref{figure:bout-durations}.
+Haltere switch rarely exceeds several of seconds, and postural adjustments usually occur within ${\sim}4$ seconds, and both have relatively low variance $4.4$, and $8.2$ seconds, respectively.
+Feeding, proboscis pumping and grooming tends to have longer bouts with greater variances.
+For example, bout duration distribution of grooming has variance of $15$ seconds, and the mean bout duration is $6.2$ seconds.
+
+Another important aspect of fruit flies' behavioral repertoires is the total time spent while exhibiting each behavior.
 
 \begin{figure}[htb!]
 	\centering
@@ -243,7 +250,7 @@ Similarly, features related to leg and thorax are more apparent for grooming and
 	\begin{subfigure}[b]{0.95\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/BoutDurationDistributions-Ann.pdf}
-		\caption{Kernel density estimations of bout durations for each behavioral category. Variance of bout durations within and across behavioral categories demonstrates the rich behavioral repertoire.}
+		\caption{Kernel density estimations of bout durations for each behavioral category. Variance of bout durations within and across behavioral categories demonstrates the rich behavioral repertoire. \label{figure:bout-durations}}
 	\end{subfigure}%
 
 	\centering
