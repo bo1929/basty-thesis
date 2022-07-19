@@ -317,6 +317,16 @@ In contrast to majority voting (hard voting), the soft voting scheme assigns the
 \end{equation}
 
 \subsubsection{Behavioral Scores}
+Definitions of behavioral categories might be broad, and expressed behaviors sometimes are a combination of multiple behavioral categories.
+For example a switch-like movement of the haltere can simultaneously occur with a postural adjustment.
+Also, one may also want to examine and interpret top-$k$ predictions, especially when there exists many narrow behavioral categories.
+Thus, in addition to assigning categories to frames, it is also useful to compute and report scores for behavioral category based on the votes contributed by each annotated experiments.
+Moreover, such scores can be utilized as confidence scores, and might be helpful to analyze differences in behavioral repertoire (see Figure~\ref{figure:behavioral-score-distributions} and Figure~\ref{figure:repertoire-difference}).
+
+For a behavioral category $i$, such a score can be calculated by combining votes as follows:
+\begin{equation}
+	\frac{\sum_{l=1}^{\Ann{R}} \vote_{f,i}^{k,l}}{\sum_{i = 1}^{K}\sum_{l=1}^{\Ann{R}} \vote_{f,i}^{k,l}}.
+\end{equation}
 
 \subsection{Post-processing}\label{section:postprocessing-predictions}
 Finally, we post-process predicted annotations to improve our nearest neighbor based algorithm by incorporating a couple of assumptions on the temporal organization of the behaviors and physical constrains.
