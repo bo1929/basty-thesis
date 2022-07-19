@@ -53,7 +53,7 @@ UMAP and other non-linear dimensionality reduction algorithms that attempt to us
 A distance metric is needed to construct a $k$-nearest neighbor ($k$-NN) graph.
 In our case, we normalized the feature matrices as described in Section~\ref{section:feature-normalization}, feature vectors at each time step sum up to $1$, and hence feature vectors can be considered as discrete probability distributions.
 We use the Hellinger distance \citep{hellinger_neue_1909} to quantify the similarity between ``discrete probability distributions'' of features, which is given by
-\begin{equation}
+\begin{equation}\label{equation:hellinger-distance}
 	\operatorname{Hellinger}(P,Q)={\frac {1}{\sqrt {2}}}\;{\sqrt {\sum _{i=1}^{k}({\sqrt {p_{i}}}-{\sqrt {q_{i}}})^{2}}}.
 \end{equation}
 Then, based on the Hellinger distances, UMAP constructs a weighted $k$-NN graph using nearest neighbor descent \citep{dong_efficient_2011}.
@@ -241,7 +241,7 @@ Consider two experiments, an annotated one $\exptAnn$, and an unannotated one $\
 Given the true annotations $\Ann{\V{y}}$ of the frames in the $\Ann{\MicroActivity}$ set of $\exptAnn$, and $K$ behavioral categories, the goal is to compute $\V{\hat{b}}_f=\qmatrix{\hat{b}_{f,1}, \cdots \hat{b}_{f,K}}$, representing the weights (in other words, the similarity score) of each behavioral category for $\exptUnann$, using $\Ann{\V{E}}, \Unann{\V{E}}$ and $\Ann{\V{y}}$.
 
 The procedure start by querying $k$-nearest neighbors of $\exptUnann$'s each frame $f$ in the joint behavioral embedding space consisting of $\Ann{\V{E}}$ and $\Unann{\V{E}}$, using the $k$-d trees for efficiency \citep{bentley_multidimensional_1975}. $\NN{k}{f}$ denotes the set of indices of $\Unann{\V{e}}_f$'s $k$ nearest neighbors, and the $k$-NN weight $b_{f,i}$ for each query point (i.e., frame) $f$ of $\exptUnann$, and behavioral category $i$, is computed by
-\begin{equation}
+\begin{equation}\label{equation:nn-weights}
 	b_{f,i} = \begin{dcases}
 		\sum_{f^\prime \in \NNi{k}{i}{f}}\frac{1}{\dist{\Unann{\V{e}}_f}{\Ann{\V{e}}_{f^\prime}}^p + \epsilon} & \textnormal{if } \card{\NNi{k}{i}{f}} \neq 0, \\
 		0                                                                                                      & \textnormal{if otherwise},
@@ -259,7 +259,7 @@ Especially when $k$ is large, it becomes crucial to consider the imbalanced dist
 Thus, incorporating this imbalance into the formulation may help to improve the recall of rarely occurring short-bout behaviors and precision of frequently occurring long-bout behaviors.
 To achieve this, we normalize the scores previously computed, $b_{f,i}$, as a function of the number of occurrences of the behavioral category $i$ as follows:
 
-\begin{equation}
+\begin{equation}\label{equation:behavioral-weight-occurence-normalization},
 	b^\prime_{f,i} = \frac{b_{f,i}}{\rbr{1 + N^{\plus}_i}^p} \qbor \frac{b_{f,i}}{\log_k(1 + N^{\plus}_i)} \qbwhere p \in \set{0, \sfrac{1}{2}, 1}, k \in \set{2, 10},
 \end{equation}
 where $N^{\plus}_i = \card*{\Set{f}{y^{\plus}_f=i}}$ is the number of frames annotated as behavioral category $i$.
@@ -269,7 +269,7 @@ It may be even desired to set $p=0$, and not considering the number of occurrenc
 
 The resulting vector $\V{b^{\prime}}_f \in \reals^K$ is dependent on the annotated experiment $\exptAnn$, and the vectors computed based on different annotated experiments are not comparable with each other.
 Hence, we map the values of $b^\prime_{f,i}$ to $\sqbr{0,1}$ using either the $\operatorname {softmax}$ function or $\textnormal{L}_1$ normalization as follows:
-\begin{equation}
+\begin{equation}\label{equation:behavioral-weight-activation}
 	\hat{b}_{f,i} = \frac{\exp{b^\prime_{f,i}}}{\sum_{j=1}^{K} \exp{b^\prime_{f,j}}} \qbor \frac{b^\prime_{f,i}}{\sum_{j=1}^{K} b^\prime_{f,j}}.
 \end{equation}
 The resulting behavioral weight vector $\V{\hat{b}}_f \in \sqbr{0,1}^K$ can be considered as a probability distribution.
