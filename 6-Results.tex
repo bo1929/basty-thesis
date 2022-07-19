@@ -196,14 +196,14 @@ We observe that the long dormancy epochs are interrupted by relatively short mac
 In addition to short macro activity bouts, we observe very small displacements all over the night, which indicates there exists micro-activities other than major positional and postural changes.
 Hence, a more fine-grained analysis and detailed examination is necessary to gain an insight, as this work attempts to achieve.
 
-\begin{figure}[htb!]
+\begin{figure}[t!]
 	\centering
-	\begin{subfigure}[htb!]{0.95\linewidth}
+	\begin{subfigure}[b]{0.95\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Velocity-WT-1T.pdf}
 		\caption{Wild type.}
 	\end{subfigure}%
 
-	\begin{subfigure}[htb!]{0.95\linewidth}
+	\begin{subfigure}[b]{0.95\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Velocity-SD-1T.pdf}
 		\caption{Sleep-deprived.}
 	\end{subfigure}%
@@ -212,32 +212,17 @@ Hence, a more fine-grained analysis and detailed examination is necessary to gai
 		Displacement values are computed as described in Equation~\ref{equation:displacement}, and smoothed with a rolling mean of 1-minute window.\label{figure:displacement}}
 \end{figure}
 
-Using annotated behavioral categories, we further examine more closely how activities manifested during the sleep.
-In the Figure~\ref{figure:heatmap-microactivity}, experiments are temporally divided into 5 minute bins, and activity quantified as the ration between number of annotated frames to total number of frames ($900$ frames). Such a quantification provides us a view on the sleep which demonstrates that many activities occur without the displacement of the fly's body.
-
-\begin{figure}[bht!]
-	\centering\includegraphics[width=\linewidth]{figures/ActivityBinned-Ann-WT-5T.pdf}
+\begin{figure}[b!]
+	\centering\includegraphics[width=0.95\linewidth]{figures/ActivityBinned-Ann-WT-5T.pdf}
 	\caption[Binned temporal heatmap of activities.]{Binned temporal heatmap of activities.
 		Each bin is $5$ minutes, corresponding to $9000$ frames.
 		Activity value is computed as the ratio of the number of annotated frames and total number of frames in that bin. \label{figure:heatmap-microactivity}}
 \end{figure}
 
-In addition to temporal organization of the activities, we are also interested in the characteristics of each behavioral categories such as total time spent, bout durations, kinematics, and feature value distributions.
-In order to visualize feature distributions of each behavioral category, we sum behavioral representation values of all frequency channels for each spatio-temporal feature.
-For a single frame, resulting values sum up to $1$ as they are $\textnormal{L-}1$ normalized.
-In the Figure~\ref{figure:feature-distributions}, we see how behavioral categories are defined by spatial characteristics.
-As expected, proboscis related features play a significant role in characterizing feeding and proboscis pumping.
-Similarly, features related to leg and thorax are more apparent for grooming and postural adjustment.
+Using annotated behavioral categories, we further examine more closely how activities manifested during the sleep.
+In the Figure~\ref{figure:heatmap-microactivity}, experiments are temporally divided into 5 minute bins, and activity quantified as the ration between number of annotated frames to total number of frames ($900$ frames). Such a quantification provides us a view on the sleep which demonstrates that many activities occur without the displacement of the fly's body.
 
-Behaviors differ in terms of bout durations as well.
-Kernel density estimations of bout duration distributions for each behavioral category is given in the Figure~\ref{figure:bout-durations}.
-Haltere switch rarely exceeds several of seconds, and postural adjustments usually occur within ${\sim}4$ seconds, and both have relatively low variance $4.4$, and $8.2$ seconds, respectively.
-Feeding, proboscis pumping and grooming tends to have longer bouts with greater variances.
-For example, bout duration distribution of grooming has variance of $15$ seconds, and the mean bout duration is $6.2$ seconds.
-
-Another important aspect of fruit flies' behavioral repertoires is the total time spent while exhibiting each behavior.
-
-\begin{figure}[htb!]
+\begin{figure}[h!]
 	\centering
 	\begin{subfigure}[b]{0.95\linewidth}
 		\centering
@@ -261,7 +246,22 @@ Another important aspect of fruit flies' behavioral repertoires is the total tim
 	\caption{Summary of behavioral repertoires, demonstrated using both spatial and temporal characteristics. \label{figure:summary-behavior-characteristics}}
 \end{figure}
 
-In the Figure~\ref{figure:temporal-organization-behavior}.
+In addition to temporal organization of the activities, we are also interested in the characteristics of each behavioral categories such as total time spent, bout durations, kinematics, and feature value distributions.
+In order to visualize feature distributions of each behavioral category, we sum behavioral representation values of all frequency channels for each spatio-temporal feature.
+For a single frame, resulting values sum up to $1$ as they are $\textnormal{L-}1$ normalized.
+In the Figure~\ref{figure:feature-distributions}, we see how behavioral categories are defined by spatial characteristics.
+As expected, proboscis related features play a significant role in characterizing feeding and proboscis pumping.
+Similarly, features related to leg and thorax are more apparent for grooming and postural adjustment.
+
+Behaviors differ in terms of bout durations as well.
+Kernel density estimations of bout duration distributions for each behavioral category is given in the Figure~\ref{figure:bout-durations}.
+Haltere switch rarely exceeds several of seconds, and postural adjustments usually occur within ${\sim}4$ seconds, and both have relatively low variance $4.4$, and $8.2$ seconds, respectively.
+Feeding, proboscis pumping and grooming tends to have longer bouts with greater variances.
+For example, bout duration distribution of grooming has variance of $15$ seconds, and the mean bout duration is $6.2$ seconds.
+
+Another important aspect of fruit flies' behavioral repertoires is the total time spent while exhibiting each behavior (see Figure~\ref{figure:time-spent-in-behaviors}).
+Grooming is the most exhibited behavior in terms of total time spent, with an average of $19.9$ minutes, and a standard deviation of $5.2$ minutes.
+We observe a great variance for time spent exhibiting haltere switch among experiments, the average and the standard deviation are $4.5$ minutes and $5.9$ respectively.
 
 \begin{figure}[htb!]
 	\centering
@@ -288,3 +288,5 @@ In the Figure~\ref{figure:temporal-organization-behavior}.
 	% 	\caption{Fraction of time spent with micro-activities in dormant epochs, comparing wild type experiments and sleep deprived experiments.}
 	% \end{subfigure}%
 \end{figure}
+
+In the Figure~\ref{figure:temporal-organization-behavior}.
