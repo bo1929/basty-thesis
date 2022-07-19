@@ -155,7 +155,7 @@ We observe that detection performance vary greatly among different experiments. 
 Considering all splits together, we achieve a macro average of $0.8$ AUC score with a one-versus-rest approach.
 
 As discussed in the Chapter~\ref{chapter:introduction}, the behavioral repertoire of the fruit fly is much richer than the behavioral categories that we considered.
-Moreover, there exists a great amount of variation among flies behavioral repertoire and behavioral visits (see Section~\ref{section:analyzing-behavioral-repertoire}).
+Moreover, there exists a great amount of variation among flies behavioral repertoire and behavioral visits (see Section~\ref{section:analyzing-behavioral-repertoires}).
 Thus, we also investigate our pipeline's ability of detection of unseen behavioral categories by utilizing behavioral scores.
 Such an ability is important for avoiding misleading the user of the pipeline. It may also be desired to reconsider defined and annotated behavioral categories, and may further lead to interesting biological observations.
 To this end, we consider the following experimental setting: behavior mapping of an unannotated experiment (FlyF1-03082020) is done separately for two annotated experiments, namely FlyF14-0817202 and FlyM13-08172021.
@@ -189,13 +189,13 @@ Accordingly, extending or re-considering behavioral annotations can be necessary
 		Results demonstrate the ability of the proposed pipeline to detect and discover unseen unannotated behavioral categories using behavioral scores.\label{figure:repertoire-difference}}
 \end{figure}
 
-\section{Analyzing Behavioral Repertoire}\label{section:analyzing-behavioral-repertoire}
+\section{Analyzing Behavioral Repertoires}\label{section:analyzing-behavioral-repertoires}
 In this section, we analyze the collected data of sleep experiments to discover how behaviors that we are interested in exhibited.
 Starting from a broad perspective, the most brief description of sleep experiments can be done by quantifying the displacement of the flies placed in the chamber.
 In the Figure~\ref{figure:displacement}, we plot velocity-based feature vectors $\V{u}$ between ZT10-ZT02 and ZT10-ZT06, respectively for each wild type sleep and sleep-deprived experiments.
 We observe that the long dormancy epochs are interrupted by relatively short macro activity bouts during the sleep.
 In addition to short macro activity bouts, we observe very small displacements all over the night, which indicates there exists micro-activities other than major positional and postural changes.
-Hence, a more fine-grained analysis and closer look is necessary, as this work attempts to achieve.
+Hence, a more fine-grained analysis and detailed examination is necessary to gain an insight, as this work attempts to achieve.
 
 \begin{figure}[htb!]
 	\centering
@@ -213,12 +213,13 @@ Hence, a more fine-grained analysis and closer look is necessary, as this work a
 		Displacement values are computed as described in Equation~\ref{equation:displacement}, and smoothed with a rolling mean of 1-minute window.\label{figure:displacement}}
 \end{figure}
 
-In the Figure~\ref{figure:heatmap-microactivity}.
+Using annotated behavioral categories, we further more closely examine how activities manifested during the sleep.
+In the Figure~\ref{figure:heatmap-microactivity}, experiments are temporally divided into 5 minute bins, and activity quantified as the ration between number of annotated frames to total number of frames ($900$ frames). Such an quantification provides us a view on the sleep which demonstrates that many activities occur without the displacement of the fly's body.
 
 \begin{figure}[htb!]
 	\centering\includegraphics[width=\linewidth]{figures/ActivityBinned-Ann-WT-5T.pdf}
 	\caption[Binned temporal heatmap of activities.]{Binned temporal heatmap of activities.
-		Each bin is $5$ minutes, corresponding to $900$ frames.
+		Each bin is $5$ minutes, corresponding to $9000$ frames.
 		Activity value is computed as the ratio of the number of annotated frames and total number of frames in that bin. \label{figure:heatmap-microactivity}}
 \end{figure}
 

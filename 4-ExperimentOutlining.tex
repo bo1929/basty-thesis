@@ -8,7 +8,7 @@ We characterize dormancy epochs by lack of macro-activities, i.e., significant p
 After detecting and excluding intervals of macro-activities, we end up with time points where the fly is dormant.
 An additional  processing step is needed for the dormancy epochs, as we are not interested in the time points where the fly is totally quiescent.
 Our major focus is on the micro-activity bouts manifested during a dormancy epoch.
-In order to detect those bouts, we should distinguish micro-activities exhibited during dormant epochs from macro-activities by quantifying them with a closer look at various body parts. We use the term ``bouts'' and ``epochs'' respectively for micro-activities and macro-activities to reflect their difference in terms of duration. As discussed in Section~\ref{section:analyzing-behavioral-repertoire}, behaviors categorized in micro-activities are tends to have shorter durations, compared to macro-activities.
+In order to detect those bouts, we should distinguish micro-activities exhibited during dormant epochs from macro-activities by quantifying them with a closer look at various body parts. We use the term ``bouts'' and ``epochs'' respectively for micro-activities and macro-activities to reflect their difference in terms of duration. As it is shown in Section~\ref{section:analyzing-behavioral-repertoires}, behaviors categorized in micro-activities are tends to have shorter durations, compared to macro-activities.
 
 At this stage, our ultimate goal is to extract bouts of micro-activities exhibited during the dormancy state.
 Extracted micro-activity bouts constitute the data points that are subject to behavior mapping.
@@ -35,7 +35,7 @@ where the resulting velocity-based feature vector is $\V{v}=\rbr{v_1, \cdots, v_
 
 \subsection{Micro-activity Bouts}
 Behaviors exhibited during dormancy epochs are not necessarily accompanied by postural changes and the displacement of the animal's body.
-For instance, the pumping-like movement of the proboscis or switch-like movement of haltere tends to happen independent from the remaining body parts. 
+For instance, the pumping-like movement of the proboscis or switch-like movement of haltere tends to happen independent from the remaining body parts.
 Thus, one needs to consider more than a single scalar value, as in the previous case of macro-activity.
 For each snapshot feature $s_i$, we sum all frequency channels $f$, i.e., timescales, utilizing the dynamic postural feature tensor $W$, as follows:
 \begin{equation}
