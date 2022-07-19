@@ -199,12 +199,12 @@ Hence, a more fine-grained analysis and detailed examination is necessary to gai
 
 \begin{figure}[htb!]
 	\centering
-	\begin{subfigure}[ht!]{0.95\linewidth}
+	\begin{subfigure}[htb!]{0.95\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Velocity-WT-1T.pdf}
 		\caption{Wild type.}
 	\end{subfigure}%
 
-	\begin{subfigure}[ht!]{0.95\linewidth}
+	\begin{subfigure}[htb!]{0.95\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Velocity-SD-1T.pdf}
 		\caption{Sleep deprived.}
 	\end{subfigure}%
@@ -216,21 +216,27 @@ Hence, a more fine-grained analysis and detailed examination is necessary to gai
 Using annotated behavioral categories, we further more closely examine how activities manifested during the sleep.
 In the Figure~\ref{figure:heatmap-microactivity}, experiments are temporally divided into 5 minute bins, and activity quantified as the ration between number of annotated frames to total number of frames ($900$ frames). Such an quantification provides us a view on the sleep which demonstrates that many activities occur without the displacement of the fly's body.
 
-\begin{figure}[htb!]
+\begin{figure}[bht!]
 	\centering\includegraphics[width=\linewidth]{figures/ActivityBinned-Ann-WT-5T.pdf}
 	\caption[Binned temporal heatmap of activities.]{Binned temporal heatmap of activities.
 		Each bin is $5$ minutes, corresponding to $9000$ frames.
 		Activity value is computed as the ratio of the number of annotated frames and total number of frames in that bin. \label{figure:heatmap-microactivity}}
 \end{figure}
 
-In the Figure~\ref{figure:summary-behavior-characteristics}.
+In addition to temporal organization of the activities, we are also interested in the characteristics of each behavioral categories such as total time spent, bout durations, kinematics and feature value distributions.
+In order to visualize feature distributions of each behavioral category, we sum behavioral representation values of all frequency channels for each spatio-temporal feature.
+For a single frame, resulting values sum up to $1$ as they are $\textnormal{L-}1$ normalized.
+In the Figure~\ref{figure:feature-distributions}, we see how behavioral categories are defined by spatial characteristics.
+As expected, proboscis related features play an significant role in characterizing feeding and proboscis pumping.
+Similarly, features related to leg and thorax are more apparent for grooming and postural adjustment.
+
 
 \begin{figure}[htb!]
 	\centering
 	\begin{subfigure}[b]{0.95\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/FeatureDistributions_perBehavior-Ann.pdf}
-		\caption{Summation of all frequency channels of behavioral representation value for each spatio-temporal feature.}
+		\caption{Summation of all frequency channels of behavioral representation value for each spatio-temporal feature.\label{figure:feature-distributions}}
 	\end{subfigure}%
 
 	\centering
@@ -244,9 +250,9 @@ In the Figure~\ref{figure:summary-behavior-characteristics}.
 	\begin{subfigure}[htb!]{0.95\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/TimeSpent-perBehavior-Ann.pdf}
-		\caption{Time spent with each behavioral category for all experiments. \label{figure:time-spent-in-behaviors}}
+		\caption{Time spent while exhibiting each behavioral category for all experiments. \label{figure:time-spent-in-behaviors}}
 	\end{subfigure}%
-	\caption{Summary of behavioral repertoires of different fly, demonstrated using both spatial and temporal characteristics. \label{figure:summary-behavior-characteristics}}
+	\caption{Summary of behavioral repertoires, demonstrated using both spatial and temporal characteristics. \label{figure:summary-behavior-characteristics}}
 \end{figure}
 
 In the Figure~\ref{figure:temporal-organization-behavior}.
