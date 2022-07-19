@@ -148,7 +148,7 @@ False positive micro-activity frames affects haltere switch detection performanc
 This performance difference also shows the importance of achieving low recall for quiescent and other category in the experiment outlining stage.
 Since the evaluation is done with the $\MicroActivity$ set is more realistic, the following comments are made on considering it.
 
-The most robust detection is achieved for proboscis pumping and postural adjustment behavioral categories, respectively achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
+The most robust detection is achieved for proboscis pumping and postural adjustment behavioral categories, respectively, achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
 The maximum $\textnormal{F-}1$ score achieved for grooming is $0.60$ for FlyF1-03082020164520 split, whereas $\textnormal{F-}1$ of haltere switch behavioral category do not exceed $0.4$.
 AUC scores for the proboscis pumping often exceeds $0.95$, implying robust detection for almost all the splits.
 We observe that detection performance vary greatly among different experiments. This variation can be due to a number of reasons, but most likely reasons are related to tracking performance and annotation quality, and as well as behavioral repertoires of flies.
@@ -213,8 +213,8 @@ Hence, a more fine-grained analysis and detailed examination is necessary to gai
 		Displacement values are computed as described in Equation~\ref{equation:displacement}, and smoothed with a rolling mean of 1-minute window.\label{figure:displacement}}
 \end{figure}
 
-Using annotated behavioral categories, we further more closely examine how activities manifested during the sleep.
-In the Figure~\ref{figure:heatmap-microactivity}, experiments are temporally divided into 5 minute bins, and activity quantified as the ration between number of annotated frames to total number of frames ($900$ frames). Such an quantification provides us a view on the sleep which demonstrates that many activities occur without the displacement of the fly's body.
+Using annotated behavioral categories, we further examine more closely how activities manifested during the sleep.
+In the Figure~\ref{figure:heatmap-microactivity}, experiments are temporally divided into 5 minute bins, and activity quantified as the ration between number of annotated frames to total number of frames ($900$ frames). Such a quantification provides us a view on the sleep which demonstrates that many activities occur without the displacement of the fly's body.
 
 \begin{figure}[bht!]
 	\centering\includegraphics[width=\linewidth]{figures/ActivityBinned-Ann-WT-5T.pdf}
@@ -223,11 +223,11 @@ In the Figure~\ref{figure:heatmap-microactivity}, experiments are temporally div
 		Activity value is computed as the ratio of the number of annotated frames and total number of frames in that bin. \label{figure:heatmap-microactivity}}
 \end{figure}
 
-In addition to temporal organization of the activities, we are also interested in the characteristics of each behavioral categories such as total time spent, bout durations, kinematics and feature value distributions.
+In addition to temporal organization of the activities, we are also interested in the characteristics of each behavioral categories such as total time spent, bout durations, kinematics, and feature value distributions.
 In order to visualize feature distributions of each behavioral category, we sum behavioral representation values of all frequency channels for each spatio-temporal feature.
 For a single frame, resulting values sum up to $1$ as they are $\textnormal{L-}1$ normalized.
 In the Figure~\ref{figure:feature-distributions}, we see how behavioral categories are defined by spatial characteristics.
-As expected, proboscis related features play an significant role in characterizing feeding and proboscis pumping.
+As expected, proboscis related features play a significant role in characterizing feeding and proboscis pumping.
 Similarly, features related to leg and thorax are more apparent for grooming and postural adjustment.
 
 
