@@ -1,7 +1,7 @@
 \chapter{Behavior Mapping}
 
 \section{Overview of Behavior Mapping}
-Our ultimate goal is to have a fine-grained categorization of the behaviors observed during dormancy. Thus, it is not sufficient to outline experiments and construct the sets $\MicroActivity$ and $\MacroActivity$. Behavior mapping stage is the most critical and novel part of the pipeline, and in this stage, we discover and predict stereotypical behaviors by mapping each frame in the sets $\MicroActivity$.
+Our ultimate goal is to have a fine-grained categorization of the behaviors observed during dormancy. Thus, it is not sufficient to detect the activities and construct the sets $\MicroActivity$ and $\MacroActivity$. Behavior mapping stage is the most critical and novel part of the pipeline, and in this stage, we discover and predict stereotypical behaviors by mapping each frame in the sets $\MicroActivity$.
 
 Behavior mapping stage starts by generating low dimensional behavioral embeddings from high dimensional behavioral matrix $\V{\hat{W}}$, but only the rows corresponding to the $\MicroActivity$ are included in the mapping.
 Rest of the frames, namely the $\Quiescence$ set and $\MacroActivity$ set directly assigned to quiescent and moving categories.
@@ -223,7 +223,7 @@ As described in Section~\ref{section:nearest-neighbors-classification}, semi-sup
 
 \section{Nearest Neighbor Analysis and Classification}\label{section:nearest-neighbors-classification}
 One of our ultimate goals is to annotate an experiment using already annotated ones.
-In previous sections and chapters, we described feature extraction, experiment outlining, and computation of behavioral embeddings.
+In previous sections and chapters, we described feature extraction, activity detection, and computation of behavioral embeddings.
 In this section, we describe a novel nearest neighbor based classification approach, which has to tackle following challenges:
 \begin{itemize}
 	\item sparsity of behavioral expressions,

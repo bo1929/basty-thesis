@@ -17,7 +17,7 @@ Then, we computed snapshot features and gradient features as described in Sectio
 In order to generate postural dynamics, wavelet transformation is applied to snapshot features at $20$ different frequency channels dyadically spaced between $1$ Hz and $20$ Hz (see Equation~\ref{equation:dyadically-spaced-spectrum} for determining spectrum frequencies).
 Then different timescales are normalized as given in Equation~\ref{equation:wavelet-normalization}.
 After flattening and $\textnormal{L}_1$ frame normalization, we ended up with a $13 \times 20 = 260$ dimensional behavioral representation matrix $\V{\hat{W}}$.
-Similarly, for gradient features, moving mean values are computed for a single timescale which is $33$ milliseconds, resulting in $9 \times 1 = 9$ dimensional behavioral representation matrix $\V{\hat{M}}^\mu$, which is only used for experiment outlining and constructing $\Dormancy$ set.
+Similarly, for gradient features, moving mean values are computed for a single timescale which is $33$ milliseconds, resulting in $9 \times 1 = 9$ dimensional behavioral representation matrix $\V{\hat{M}}^\mu$, which is only used for activity detection and constructing $\Dormancy$ set.
 
 \begin{table}[htb!]
 	\begin{adjustbox}{width=1\textwidth}
@@ -42,28 +42,28 @@ Similarly, for gradient features, moving mean values are computed for a single t
 	\caption{Computed spatio-temporal features. \label{table:spatiotemporal-features}}
 \end{table}
 
-After constructing behavioral representation matrices, the experiment outlining stage of our pipeline takes place.
+After constructing behavioral representation matrices, the activity detection stage of our pipeline takes place.
 Here reported recall scores are for the frame set $\MicroActivity$, and it is desired to achieve high recall scores, except for the ``quiescent and other'' category.
-We evaluate both unsupervised and supervised approaches, recall scores and the accuracy is given in the Figure~\ref{figure:outlining-performance}.
+We evaluate both unsupervised and supervised approaches, recall scores and the accuracy is given in the Figure~\ref{figure:detection-performance}.
 
 \begin{figure}[htb!]
 	\centering
 	\begin{subfigure}[b]{0.495\linewidth}
-		\centering\includegraphics[width=\linewidth]{figures/OutliningPerformance-Supervised.pdf}
+		\centering\includegraphics[width=\linewidth]{figures/ActivityDetectionPerformance-Supervised.pdf}
 		\caption{Supervised detection.}
 	\end{subfigure}%
 	\hfill
 	\begin{subfigure}[b]{0.495\linewidth}
-		\centering\includegraphics[width=\linewidth]{figures/OutliningPerformance-Unsupervised.pdf}
+		\centering\includegraphics[width=\linewidth]{figures/ActivityDetectionPerformance-Unsupervised.pdf}
 		\caption{Unsupervised detection.}
 	\end{subfigure}%
-	\caption[Performance summary of experiment outlining and micro-activity detection.]{Performance summary of experiment outlining and micro-activity detection.
+	\caption[Performance summary of activity detection and micro-activity detection.]{Performance summary of activity detection and micro-activity detection.
 		The red line indicates the macro average of accuracy scores achieved for each split.
 		High recall scores are desired for behavioral categories, as opposed to quiescent frames.
-		Supervised and unsupervised detections are given respectively in the left subfigure and in the right subfigure. \label{figure:outlining-performance}}
+		Supervised and unsupervised detections are given respectively in the left subfigure and in the right subfigure. \label{figure:detection-performance}}
 \end{figure}
 
-For unsupervised experiment outlining, the threshold $c$ is set to the decision boundary $\lambda_1$ of two Gaussian components for construction of the $\Dormancy$ set.
+For unsupervised activity detection, the threshold $c$ is set to the decision boundary $\lambda_1$ of two Gaussian components for construction of the $\Dormancy$ set.
 Similarly, thresholds $c_i$ for each $\V{u}_i$ value are the first decision boundaries of $3$ Gaussian components, sorted by their means.
 Resulting detection performance is quite poor for switch-like behavior of haltere, since this behavior occurs very subtly, and it is similar to quiescent frames.
 8 out of 11 splits, has recall score less than $0.5$.
@@ -74,9 +74,9 @@ For grooming, recall is always greater than $0.97$, which implies that we do not
 Similarly, the recall score of feeding drops below $0.95$ only once.
 For proboscis pumping, 6 out of 11 splits have recall score greater than $0.9$, and performance is relatively poor for two splits ($0.61$ and $0.56$ recall).
 Again, haltere switch is the most challenging behavioral category, but recall is often greater than $0.75$ as opposed to unsupervised approach.
-Considering its superior performance over unsupervised approach, we proceed to behavior mapping by employing supervised outlining.
+Considering its superior performance over unsupervised approach, we proceed to behavior mapping by employing supervised detection.
 
-After experiment outlining, the next stage is the behavior mapping, where the frames in the set $\MicroActivity$ are mapped to behavioral categories.
+After activity detection, the next stage is the behavior mapping, where the frames in the set $\MicroActivity$ are mapped to behavioral categories.
 First step is computation of behavioral embeddings.
 The semi-supervised pair embeddings described in the Section~\ref{section:pair-embeddings} computed for each annotated and unannotated experiment pair.
 We set the embedding space dimension to 2, which $260$ dimensional behavioral representation matrix $\V{\hat{W}}$ is reduced to.
@@ -144,7 +144,7 @@ Using behavioral computed behavioral scores, we computed precision recall and re
 Evaluations are done by considering two subsets of frames, the first subset is the frames annotated as one of the behavioral categories and the other one is the $\MicroActivity$ set.
 The latter one contains false positive micro-activity frames, which is quantified as the recall score of quiescent and other category.
 False positive micro-activity frames affects haltere switch detection performance most, for instance, its weighted mean precision decreases by ${\sim}0.5$ for fixed recall at ${\sim}0.65$.
-This performance difference also shows the importance of achieving low recall for quiescent and other category in the experiment outlining stage.
+This performance difference also shows the importance of achieving low recall for quiescent and other category in the activity detection stage.
 Since the evaluation is done with the $\MicroActivity$ set is more realistic, the following comments are made on considering it.
 
 The most robust detection is achieved for proboscis pumping and postural adjustment behavioral categories, respectively, achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
@@ -266,14 +266,14 @@ We observe a great variance for time spent exhibiting haltere switch among exper
 \begin{figure}[htb!]
 	\centering
 	\begin{subfigure}[b]{0.975\linewidth}
-		\centering\includegraphics[width=\linewidth]{figures/Heatmap_BehavioralUsage-Ann.pdf}
+		\centering\includegraphics[width=\linewidth]{figures/Heatmap_BehavioralVisit-Ann.pdf}
 		\caption{Rate of behavioral visits during the sleep within each $5$ sleep percentage bin. Each row is normalized to sum up to $1$.}
 	\end{subfigure}%
 
 	\centering
 	\begin{subfigure}[b]{0.975\linewidth}
-		\centering\includegraphics[width=\linewidth]{figures/CumulativeLine_BehavioralUsage-Ann.pdf}
-		\centering\includegraphics[width=\linewidth]{figures/MeanCumRofC_BehavioralUsage-Ann.pdf}
+		\centering\includegraphics[width=\linewidth]{figures/CumulativeLine_BehavioralVisit-Ann.pdf}
+		\centering\includegraphics[width=\linewidth]{figures/MeanCumRofC_BehavioralVisit-Ann.pdf}
 		\caption{Cumulative behavioral visits for each behavior, behaviors with less than 2 bouts are excluded.}
 	\end{subfigure}%
 
