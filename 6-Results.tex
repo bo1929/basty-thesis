@@ -1,6 +1,7 @@
 \chapter{Results}
 
 \section{Employing the Pipeline and  Evaluation}\label{section:employing-proposed-pipeline}
+
 Total of 11 experiments (7 wild type sleep and 4 sleep-deprived) and their annotations are split as 10 training experiments and 1 test experiment for all combinations.
 We report results and evaluate each split and demonstrate varying performance for different splits.
 
@@ -8,14 +9,14 @@ Our pipeline starts with the feature extraction stage, where raw tracking data g
 Body parts used to extract features are proboscis, haltere, thorax, head (left and right), leg joints (left and right).
 We use oriented pose vales for body parts with left and right counterparts, as described in the Section~\ref{section:oriented-pose-values}.
 In order to detect occluded body parts, we set the low confidence score threshold to $0.075$.
-Moving median window size $\tau$ is $15$ frames, ($0.5$ seconds) and threshold $\tau$ set to $15$ microns. If the position of a body part exceeds the median of the window centered around it by $\tau$, it is marked as occluded, as described in Section~\ref{section:detecting-occlusions}
+Moving median window size $\tau$ is $15$ frames, ($0.5$ seconds) and threshold $\tau$ set to $15$ microns. If the position of a body part exceeds the median of the window centered around it by $\tau$, it is marked as occluded, as described in Section~\ref{section:detecting-occlusions}.
+
 Linear interpolation is used for imputation of marked frames.
 After that, firstly, a median filter of size $6$ frames, and then a boxcar filter of size $6$ frames is applied to reduce the tracking noise and smooth the signal, without smoothing behaviors exhibited by rapid movements.
-Aligning different orientations and transforming the frames to be egocentric did not result in performance improvement in our case, hence, we continued without making frames egocentric.
+Aligning different orientations and transforming the frames to be egocentric did not result in performance improvement in our case, hence, we did not transform frames egocentric.
 
 Then, we computed snapshot features and gradient features as described in Section~\ref{section:spatiotemporal-fetaures}, and given in the Table~\ref{table:spatiotemporal-features}.
-In order to generate postural dynamics, wavelet transformation is applied to snapshot features at $20$ different frequency channels dyadically spaced between $1$ Hz and $20$ Hz (see Equation~\ref{equation:dyadically-spaced-spectrum} for determining spectrum frequencies).
-Then different timescales are normalized as given in Equation~\ref{equation:wavelet-normalization}.
+In order to generate postural dynamics, we applied wavelet transformation  to snapshot features at $20$ different frequency channels dyadically spaced between $1$ Hz and $20$ Hz (see Equation~\ref{equation:dyadically-spaced-spectrum} for determining spectrum frequencies).  Different timescales are normalized as given in Equation~\ref{equation:wavelet-normalization}.
 After flattening and $\textnormal{L}_1$ frame normalization, we ended up with a $13 \times 20 = 260$ dimensional behavioral representation matrix $\V{\hat{W}}$.
 Similarly, for gradient features, moving mean values are computed for a single timescale which is $33$ milliseconds, resulting in $9 \times 1 = 9$ dimensional behavioral representation matrix $\V{\hat{M}}^\mu$, which is only used for activity detection and constructing $\Dormancy$ set.
 
@@ -44,7 +45,7 @@ Similarly, for gradient features, moving mean values are computed for a single t
 
 After constructing behavioral representation matrices, the activity detection stage of our pipeline takes place.
 Here reported recall scores are for the frame set $\MicroActivity$, and it is desired to achieve high recall scores, except for the ``quiescent and other'' category.
-We evaluate both unsupervised and supervised approaches, recall scores and the accuracy is given in the Figure~\ref{figure:detection-performance}.
+We evaluate both unsupervised and supervised approaches, recall, and accuracy values are shown in Figure~\ref{figure:detection-performance}.
 
 \begin{figure}[htb!]
 	\centering
