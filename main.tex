@@ -1,63 +1,88 @@
-\documentclass[
-  12pt,
-  oneside,
-  a4paper
-  ]{report}
-
+\documentclass[12pt, leqno, oneside, a4paper]{book}
 %%%%%%%%%%%%
 % Packages %
 %%%%%%%%%%%%
-\usepackage{inputenc}
 \usepackage[
-  rmargin=2.5cm,
-  lmargin=3.5cm,
-  tmargin=2.5cm,
-  bmargin=2.5cm
-  ]{geometry}
+    rmargin=2.5cm,
+    lmargin=3.5cm,
+    tmargin=2.5cm,
+    bmargin=2.5cm
+    ]{geometry}
+% \usepackage[utf8]{inputenc}
 % \usepackage{showframe}
 \usepackage{thesis}
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 % Thesis Main Document %
 %%%%%%%%%%%%%%%%%%%%%%%%
+% Define thesis name, author, advisor, etc.
+% ---------------------------------------------------
+\def\thesistitle{Automated Behavioral Analysis of Asleep Fruit Fly}
+
+\def\student{Ali Osman Berk Şapcı\xspace}
+
+\def\advisor{Asst. Prof. Öznur Taştan\xspace}
+\def\coadvisor{Prof. Sündüz Keleş\xspace}
+
+\def\domjuryb{Prof. Gözde Bozdağı Akar\xspace}
+\def\domjurya{Asst. Prof. Onur Varol\xspace}
+
+\def\uniloc{İstanbul, Türkiye\xspace}
+\def\uni{Sabancı Üniversitesi\xspace}
+\def\school{Faculty of Engineering and Natural Sciences\xspace}
+\def\major{Computer Science and Engineering\xspace}
+\def\degree{Master of Science\xspace}
+\def\degreeabv{MSc.\xspace}
+
+\def\thesistitletr{Uyku Halindeki Meyve Sineğinin Davranışsal Analizi}
+\def\advisortr{Dr. Öğr. Üyesi  Öznur Taştan\xspace}
+\def\coadvisortr{Prof. Dr. Sündüz Keleş\xspace}
+\def\majortr{Bilgisayar Bilimi ve Mühendisliği\xspace}
+\def\degreetr{Y\"{u}ksek L\.{ı}sans\xspace}
+
+\def\day{27}
+\def\month{July}
+\def\monthtr{Temmuz}
+\def\year{2022}
+
 \begin{document}
+\pagenumbering{gobble}
+    % Cover, approval and copyright
+    \import{"frontmatter"}{cover}
+    \import{"frontmatter"}{approval}
+    \import{"frontmatter"}{copyright}
 
-\title{Automated Behavioral Analysis of Asleep Fruit Fly}
-\author{Ali Osman Berk Şapcı}
-\maketitle
+    % Abstracts, acknowledgements, and dedication
+    % -----------------------------------------------
+    %  Start roman page numbering from 3
+    \clearpage \pagenumbering{roman} \setcounter{page}{3}
+    \import{"frontmatter"}{abstract}
+    \import{"frontmatter"}{ozet}
+    \import{"frontmatter"}{acknowledgments}
+    \import{"frontmatter"}{dedication}
 
-\tableofcontents
-\listoffigures
-\listoftables
+    % TOC, lists of figures, tables, and algorithms
+    % -----------------------------------------------
+    \tableofcontents
+    \listoffigures
+    \listoftables
+    % \listofalgorithms
 
-\begin{abstract}
-	Sleep is an essential behavioral program conserved across the animal kingdom.
-	In order to understand the underlying function of sleep, careful characterization of the changes in behavior and physiology is needed in powerful genetic model systems such as \textit{Drosophila Melanogaster}.
-	Recent advances in machine learning have enabled tracking of the body parts and robust pose estimation; however, automated quantification of the behaviors requires providing a mapping from a pair of spatial coordinates to behavioral categories.
-	Existing methods and pipelines are developed with behaviors defined by major postural changes in mind.
-	The task of  detecting and successfully mapping behaviors exhibited during sleep comes with its unique challenges.
-	Our task of phenotyping sleep requires tackling with behaviors defined by unobtrusive changes, and that sparsely occur during long sleep cycles.
-	To this end, we develop \texttt{basty} (Automated \underline{B}ehavioral \underline{A}nalysis of A\underline{s}leep Frui\underline{t} Fl\underline{y}); a novel, end-to-end pipeline, which is made public as a configurable, open source and easy-to-use software package.
-	Our pipeline consists of multiple stages, which can be briefly described as follows: computing meaningful behavioral representations, detecting activities in long sleep experiments (14-16 hours), and nearest neighbors analysis in a low dimensional behavioral space.
-	We evaluate our pipeline with a dataset consisting of sleep-deprivation and wild-type sleep experiments; by considering five behavioral categories.
-	Results show that our pipeline successfully maps behavioral categories, achieving an AUC score of 0.8, and it is able to detect unseen behaviors and differences in behavioral repertoires.
-	Furthermore, we present a brief analysis of the behavioral repertoire exhibited during sleep by examining spatio-temporal characteristics of the behaviors and their temporal organization.
-	% A \textit{Bastı} (English: \textit{Basty}, Azerbaijani Turkish: \textit{Basdı}, Anatolian Turkish: \textit{Basdırık}) is an evil spirit in Turkic mythology which rides on people's chests while they sleep, bringing on  nightmares.
-	% Bastı sits astride a sleeper's chest and becomes heavier until the crushing weight awakens the terrified and breathless dreamer.
-	% The victim awakes, unable to move under the Bastıs weight.
-	% It may also include lucid dreams.
-	% There are different types of Bastı in Anatolia: Al-Bastı, Kara-Bastı, Kul-Bastı, Sarı-Bastı.
-\end{abstract}
-
-\input{1-Introduction}
-\input{2-DataCollection}
-\input{3-FeatureExtraction}
-\input{4-ActivityDetection}
-\input{5-BehaviorMapping}
-\input{6-Results}
-\input{7-BastySoftwarePackage}
-\input{8-Conclusion}
-
-\bibliography{refs}
-
+    % Chapters
+    % -----------------------------------------------
+    % Start Arabic page numbering from 1
+    \clearpage \pagenumbering{arabic} \setcounter{page}{1} \onehalfspacing
+    \import{"chapters"}{1-Introduction}
+    \import{"chapters"}{2-DataCollection}
+    \import{"chapters"}{3-FeatureExtraction}
+    \import{"chapters"}{4-ActivityDetection}
+    \import{"chapters"}{5-BehaviorMapping}
+    \import{"chapters"}{6-Results}
+    \import{"chapters"}{7-bastySoftwarePackage}
+    \import{"chapters"}{8-Conclusion}
+    % Bibliography
+    % -----------------------------------------------
+    \singlespace
+    \addcontentsline{toc}{chapter}{Bibliography}
+    \bibliography{refs}
 \end{document}

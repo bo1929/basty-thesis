@@ -28,16 +28,32 @@
 \usepackage{xfrac}
 \usepackage{natbib}
 \usepackage{lipsum}
-\usepackage{lmodern}
 \usepackage{bm}
 \usepackage{upgreek}
 \usepackage{lmodern}
+\usepackage{import}
+\usepackage{listings}
+\usepackage{xspace}
 \usepackage[
   warnings-off={
     mathtools-colon,
     mathtools-overbracket
     }
   ]{unicode-math}
+  
+%%%%%%%%%%%%%%%
+% Formatting %
+%%%%%%%%%%%%%%%
+% Algorithm formatting
+\renewcommand\floatpagefraction{0.95}
+\renewcommand\topfraction{0.95}
+\renewcommand\bottomfraction{0.95}
+\renewcommand\textfraction{0.05}
+% Chapter heading formatting
+% \titleformat{\chapter}[display]{\filleft\Huge\bfseries}{\fontsize{60}{0}\selectfont\textcolor{gray}\thechapter}{0em}{}[]
+% \titleformat{\appendix}[display]{\filleft\Huge\bfseries}{\fontsize{60}{0}\selectfont\textcolor{gray}\thechapter}{0em}{}[]
+% Caption formatting
+\captionsetup{labelfont=bf}
 
 %%%%%%%%%%%%%%%
 % Definitions %
@@ -124,9 +140,15 @@
 %%%%%%%%%%%%
 % Settings %
 %%%%%%%%%%%%
-\bibliographystyle{unsrtnat}
+\bibliographystyle{apalike}
 \onehalfspacing
 
 \setlength{\arrayrulewidth}{0.6mm}
 \setlength{\tabcolsep}{10pt}
 \renewcommand{\arraystretch}{1.05}
+\hypersetup{
+  colorlinks   = true, % Colours links instead of ugly boxes
+  urlcolor     = blue, % Colour for external hyperlinks
+  linkcolor    = black, % Colour of internal links
+  citecolor   = black % Colour of citations
+}
