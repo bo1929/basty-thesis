@@ -84,7 +84,8 @@ Annotations contain 5 behavioral categories, namely grooming, postural adjustmen
 These behavioral categories correspond to the micro-activities that we are interested in.
 We formulate a binary classification problem by considering all behavioral categories as positive class, and the rest as negative class.
 After constructing the $\Dormancy$ set with the unsupervised approach described in the Section~\ref{section:unsupervised-detection}, we train a random forest of decision trees \citep{breiman_random_2001} with all the frames of annotated flies' $\Dormancy$ set.
-Similar to unsupervised approach, we use $\V{u}_i$ as the training features. For a single annotated fly, the resulting training feature matrix is $\V{U} \in \reals^{T \times N_G}$.
+Similar to unsupervised approach, we use $\V{u}_i$ as the training features.
+For a single annotated fly, the resulting training feature matrix is $\V{U} \in \reals^{T \times N_G}$.
 In contrast to the original publication \citep{breiman_random_2001}, we use the Scikit-learn \citep{pedregosa_scikit-learn_2011} implementation combines classifiers by averaging their probabilistic prediction, instead of letting each classifier vote for a single class.
 $\MicroActivity$ set is constructed with the frames predicted as the positive class, corresponding to the union of annotated behavioral categories, and similarly $\Quiescence$ set consists of the frames predicted as the negative class.
 

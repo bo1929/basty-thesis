@@ -47,42 +47,42 @@
 
 \begin{document}
 \pagenumbering{gobble}
-    % Cover, approval and copyright
-    \import{"frontmatter"}{cover}
-    \import{"frontmatter"}{approval}
-    \import{"frontmatter"}{copyright}
+% Cover, approval and copyright
+\import{"frontmatter"}{cover}
+\import{"frontmatter"}{approval}
+\import{"frontmatter"}{copyright}
 
-    % Abstracts, acknowledgements, and dedication
-    % -----------------------------------------------
-    %  Start roman page numbering from 3
-    \clearpage \pagenumbering{roman} \setcounter{page}{3}
-    \import{"frontmatter"}{abstract}
-    \import{"frontmatter"}{ozet}
-    \import{"frontmatter"}{acknowledgments}
-    \import{"frontmatter"}{dedication}
+% Abstracts, acknowledgements, and dedication
+% -----------------------------------------------
+%  Start roman page numbering from 3
+\clearpage \pagenumbering{roman} \setcounter{page}{3}
+\import{"frontmatter"}{abstract}
+\import{"frontmatter"}{ozet}
+\import{"frontmatter"}{acknowledgments}
+\import{"frontmatter"}{dedication}
 
-    % TOC, lists of figures, tables, and algorithms
-    % -----------------------------------------------
-    \tableofcontents
-    \listoffigures
-    \listoftables
-    % \listofalgorithms
+% TOC, lists of figures, tables, and algorithms
+% -----------------------------------------------
+\tableofcontents
+\listoffigures
+\listoftables
+% \listofalgorithms
 
-    % Chapters
-    % -----------------------------------------------
-    % Start Arabic page numbering from 1
-    \clearpage \pagenumbering{arabic} \setcounter{page}{1} \onehalfspacing
-    \import{"chapters"}{1-Introduction}
-    \import{"chapters"}{2-DataCollection}
-    \import{"chapters"}{3-FeatureExtraction}
-    \import{"chapters"}{4-ActivityDetection}
-    \import{"chapters"}{5-BehaviorMapping}
-    \import{"chapters"}{6-Results}
-    \import{"chapters"}{7-bastySoftwarePackage}
-    \import{"chapters"}{8-Conclusion}
-    % Bibliography
-    % -----------------------------------------------
-    \singlespace
-    \addcontentsline{toc}{chapter}{Bibliography}
-    \bibliography{refs}
+% Chapters
+% -----------------------------------------------
+% Start Arabic page numbering from 1
+\clearpage \pagenumbering{arabic} \setcounter{page}{1} \onehalfspacing
+\import{"chapters"}{1-Introduction}
+\import{"chapters"}{2-DataCollection}
+\import{"chapters"}{3-FeatureExtraction}
+\import{"chapters"}{4-ActivityDetection}
+\import{"chapters"}{5-BehaviorMapping}
+\import{"chapters"}{6-Results}
+\import{"chapters"}{7-bastySoftwarePackage}
+\import{"chapters"}{8-Conclusion}
+% Bibliography
+% -----------------------------------------------
+\singlespace
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliography{refs}
 \end{document}
