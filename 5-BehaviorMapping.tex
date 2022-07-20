@@ -3,7 +3,7 @@
 \section{Overview of Behavior Mapping}
 Our ultimate goal is to have a fine-grained categorization of the behaviors observed during dormancy. Thus, it is not sufficient to detect the activities and construct the sets $\MicroActivity$ and $\MacroActivity$. Behavior mapping stage is the most critical and novel part of the pipeline, and in this stage, we discover and predict stereotypical behaviors by mapping each frame in the sets $\MicroActivity$.
 
-Behavior mapping stage starts by generating low dimensional behavioral embeddings from high dimensional behavioral matrix $\V{\hat{W}}$, but only the rows corresponding to the $\MicroActivity$ are included in the mapping.
+The behavior mapping stage starts by generating low dimensional behavioral embeddings from the high dimensional behavioral representation matrix $\V{\hat{W}}$, but only the rows corresponding to the $\MicroActivity$ are included in the mapping.
 Rest of the frames, namely the $\Quiescence$ set and $\MacroActivity$ set directly assigned to quiescent and moving categories.
 In the Section~\ref{section:behavioral-embeddings}, behavioral embedding generation is discussed in detail, including supervised, semi-supervised and unsupervised approaches.
 We use semi-supervised pair UMAP embeddings, described in the Section~\ref{section:pair-embeddings}, to map frames to behaviors.
@@ -11,7 +11,7 @@ We use semi-supervised pair UMAP embeddings, described in the Section~\ref{secti
 The next step is a novel nearest neighbor analysis in the generated low dimensional behavioral spaces, as we detail in the Section~\ref{section:nearest-neighbors-classification}.
 Nearest neighbor analysis consists of several parts.
 First one is the computation of the behavioral weights (Section ~\ref{section:behavioral-weights}). Next, we combine behavioral weights provided by each ``view'', i.e., annotated experiment by forming a committee (Section~\ref{section:committee-by-voting}).
-Finally post-processing is described in the Section~\ref{section:postprocessing-predictions}.
+Finally, post-processing is described in the Section~\ref{section:postprocessing-predictions}.
 
 \section{Behavioral Embeddings}\label{section:behavioral-embeddings}
 The dynamic postural features are able to capture many different timescales, however their high-dimensional structure makes it challenging to directly exploit behavioral representations in analysis, learning, and visualization.
@@ -169,7 +169,7 @@ As described in Section~\ref{section:nearest-neighbors-classification}, semi-sup
 		\centering\includegraphics[height=5cm]{figures/FlyF15-08182021173222_FlyM4-03062020153616-SemisupervisedPairEmbedding-JointChart.pdf}
 		\caption{Unannotated and annotated experiments.}
 	\end{subfigure}%
-	\caption[Semi-supervised pair embeddings with an annotated and an unannotated experiments.]{Semi-supervised pair embeddings with an annotated and an unannotated experiments. FlyM4-03062020 (annotated) provides a ``view'' on the behavioral repertoire of the FlyF15-08182021 (unannotated).}
+	\caption[Semi-supervised pair embeddings with an annotated and an unannotated experiment.]{Semi-supervised pair embeddings with an annotated and an unannotated experiment. FlyM4-03062020 (annotated) provides a ``view'' on the behavioral repertoire of the FlyF15-08182021 (unannotated).}
 \end{figure}
 
 \begin{comment}

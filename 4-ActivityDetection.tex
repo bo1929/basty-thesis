@@ -31,7 +31,7 @@ However, in our case, computing a single scalar value to capture the overall mov
 \begin{equation}\label{equation:displacement}
 	v_t = \sum_{\tau \in \mathcal{T}_G}{\sum_{i=1}^{N_G}{\mu_\tau\rbr{g_i,t}}},
 \end{equation}
-where the resulting velocity-based feature vector is $\V{v}=\rbr{v_1, \cdots, v_T}$. Essentially, high and low values of $v_t$ indicate macro-activity and dormancy, respectively. Micro-activities can not be detected by using such a straightforward and general value, and therefore, can not be distinguished from dormancy by soley using only this quantity.
+where the resulting velocity-based feature vector is $\V{v}=\rbr{v_1, \cdots, v_T}$. Essentially, high and low values of $v_t$ indicate macro-activity and dormancy, respectively. Micro-activities can not be detected by using such a straightforward and general value, and therefore, can not be distinguished from dormancy by solely using only this quantity.
 
 \subsection{Micro-activity Bouts}\label{section:micro-activities}
 Behaviors exhibited during dormancy epochs are not necessarily accompanied by postural changes and the displacement of the animal's body.
@@ -82,11 +82,11 @@ This is due to the fact that, micro-activities are manifested by the displacemen
 
 \subsection{Supervised Approach}\label{section:supervised-detection}
 Annotations contain 5 behavioral categories, namely grooming, postural adjustments, proboscis pumping, haltere switch, and feeding.
-These behavioral categories corresponds to the micro-activities that we are interested in.
+These behavioral categories correspond to the micro-activities that we are interested in.
 We formulate a binary classification problem by considering all behavioral categories as positive class, and the rest as negative class.
 After constructing the $\Dormancy$ set with the unsupervised approach described in the Section~\ref{section:unsupervised-detection}, we train a random forest of decision trees \citep{breiman_random_2001} with all the frames of annotated flies' $\Dormancy$ set.
-Similar to unsupervised approach, we use $\V{u}_i$ as the training features. For a single annotated fly, resulting training feature matrix is $\V{U} \in \reals^{T \times N_G}$.
-In contrast to the original publication \citep{breiman_random_2001}, we use the scikit-learn \citep{pedregosa_scikit-learn_2011} implementation combines classifiers by averaging their probabilistic prediction, instead of letting each classifier vote for a single class.
-$\MicroActivity$ set is constructed with the frames predicted as the positive class, corresponding to union of annotated behavioral categories, and similarly $\Quiescence$ set consists of the frames predicted as negative class.
+Similar to unsupervised approach, we use $\V{u}_i$ as the training features. For a single annotated fly, the resulting training feature matrix is $\V{U} \in \reals^{T \times N_G}$.
+In contrast to the original publication \citep{breiman_random_2001}, we use the Scikit-learn \citep{pedregosa_scikit-learn_2011} implementation combines classifiers by averaging their probabilistic prediction, instead of letting each classifier vote for a single class.
+$\MicroActivity$ set is constructed with the frames predicted as the positive class, corresponding to the union of annotated behavioral categories, and similarly $\Quiescence$ set consists of the frames predicted as the negative class.
 
 Configuration and the parameters of the random forest of decision trees is given in the Section~\ref{section:employing-proposed-pipeline}, and its performance is evaluated and compared with the unsupervised approach in the same section as well.
