@@ -3,12 +3,17 @@
 \section{Overview of Behavior Mapping}
 Our ultimate goal is to have a fine-grained categorization of the behaviors observed during dormancy. Thus, it is not sufficient to outline experiments and construct the sets $\MicroActivity$ and $\MacroActivity$. Behavior mapping stage is the most critical and novel part of the pipeline, and in this stage, we discover and predict stereotypical behaviors by mapping each frame in the sets $\MicroActivity$.
 
-\NOTE{Describe approaches and use cases.}
-\NOTE{Discuss predicted and annotated $\MicroActivity$ sets.}
-\NOTE{Summarize mapping.}
-\NOTE{Introduce sections.}
+Behavior mapping stage starts by generating low dimensional behavioral embeddings from high dimensional behavioral matrix $\V{\hat{W}}$, but only the rows corresponding to the $\MicroActivity$ are included in the mapping.
+Rest of the frames, namely the $\Quiescence$ set and $\MacroActivity$ set directly assigned to quiescent and moving categories.
+In the Section~\ref{section:behavioral-embeddings}, behavioral embedding generation is discussed in detail, including supervised, semi-supervised and unsupervised approaches.
+We use semi-supervised pair UMAP embeddings, described in the Section~\ref{section:pair-embeddings}, to map frames to behaviors.
 
-\section{Behavioral Embeddings}
+The next step is a novel nearest neighbor analysis in the generated low dimensional behavioral spaces, as we detail in the Section~\ref{section:nearest-neighbors-classification}.
+Nearest neighbor analysis consists of several parts.
+First one is the computation of the behavioral weights (Section ~\ref{section:behavioral-weights}). Next, we combine behavioral weights provided by each ``view'', i.e., annotated experiment by forming a committee (Section~\ref{section:committee-by-voting}).
+Finally post-processing is described in the Section~\ref{section:postprocessing-predictions}.
+
+\section{Behavioral Embeddings}\label{section:behavioral-embeddings}
 The dynamic postural features are able to capture many different timescales, however their high-dimensional structure makes it challenging to directly exploit behavioral representations in analysis, learning, and visualization.
 For example, the behavioral representation matrix ($\V{\hat{W}}$) computed from dynamic postural features ($\V{W}$) with $20$ spatio-temporal features and $25$ timescales (i.e., frequency channels) has $20 \times 25 {=} 500$ columns.
 Since the correlation between different spatio-temporal features (e.g., distance between head and proboscis and cartesian pose values of proboscis) and different timescales are often strong (see Figure~\ref{figure:correlations-btw-features}), one may expect that the topological structure of the high dimensional behavioral representations ($\V{\hat{W}}$) can be accurately represented in a lower dimensional space.
@@ -36,9 +41,7 @@ Finally, computational performance of UMAP scales well with the number of sample
 Run-time performance of the dimensionality reduction algorithm is an important concern in the behavioral mapping pipeline, as the number of samples and the data dimensionality is often on the order of $10^6$ and $10^2$, respectively.
 
 UMAP and other non-linear dimensionality reduction algorithms that attempt to use a mathematical structure akin to a $k$-nearest neighbor graph to approximate a manifold, follow a similar basic structure as below \citep{mcinnes_umap_2020}.
-\begin{itemize}
-	\item Graph Construction
-	      \begin{enumerate}
+\begin{itemize} \item Graph Construction \begin{enumerate}
 		      \item Construct a weighted $k$-nearest neighbor graph.
 		      \item Apply some transformation on the edge weights to envelop local distances.
 		      \item Deal with the incompatibility of the local metrics, i.e., disagreeing weights of the edges.
