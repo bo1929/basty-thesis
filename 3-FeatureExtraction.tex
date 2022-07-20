@@ -43,7 +43,7 @@ But in addition to this, there are a couple of optional procedures that can be b
 These additional procedures deal with the occluded body parts of the fly, alignment of the fly orientations and defining new points of interest.
 
 \subsection{Occluded Body Parts}\label{section:dealing-with-occluded-body-parts}
-As mentioned in Section~\ref{section:challanges}, the two-dimensional nature of the video recordings introduces several significant challenges,  one of which is the occluded body parts. Occlusion describes various cases where the tracked parts are eclipsed by other parts in the view area,
+As mentioned in Chapter~\ref{chapter:introduction}, the two-dimensional nature of the video recordings introduces several significant challenges,  one of which is the occluded body parts. Occlusion describes various cases where the tracked parts are eclipsed by other parts in the view area,
 There are many types of occlusions. One type is short occlusions that often results from postural changes. Imputation of the time series $\V{X}$ and $\V{Y}$ for such short occlusions is relatively easy since the number of consecutive missing data points is limited.
 However, this is not the case for long occlusions, which usually occur when the fly is in dormancy for an extended period of time.
 Especially for the body parts with left and right counterparts, fly's orientation can result in one of the counterparts being occluded for long dormancy periods.
@@ -140,7 +140,7 @@ Alignment of the frames is an optional step in the behavioral mapping pipeline.
 It is potentially beneficial, and reasonable, to perform alignment when the Cartesian pose values of the body parts are included as spatio-temporal features.
 
 \subsection{Filtering and Imputation}
-Estimated pose values are highly noisy because of the reasons explained in Section~\ref{section:challanges}.
+Estimated pose values are highly noisy because of the reasons explained in Chapter~\ref{chapter:introduction}.
 Thus, filtering the pose values and imputation of the data points marked as occluded or abnormal is an essential step before proceeding with the rest of the pipeline, which contains stages that are sensitive to noise.
 
 One of the most practical and effective approaches for time series imputation is applying interpolation.
@@ -265,11 +265,11 @@ The resulting two feature matrices are $\V{S} \in \mathbb{R}^{T \times \rbr{2\ca
 
 \section{Computation of Dynamic Postural Features}\label{section:dynamic-postural-features}
 Instantaneous values of spatio-temporal features do not provide a sufficient description of complex postural dynamics of behaviors.
-Understanding the output of a complex biological system, in our case  the behavior, can only be achieved by studying multiple time-scales concurrently.
+Understanding the output of a complex biological system, in our case  the behavior, can only be achieved by studying multiple timescales concurrently.
 Previous studies attempted to search behavioral motifs, e.g., repeated sub-sequences of actions with finite length, within the behavioral time series \citep{ye_time_2011, brown_dictionary_2013}.
 However, as \citet{berman_mapping_2014} states, this paradigm usually requires problems of temporal alignment and relative phasing between different scales.
-Alternatively, extending spatio-temporal features to capture postural dynamics at different time-scales eliminate requirements of temporal alignment and motif based analysis.
-In order to extend the spatio-temporal features to dynamic postural features, we applied wavelet transformation (similar to \citet{berman_mapping_2014}) and computed moving statistics at different time-scales (similar to \citet{kabra_jaaba_2013}), respectively for the snapshot feature set ($\V{S}$) and the gradient feature set ($\V{G}$).
+Alternatively, extending spatio-temporal features to capture postural dynamics at different timescales eliminate requirements of temporal alignment and motif based analysis.
+In order to extend the spatio-temporal features to dynamic postural features, we applied wavelet transformation (similar to \citet{berman_mapping_2014}) and computed moving statistics at different timescales (similar to \citet{kabra_jaaba_2013}), respectively for the snapshot feature set ($\V{S}$) and the gradient feature set ($\V{G}$).
 
 \subsection{Moving Statistics of Gradient Features}
 Gradient features only reflect the instantaneous values of velocities with respect to the sampling rate.
@@ -289,7 +289,7 @@ Moving statistics feature generation approach has been used to learn animal beha
 \subsection{Wavelet Transformation of Snapshot Features}
 The wavelet domain is a useful representation of postural dynamics due to the following reasons given by \citet{berman_mapping_2014}, and the proposed spectrogram generation is used by others as well \citep{marshall_continuous_2021, todd_systematic_2017}.
 \begin{itemize}
-	\item It describes dynamics over multiple time-scales simultaneously by possessing a multi-resolution time-frequency trade-off.
+	\item It describes dynamics over multiple timescales simultaneously by possessing a multi-resolution time-frequency trade-off.
 	\item It eliminates the requirement of precise temporal alignment for capturing periodic behaviors by taking amplitudes of the continuous wavelet transform of each snapshot feature at different scales.
 \end{itemize}
 Given a function $s(t)$, the continuous wavelet transformation at a frequency $f>0$ is expressed as the following integral:
@@ -346,7 +346,7 @@ The other alternative set of frequencies is linearly spaced between $f_{\textnor
 for $i=1,2,\dots,N_f$, and their corresponding wavelet scales are computed by $a\rbr{f_i}$.
 
 \subsection{Constructing Dynamic Postural Feature Tensors}
-Let $\mathcal{T}_S=\set{\sfrac{1}{f_{\textnormal{min}}}, \cdots \sfrac{1}{f_{\textnormal{max}}}}$ and $\mathcal{T}_G=\set{\tau_{\textnormal{min}}, \cdots, \tau_{\textnormal{max}}}$ denote the time-scale sets respectively for wavelet transforms of snapshot features and moving statistics of gradient features. Then corresponding feature tensors are given as follows:
+Let $\mathcal{T}_S=\set{\sfrac{1}{f_{\textnormal{min}}}, \cdots \sfrac{1}{f_{\textnormal{max}}}}$ and $\mathcal{T}_G=\set{\tau_{\textnormal{min}}, \cdots, \tau_{\textnormal{max}}}$ denote the timescale sets respectively for wavelet transforms of snapshot features and moving statistics of gradient features. Then corresponding feature tensors are given as follows:
 \begin{equation}
 	\begin{aligned}
 		\V{W}        & = \rbr{W^0_{f}\rbr{\V{s}_i, t}}_{1 \leq t \leq T, \, \sfrac{1}{f} \in \mathcal{T}_S, \, 1 \leq i \leq N_S}, \\
