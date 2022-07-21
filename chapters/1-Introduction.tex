@@ -10,38 +10,39 @@ Developments of pose estimation and tracking tools such as DeepLabCut \citep{mat
 However, this data only consists of coordinate values in two or three-dimensional spatial domain, depending on the employed tracking tool.
 Quantification of rich and complex behavioral repertoires of the animals, considering its temporal structure and ambiguity, is a fundamentally difficult problem without a clear ground truth, as discussed in \citet{pereira_quantifying_2020}.
 
-Because a static set of pose values are not sufficient to describe spatio-temporal complexities of behaviors, converting positional coordinates to meaningful spatio-temporal feature representations is an essential step for capturing time varying structure of behaviors.
-The first step of many behavior mapping pipelines is generating hand-crafted features describing relative positions of body-parts, distances between body-parts, angles between body-parts, and how these values change over time, e.g., velocities and angular velocities \citep{kabra_jaaba_2013, hsu_b-soid_2021, marshall_continuous_2021, nilsson_simple_2020}.
-Alternatively, there exists several studies which directly compute behavioral representations from videos by employing deep learning \citep{bohnslav_deepethogram_2021}, or advanced computer vision techniques \citep{berman_mapping_2014, wiltschko_mapping_2015}.
-For both approaches, resulting behavioral representations are high-dimensional time series that  can  also be used to generate a spectrogram representation as in \citet{berman_mapping_2014, todd_systematic_2017, marshall_continuous_2021}.
+Because a static set of pose values are not sufficient to describe spatio-temporal complexities of behaviors, converting positional coordinates to meaningful spatio-temporal feature representations is an essential step for capturing the time-varying structure of behaviors.
+The first step of many behavior mapping pipelines is generating hand-crafted features describing relative positions of body parts, distances between body parts, angles between body parts, and how these values change over time, e.g., velocities and angular velocities \citep{kabra_jaaba_2013, hsu_b-soid_2021, marshall_continuous_2021, nilsson_simple_2020}.
+Alternatively, there exist several studies which directly compute behavioral representations from videos by employing deep learning \citep{bohnslav_deepethogram_2021}, or advanced computer vision techniques \citep{berman_mapping_2014, wiltschko_mapping_2015}.
+For both approaches, resulting behavioral representations are high-dimensional time series that can also be used to generate a spectrogram representation as in \citet{berman_mapping_2014, todd_systematic_2017, marshall_continuous_2021}.
 
 A popular approach is projecting high-dimensional time series of behavioral representations into a low-dimensional behavioral embedding; using either autoencoders \citep{whiteway_partitioning_2021, graving_vae-sne_2020} or manifold learning techniques, such as t-SNE \citep{maaten_visualizing_2008}, Isomap \citep{tenenbaum_global_2000} and UMAP \citep{mcinnes_umap_2020} \citep{berman_mapping_2014, marshall_continuous_2021, hsu_b-soid_2021, deangelis_manifold_2019, mearns_deconstructing_2020}.
 Having appropriate behavioral representations available, one can perform supervised learning, given user-provided examples of behavioral categories.
 Various algorithms are used for the task of learning behaviors, such as SVM \citet{boser_training_1992} by \citet{hsu_b-soid_2021}, LSTM \citep{hochreiter_long_1997} by \citet{wu_neural_2021}, and random forest ensembles \citep{breiman_random_2001} by \citet{kabra_jaaba_2013} and \citet{nilsson_simple_2020}.
 Alternatively, unsupervised approaches are useful for discovering repeatedly and stereotypically exhibited behaviors, as ``behavioral clusters'' with clustering \citep{berman_mapping_2014, todd_systematic_2017, marques_structure_2018, marshall_continuous_2021} or ``behavioral states'' with state space models \citep{wiltschko_mapping_2015}.
-The advantage of benefiting unsupervised learning is to avoid annotator bias, annotation cost, and various shortcomings of depending on human definitions of behavior.
+The advantage of benefiting from unsupervised learning is to avoid annotator bias, annotation cost, and various shortcomings of depending on human definitions of behavior.
 
-Neuroscientist studying sleep have mainly focused on locomotor-type behaviors exhibited at night \citep{wiggin_covert_2020, nath_jellyfish_2017}, and attempts to understand underlying sleep-stages by measuring the overall displacement, and quiescence.
-For example, commercially available Drosophila Activity Monitor (DAMs, Inc., Waltham, Massachusetts) are used extensively to  study circadian rhythms and sleep \citep{pfeiffenberger_processing_2010, pfeiffenberger_locomotor_2010}.
-Relatively advanced systems, such as Ethoscopes \citep{geissmann_ethoscopes_2017}, has also been developed in recent years.
-Featuring supervised machine learning, Ethoscopes learns to detect not only walking activity but also micro-activities (for example, in-place movements such as grooming, egg laying), but without a fine-grained categorization of micro-activities to more specific behaviors \citep{geissmann_most_2019}.
-Hinting the importance of analyzing rich behavioral repertoire exhibited during sleep, \citet{van_alphen_deep_2021}, analyzed the functional role of proboscis extension behavior, but without automatizing behavioral analysis proboscis extension behavior is quantified by manually scanning through the videos.
-Ad-hoc solutions, specifically dedicated to a single or to a small subset of behaviors has also been introduced.
-For example, \citet{itskov_automated_2014} presents a method which utilizes capacitive measurements, for automated quantification of feeding behavior.
-Another such an ad-hoc solution is developed by \citet{qiao_automated_2018}, and achieves automated analysis of long-term grooming behavior in \textit{Drosophila Melanogaster}.
+Neuroscientists studying sleep have mainly focused on locomotor-type behaviors exhibited at night \citep{wiggin_covert_2020, nath_jellyfish_2017}, and attempts to understand underlying sleep stages by measuring the overall displacement, and quiescence.
+For example, the commercially available Drosophila Activity Monitor (DAMs, Inc., Waltham, Massachusetts) is used extensively to study circadian rhythms and sleep \citep{pfeiffenberger_processing_2010, pfeiffenberger_locomotor_2010}.
+Relatively advanced systems, such as Ethoscopes \citep{geissmann_ethoscopes_2017}, have also been developed in recent years.
+Featuring supervised machine learning, Ethoscopes learns to detect not only walking activity but also micro-activities (for example, in-place movements such as grooming, and egg laying) but without a fine-grained categorization of micro-activities to more specific behaviors \citep{geissmann_most_2019}.
+Hinting at the importance of analyzing rich behavioral repertoire exhibited during sleep, \citet{van_alphen_deep_2021}, analyzed the functional role of proboscis pumping behavior, but without automatizing behavioral analysis proboscis pumping behavior is quantified by manually scanning through the videos.
+Ad-hoc solutions, specifically dedicated to a single or a small subset of behaviors have also been introduced.
+For example, \citet{itskov_automated_2014} presents a method that utilizes capacitive measurements, for automated quantification of feeding behavior.
+Another such ad-hoc solution is developed by \citet{qiao_automated_2018}, and achieves automated analysis of long-term grooming behavior in \textit{Drosophila Melanogaster}.
 Their method, including hardware and a platform for video recordings, maps fly activity onto a three-dimensional behavior space and utilizes a $k$-nearest neighbors classifier.
-However, a detailed phenotyping of behavioral repertoire of sleep, which we aim to achieve in this work, has not been addressed in the literature.
+However, detailed phenotyping of the behavioral repertoire of sleep, which we aim to achieve in this work, has not been addressed in the literature.
 
 The inherent structure of sleep is mainly characterized by reduced muscle activity and long dormancy epochs.
 Thus, observable behaviors are exhibited much more scarcely and rarely, compared to wakefulness.
-Moreover, during sleep, the behavioral repertoire of fruit fly substantially consists of in-place behaviors rather than major postural and positional.
-For instance, proboscis extension is an in-place behavior, which is not necessarily accompanied by a positional or postural change of rest of the body.
-Another such example is switch-like behavior of the haltere which is characterized by haltere's positional change in the order of microns, and eventuate rapidly within a second.
+Moreover, during sleep, the behavioral repertoire of fruit flies substantially consists of in-place behaviors rather than major postural and positional.
+For instance, proboscis pumping is an in-place behavior, which is not necessarily accompanied by a positional or postural change in the rest of the body.
+Another such example is the switch-like behavior of the haltere which is characterized by the haltere's positional change in the order of microns and eventuates rapidly within a second.
 Therefore, our task of phenotyping sleep requires tackling behaviors defined by unobtrusive changes that sparsely occur during long sleep cycles.
-% Automated quantification of switch-like movement of haltere is achieved for the first time in this work.
-
+Previously developed behavior mapping models are not designed with such behaviors in mind.
+Their main focus has been on behaviors that feature major postural and positional changes, such as walking and wing waggle.
 
 Our approach and contribution.
+% Automated quantification of switch-like movement of haltere is achieved for the first time in this work.
 
 Outline.
 

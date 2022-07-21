@@ -42,11 +42,18 @@ But in addition to this, there are a couple of optional procedures that can be b
 These additional procedures deal with the occluded body parts of the fly, alignment of the fly orientations and defining new points of interest.
 
 \subsection{Occluded Body Parts}\label{section:dealing-with-occluded-body-parts}
-As mentioned in Chapter~\ref{chapter:introduction}, the two-dimensional nature of the video recordings introduces several significant challenges,  one of which is the occluded body parts. Occlusion describes various cases where the tracked parts are eclipsed by other parts in the view area,
-There are many types of occlusions. One type is short occlusions that often results from postural changes. Imputation of the time series $\V{X}$ and $\V{Y}$ for such short occlusions is relatively easy since the number of consecutive missing data points is limited.
+The two-dimensional nature of the video recordings introduces several significant challenges,  one of which is the occluded body parts.
+Occlusion describes various cases where the tracked parts are eclipsed by other parts in the view area.
+As we are interested in behaviors that are characterized by particular body parts, occlusion introduces a great challenge.
+Obviously, it is impossible to capture a switch-like movement of haltere, when haltere is occluded.
+
+There are many types of occlusions.
+One type is short occlusions that often results from postural changes.
+Imputation of the time series $\V{X}$ and $\V{Y}$ for such short occlusions is relatively easy since the number of consecutive missing data points is limited.
 However, this is not the case for long occlusions, which usually occur when the fly is in dormancy for an extended period of time.
 Especially for the body parts with left and right counterparts, fly's orientation can result in one of the counterparts being occluded for long dormancy periods.
-We use imputation and elimination of the corresponding data-points to deal with the occlusions. Before describing those approaches, we define a criterion for target occlusion.
+We use imputation and elimination of the corresponding data-points to deal with the occlusions.
+Before describing those approaches, we define a criterion for target occlusion.
 
 \subsubsection{Oriented Pose Values for Body Parts with Left \& Right Counterparts}\label{section:oriented-pose-values}
 If the fly is oriented perpendicular to the camera perspective, as in Figure~\ref{figure:perpendicular-orientation}, then one of the left and right body parts is often occluded.
