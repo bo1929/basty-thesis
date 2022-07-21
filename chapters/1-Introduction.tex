@@ -10,10 +10,21 @@ Developments of pose estimation and tracking tools such as DeepLabCut \citep{mat
 However, this data only consists coordinate values in two or three dimensional spatial domain, depending on the employed tracking tool.
 Quantification of rich and complex behavioral repertoires of the animals, considering its temporal structure and ambiguity, is a fundamentally difficult problem without a clear ground truth, as discussed in \citet{pereira_quantifying_2020}.
 
+Behavior mapping.
+Why do these approaches fails during sleep.
+
+Neuroscientist studying sleep have mainly focused on locomotor-type behaviors exhibited at night \citep{wiggin_covert_2020, nath_jellyfish_2017},and attempts to understand underlying sleep-stages by measuring the overall displacement, and quiescence.
+Relatively advanced systems such as Ethoscope \citep{geissmann_ethoscopes_2017} has also been developed in the recent years.
+Featuring supervised machine learning, Ethoscope learns to detect not only walking activity but also micro-activities (for example, in-place movements such as grooming, egg laying), but without a fine-grained categorization of micro-activities to more specific behaviors \citep{geissmann_most_2019}.
+Hinting the importance of analyzing rich behavioral repertoire exhibited during sleep, \citet{van_alphen_deep_2021}, analyzed the functional role of proboscis extension behavior, but without automatizing behavioral analysis proboscis extension behavior is quantified by manually scanning through the videos.
+Ad-hoc solutions, specifically dedicated to a single or to a small subset of behaviors have also been introduced.
+
+Challenges.
+
+Contribution.
+
 \NOTE{
 	\begin{itemize}
-		\item A deep sleep stage in {Drosophila} with a functional role in waste clearance: \citep{van_alphen_deep_2021}
-		\item Most sleep does not serve a vital function: {Evidence} from {Drosophila} melanogaster: \citep{geissmann_most_2019}
 		\item Automated analysis of long-term grooming behavior in {Drosophila} using a k-nearest neighbors classifier: \citep{qiao_automated_2018}
 		\item Mapping the stereotyped behaviour of freely moving fruit flies: \citep{berman_mapping_2014}
 		\item Systematic exploration of unsupervised methods for mapping behavior: \citep{todd_systematic_2017}
@@ -23,7 +34,6 @@ Quantification of rich and complex behavioral repertoires of the animals, consid
 	\begin{itemize}
 		\item Predictability and hierarchy in \textit{{Drosophila}} behavior: \citep{berman_predictability_2016}
 		\item The manifold structure of limb coordination in walking {Drosophila}: \citep{deangelis_manifold_2019}
-		\item The 103,200-arm acceleration dataset in the {UK} {Biobank} revealed a landscape of human sleep phenotypes: \citep{katori_103200-arm_2022}
 	\end{itemize}
 }
 \NOTE{
@@ -38,12 +48,10 @@ Quantification of rich and complex behavioral repertoires of the animals, consid
 		\item Structure of the {Zebrafish} {Locomotor} {Repertoire} {Revealed} with {Unsupervised} {Behavioral} {Clustering}: \citep{marques_structure_2018}
 	\end{itemize}
 }
-
 \NOTE{
 	\begin{itemize}
 		\item {DeepEthogram}, a machine learning pipeline for supervised behavior classification from raw pixels: \citep{bohnslav_deepethogram_2021}
 		\item B-{SOiD}, an open-source unsupervised algorithm for identification and fast prediction of behaviors: \citep{hsu_b-soid_2021}
-		\item Ethoscopes: {An} open platform for high-throughput ethomics: \citep{geissmann_ethoscopes_2017}
 		\item {JAABA}: interactive machine learning for automatic annotation of animal behavior: \citep{kabra_jaaba_2013}
 		\item Simple {Behavioral} {Analysis} ({SimBA}) – an open source toolkit for computer classification of complex social behaviors in experimental animals: \citep{nilsson_simple_2020}
 	\end{itemize}
