@@ -11,7 +11,7 @@ However, this data only consists of coordinate values in two or three-dimensiona
 Quantification of rich and complex behavioral repertoires of the animals, considering its temporal structure and ambiguity, is a fundamentally difficult problem without a clear ground truth, as discussed in \citet{pereira_quantifying_2020}.
 
 Because a static set of pose values are not sufficient to describe spatio-temporal complexities of behaviors, converting positional coordinates to meaningful spatio-temporal feature representations is an essential step for capturing time varying structure of behaviors.
-The first step of many behavior mapping pipeline is generating hand-crafted features describing relative positions of body-parts, distances between body-parts, angles between body-parts, and how these values change over time, e.g., velocities and angular velocities \citep{kabra_jaaba_2013, hsu_b-soid_2021, marshall_continuous_2021, nilsson_simple_2020}.
+The first step of many behavior mapping pipelines is generating hand-crafted features describing relative positions of body-parts, distances between body-parts, angles between body-parts, and how these values change over time, e.g., velocities and angular velocities \citep{kabra_jaaba_2013, hsu_b-soid_2021, marshall_continuous_2021, nilsson_simple_2020}.
 Alternatively, there exists several studies which directly compute behavioral representations from videos by employing deep learning \citep{bohnslav_deepethogram_2021}, or advanced computer vision techniques \citep{berman_mapping_2014, wiltschko_mapping_2015}.
 For both approaches, resulting behavioral representations are high-dimensional time series that  can  also be used to generate a spectrogram representation as in \citet{berman_mapping_2014, todd_systematic_2017, marshall_continuous_2021}.
 
@@ -19,7 +19,7 @@ A popular approach is projecting high-dimensional time series of behavioral repr
 Having appropriate behavioral representations available, one can perform supervised learning, given user-provided examples of behavioral categories.
 Various algorithms are used for the task of learning behaviors, such as SVM \citet{boser_training_1992} by \citet{hsu_b-soid_2021}, LSTM \citep{hochreiter_long_1997} by \citet{wu_neural_2021}, and random forest ensembles \citep{breiman_random_2001} by \citet{kabra_jaaba_2013} and \citet{nilsson_simple_2020}.
 Alternatively, unsupervised approaches are useful for discovering repeatedly and stereotypically exhibited behaviors, as ``behavioral clusters'' with clustering \citep{berman_mapping_2014, todd_systematic_2017, marques_structure_2018, marshall_continuous_2021} or ``behavioral states'' with state space models \citep{wiltschko_mapping_2015}.
-Advantage of benefiting unsupervised learning is to avoid annotator bias, annotation cost, and various shortcomings of depending on human definitions of behavior.
+The advantage of benefiting unsupervised learning is to avoid annotator bias, annotation cost, and various shortcomings of depending on human definitions of behavior.
 
 Neuroscientist studying sleep have mainly focused on locomotor-type behaviors exhibited at night \citep{wiggin_covert_2020, nath_jellyfish_2017}, and attempts to understand underlying sleep-stages by measuring the overall displacement, and quiescence.
 For example, commercially available Drosophila Activity Monitor (DAMs, Inc., Waltham, Massachusetts) are used extensively to  study circadian rhythms and sleep \citep{pfeiffenberger_processing_2010, pfeiffenberger_locomotor_2010}.
