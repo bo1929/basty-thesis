@@ -15,8 +15,6 @@ First step of many behavior mapping pipeline is generating hand-crafted features
 Alternatively, there exists several studies which directly compute behavioral representations from videos by employing deep learning \citep{bohnslav_deepethogram_2021}, or advanced computer vision techniques \citep{berman_mapping_2014, wiltschko_mapping_2015}.
 For both approaches, resulting behavioral representations are high-dimensional time series, which also can be used to generate a spectrogram representation as in \citet{berman_mapping_2014, todd_systematic_2017, marshall_continuous_2021}.
 
-Why do these approaches fails during sleep.
-
 Neuroscientist studying sleep have mainly focused on locomotor-type behaviors exhibited at night \citep{wiggin_covert_2020, nath_jellyfish_2017}, and attempts to understand underlying sleep-stages by measuring the overall displacement, and quiescence.
 For example, commercially available Drosophila Activity Monitor (DAMs, Inc., Waltham, Massachusett) are used extensively to  study circadian rhythms and sleep \citep{pfeiffenberger_processing_2010, pfeiffenberger_locomotor_2010}.
 Relatively advanced systems, such as Ethoscopes \citep{geissmann_ethoscopes_2017}, has also been developed in recent years.
@@ -26,6 +24,7 @@ Ad-hoc solutions, specifically dedicated to a single or to a small subset of beh
 \citet{itskov_automated_2014} presents a method, which utilizes capacitive measurements, for automated quantification of feeding behavior.
 \citet{qiao_automated_2018} develops a system, which includes hardware and a platform for video recordings, for automated analysis of long-term grooming behavior in \textit{Drosophila Melanogaster}.
 Their algorithm maps fly activity onto a three-dimensional behavior space utilizes $k$-nearest neighbors classifier.
+However, complete phenotyping of behavior repertoire of sleep, which we address in this work, is not attempted in the literature.
 
 Challenges.
 
