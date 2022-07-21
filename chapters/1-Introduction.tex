@@ -27,17 +27,19 @@ Relatively advanced systems, such as Ethoscopes \citep{geissmann_ethoscopes_2017
 Featuring supervised machine learning, Ethoscopes learns to detect not only walking activity but also micro-activities (for example, in-place movements such as grooming, egg laying), but without a fine-grained categorization of micro-activities to more specific behaviors \citep{geissmann_most_2019}.
 Hinting the importance of analyzing rich behavioral repertoire exhibited during sleep, \citet{van_alphen_deep_2021}, analyzed the functional role of proboscis extension behavior, but without automatizing behavioral analysis proboscis extension behavior is quantified by manually scanning through the videos.
 Ad-hoc solutions, specifically dedicated to a single or to a small subset of behaviors has also been introduced.
-\citet{itskov_automated_2014} presents a method, which utilizes capacitive measurements, for automated quantification of feeding behavior.
-\citet{qiao_automated_2018} develops a system, which includes hardware and a platform for video recordings, for automated analysis of long-term grooming behavior in \textit{Drosophila Melanogaster}.
-Their algorithm maps fly activity onto a three-dimensional behavior space utilizes $k$-nearest neighbors classifier.
+For example, \citet{itskov_automated_2014} presents a method which utilizes capacitive measurements, for automated quantification of feeding behavior.
+Another such an ad-hoc solution is developed by \citet{qiao_automated_2018}, and achieves automated analysis of long-term grooming behavior in \textit{Drosophila Melanogaster}.
+Their method, including hardware and a platform for video recordings, maps fly activity onto a three-dimensional behavior space and utilizes a $k$-nearest neighbors classifier.
 However, a detailed phenotyping of behavioral repertoire of sleep, which we aim to achieve in this work, has not been addressed in the literature.
 
 The inherent structure of sleep is mainly characterized by reduced muscle activity and long dormancy epochs.
 Thus, observable behaviors are exhibited much more scarcely and rarely, compared to wakefulness.
 Moreover, during sleep, the behavioral repertoire of fruit fly substantially consists of in-place behaviors rather than major postural and positional.
 For instance, proboscis extension is an in-place behavior, which is not necessarily accompanied by a positional or postural change of rest of the body.
-Another such example is switch-like behavior of the haltere, which is characterized by haltere's positional change in the order of microns, and occurs very rapidly within a second.
+Another such example is switch-like behavior of the haltere which is characterized by haltere's positional change in the order of microns, and eventuate rapidly within a second.
 Therefore, our task of phenotyping sleep requires tackling behaviors defined by unobtrusive changes that sparsely occur during long sleep cycles.
+% Automated quantification of switch-like movement of haltere is achieved for the first time in this work.
+
 
 Our approach and contribution.
 
