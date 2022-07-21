@@ -309,7 +309,7 @@ Behaviors sometimes occur simultaneously, and sometimes observed behaviors might
 Hence, one may also use the combined vote scores directly, without computing the $\argmax$.
 
 \subsubsection{Hard Voting}
-In the hard voting scheme, prediction of a frame $f$ is given by the majority behavioral category of the $\argmax$ of the each annotated experiment's votes and computed by the following formula:
+In the hard voting scheme, the prediction of a frame $f$ is given by the majority behavioral category of the $\argmax$ of each annotated experiment's votes and computed by the following formula:
 \begin{equation}
 	\hat{y}^k_f = \argmax_{1 \leq i \leq K} \Set{\argmax_{1 \leq j \leq K} { \vote_{f,j}^{k,l}}}{j=i, \, 1 \leq l \leq \Ann{R}}.
 \end{equation}
@@ -322,10 +322,10 @@ In contrast to majority voting (hard voting), the soft voting scheme assigns the
 
 \subsubsection{Behavioral Scores}
 Definitions of behavioral categories might be broad, and expressed behaviors sometimes are a combination of multiple behavioral categories.
-For example a switch-like movement of the haltere can simultaneously occur with a postural adjustment.
-Also, one may also want to examine and interpret top-$k$ predictions, especially when there exists many narrow behavioral categories.
-Thus, in addition to assigning categories to frames, it is also useful to compute and report scores for behavioral category based on the votes contributed by each annotated experiments.
-Moreover, such scores can be utilized as confidence scores, and might be helpful to analyze differences in behavioral repertoire (see Figure~\ref{figure:behavioral-score-distributions} and Figure~\ref{figure:repertoire-difference}).
+For example, a switch-like movement of the haltere can simultaneously occur with a postural adjustment.
+Also, one may also want to examine and interpret top-$k$ predictions, especially when there exist many narrow behavioral categories.
+Thus, in addition to assigning categories to frames, it is also useful to compute and report scores for behavioral categories based on the votes contributed by each annotated experiment.
+Moreover, such scores can be utilized as confidence scores and might be helpful to analyze differences in the behavioral repertoire (see Figure~\ref{figure:behavioral-score-distributions} and Figure~\ref{figure:repertoire-difference}).
 
 For a behavioral category $i$, such a score can be calculated by combining votes as follows:
 \begin{equation}
@@ -333,9 +333,9 @@ For a behavioral category $i$, such a score can be calculated by combining votes
 \end{equation}
 
 \subsection{Post-processing}\label{section:postprocessing-predictions}
-Finally, we post-process predicted annotations to improve our nearest neighbor based algorithm by incorporating a couple of assumptions on the temporal organization of the behaviors and physical constrains.
+Finally, we post-process predicted annotations to improve our nearest neighbor based algorithm by incorporating a couple of assumptions on the temporal organization of the behaviors and physical constraints.
 Before applying post-processing procedures, the frames in the sets $\MacroActivity$ and $\Quiescence$ should be recovered, as we only predicted the annotations of the frames in the set $\MicroActivity$.
-Without having a temporally continuous vector of annotations, post-processing would lead unintended consequences and erroneous results.
+Without having a temporally continuous vector of annotations, post-processing would lead to unintended consequences and erroneous results.
 Let $\VpredAnn^k=\rbr{\hat{y}^k_1, \cdots, \hat{y}^k_T}$ be the $\exptUnann_k$'s vector of predicted annotations for the entire experiment, defined as follows:
 \begin{equation}
 	\predAnn^k_t =
@@ -345,9 +345,9 @@ Let $\VpredAnn^k=\rbr{\hat{y}^k_1, \cdots, \hat{y}^k_T}$ be the $\exptUnann_k$'s
 		K+1         & \textnormal{if } t \in \MacroActivity_k.
 	\end{cases}
 \end{equation}
-This vector of annotations spans an entire experiment of $k$, and consists of detailed annotations of behavioral subcategories during dormancy, the general category of macro-activities, and quiescence.
+This vector of annotations spans an entire experiment of $k$ and consists of detailed annotations of behavioral subcategories during dormancy, the general category of macro-activities, and quiescence.
 
-Before discussing the post-processing, we first need to define behavioral bouts.
+Before discussing post-processing, we first need to define behavioral bouts.
 Informally, a behavioral bout is a segment of time, in which the same behavioral category is continuously observed.
 We can formally define a behavioral bout for a given $\hat{y}^k_t$ as follows:
 \begin{equation}
@@ -356,15 +356,15 @@ We can formally define a behavioral bout for a given $\hat{y}^k_t$ as follows:
 		\mathsf{bout}^1_t & =\min\cbr{{\argmax_{t^\prime} \rbr{\hat{y}^k_t \neq \hat{y}^k_{t^\prime}} \land \rbr{t \leq t^\prime \leq T} \lor \rbr{t^\prime = T}}},
 	\end{aligned}
 \end{equation}
-where $\mathsf{bout}^0_t$ and $\mathsf{bout}^1_t$ are respectively the beginning and the end of the behavioral bout, which $\hat{y}^k_t$ belongs to.
+where $\mathsf{bout}^0_t$ and $\mathsf{bout}^1_t$ are respectively the beginning and the end of the behavioral bout, to which $\hat{y}^k_t$ belongs.
 
-We have sensible expectations about the durations of behavioral bouts of each behavioral category acquired by human annotators.
-For instance, a bout of proboscis's pumping-like movement should not be shorter than $200$ millisecond, as bout duration distributions of annotations indicates.
-In addition to annotations, we may have reason about physical and biological constraints.
+We have sensible expectations about the duration of behavioral bouts of each behavioral category acquired by human annotators.
+For instance, a bout of proboscis's pumping-like movement should not be shorter than $200$ millisecond, as bout duration distributions of annotations indicate.
+In addition to annotations, we may have reasons for physical and biological constraints.
 An example is that grooming behavior, bout duration of grooming can not exceed a couple of minutes, probability of observing a grooming behavior lasted longer than $2$ minutes is extremely low \citep{qiao_automated_2018}.
 Considering such constraints and temporal expectations, we apply the following post-processing procedures, and parameters should be determined based on the behavioral repertoire of interest.
 Post-processing procedures are especially helpful for avoiding misleading classification of the time points with erroneous tracking of body parts.
-Each procedure is optional, but should be applied in the given order.
+Each procedure is optional but should be applied in the given order.
 
 \subsubsection{Pruning Interrupting Bouts}\label{section:pruning-interrupting-bouts}
 We prune short intervals interrupting possibly long and continuous behavioral bouts.
@@ -375,9 +375,9 @@ Given a window size $\tau$, the majority behavioral category in the surrounding 
 The window size $\tau$ is typically less than a second.
 
 \subsubsection{Elimination of Overly Long and Overly Short Bouts}
-We eliminate behavioral bouts whose durations are extremely short or extremely long, and hence, contradicting with physical constraints and our temporal expectations.
+We eliminate behavioral bouts whose durations are extremely short or extremely long, and hence, contradict physical constraints and our temporal expectations.
 For each behavioral category $i$, we define two thresholds $\delta^{\symrm{short}}_i$ and $\delta^{\symrm{long}}_i$, namely upper bound and lower bound.
-Then, the behavioral bouts whose duration longer or shorter than the corresponding thresholds, are set to quiescence.
+Then, the behavioral bouts whose duration is longer or shorter than the corresponding thresholds, are set to quiescence.
 \begin{equation}
 	\hat{\predAnn}^k_t=
 	\begin{cases}
