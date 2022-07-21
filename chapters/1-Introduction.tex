@@ -10,7 +10,11 @@ Developments of pose estimation and tracking tools such as DeepLabCut \citep{mat
 However, this data only consists of coordinate values in two or three-dimensional spatial domain, depending on the employed tracking tool.
 Quantification of rich and complex behavioral repertoires of the animals, considering its temporal structure and ambiguity, is a fundamentally difficult problem without a clear ground truth, as discussed in \citet{pereira_quantifying_2020}.
 
-Behavior mapping.
+Converting set of coordinates to meaningful spatio-temporal feature representations is an essential step for capturing time varying structure of behavior, as a static set of pose values are not sufficient to describe spatio-temporal complexities of behaviors.
+First step of many behavior mapping pipeline is generating hand-crafted features describing relative positions of body-parts, distances between body-parts, angles between body-parts, and how these values change over time, e.g., velocities and angular velocities \citep{kabra_jaaba_2013, hsu_b-soid_2021, marshall_continuous_2021, nilsson_simple_2020}.
+Alternatively, there exists several studies which directly compute behavioral representations from videos by employing deep learning \citep{bohnslav_deepethogram_2021}, or advanced computer vision techniques \citep{berman_mapping_2014, wiltschko_mapping_2015}.
+For both approaches, resulting behavioral representations are high-dimensional time series, which also can be used to generate a spectrogram representation as in \citet{berman_mapping_2014, todd_systematic_2017, marshall_continuous_2021}.
+
 Why do these approaches fails during sleep.
 
 Neuroscientist studying sleep have mainly focused on locomotor-type behaviors exhibited at night \citep{wiggin_covert_2020, nath_jellyfish_2017}, and attempts to understand underlying sleep-stages by measuring the overall displacement, and quiescence.
@@ -21,7 +25,7 @@ Hinting the importance of analyzing rich behavioral repertoire exhibited during 
 Ad-hoc solutions, specifically dedicated to a single or to a small subset of behaviors has also been introduced.
 \citet{itskov_automated_2014} presents a method, which utilizes capacitive measurements, for automated quantification of feeding behavior.
 \citet{qiao_automated_2018} develops a system, which includes hardware and a platform for video recordings, for automated analysis of long-term grooming behavior in \textit{Drosophila Melanogaster}.
-Their algorithm maps fly activity onto a three-dimensional behavior space utilizes k-nearest neighbors classifier.
+Their algorithm maps fly activity onto a three-dimensional behavior space utilizes $k$-nearest neighbors classifier.
 
 Challenges.
 
@@ -31,11 +35,10 @@ Outline.
 
 \NOTE{
 	\begin{itemize}
-		\item Automated analysis of long-term grooming behavior in {Drosophila} using a k-nearest neighbors classifier: \citep{qiao_automated_2018}
-		\item Mapping the stereotyped behaviour of freely moving fruit flies: \citep{berman_mapping_2014}
 		\item Systematic exploration of unsupervised methods for mapping behavior: \citep{todd_systematic_2017}
 		\item Predictability and hierarchy in \textit{{Drosophila}} behavior: \citep{berman_predictability_2016}
 		\item The manifold structure of limb coordination in walking {Drosophila}: \citep{deangelis_manifold_2019}
+		\item {{VAE}-{SNE}: a deep generative model for simultaneous dimensionality reduction and clustering}: \citep{graving_vae-sne_2020}
 	\end{itemize}
 }
 \NOTE{
