@@ -13,25 +13,27 @@ Quantification of rich and complex behavioral repertoires of the animals, consid
 Behavior mapping.
 Why do these approaches fails during sleep.
 
-Neuroscientist studying sleep have mainly focused on locomotor-type behaviors exhibited at night \citep{wiggin_covert_2020, nath_jellyfish_2017},and attempts to understand underlying sleep-stages by measuring the overall displacement, and quiescence.
-Relatively advanced systems such as Ethoscope \citep{geissmann_ethoscopes_2017} has also been developed in recent years.
-Featuring supervised machine learning, Ethoscope learns to detect not only walking activity but also micro-activities (for example, in-place movements such as grooming, egg laying), but without a fine-grained categorization of micro-activities to more specific behaviors \citep{geissmann_most_2019}.
+Neuroscientist studying sleep have mainly focused on locomotor-type behaviors exhibited at night \citep{wiggin_covert_2020, nath_jellyfish_2017}, and attempts to understand underlying sleep-stages by measuring the overall displacement, and quiescence.
+For example, commercially available Drosophila Activity Monitor (DAMs, Inc., Waltham, Massachusett) are used extensively to  study circadian rhythms and sleep \citep{pfeiffenberger_processing_2010}.
+Relatively advanced systems, such as Ethoscopes \citep{geissmann_ethoscopes_2017}, has also been developed in recent years.
+Featuring supervised machine learning, Ethoscopes learns to detect not only walking activity but also micro-activities (for example, in-place movements such as grooming, egg laying), but without a fine-grained categorization of micro-activities to more specific behaviors \citep{geissmann_most_2019}.
 Hinting the importance of analyzing rich behavioral repertoire exhibited during sleep, \citet{van_alphen_deep_2021}, analyzed the functional role of proboscis extension behavior, but without automatizing behavioral analysis proboscis extension behavior is quantified by manually scanning through the videos.
 Ad-hoc solutions, specifically dedicated to a single or to a small subset of behaviors has also been introduced.
+\citet{itskov_automated_2014} presents a method, which utilizes capacitive measurements, for automated quantification of feeding behavior.
+\citet{qiao_automated_2018} develops a system, which includes hardware and a platform for video recordings, for automated analysis of long-term grooming behavior in \textit{Drosophila Melanogaster}.
+Their algorithm maps fly activity onto a three-dimensional behavior space utilizes k-nearest neighbors classifier.
 
 Challenges.
 
 Contribution.
+
+Outline.
 
 \NOTE{
 	\begin{itemize}
 		\item Automated analysis of long-term grooming behavior in {Drosophila} using a k-nearest neighbors classifier: \citep{qiao_automated_2018}
 		\item Mapping the stereotyped behaviour of freely moving fruit flies: \citep{berman_mapping_2014}
 		\item Systematic exploration of unsupervised methods for mapping behavior: \citep{todd_systematic_2017}
-	\end{itemize}
-}
-\NOTE{
-	\begin{itemize}
 		\item Predictability and hierarchy in \textit{{Drosophila}} behavior: \citep{berman_predictability_2016}
 		\item The manifold structure of limb coordination in walking {Drosophila}: \citep{deangelis_manifold_2019}
 	\end{itemize}
@@ -42,7 +44,6 @@ Contribution.
 		\item Deconstructing {Hunting} {Behavior} {Reveals} a {Tightly} {Coupled} {Stimulus}-{Response} {Loop}: \citep{mearns_deconstructing_2020}
 		\item Continuous {Whole}-{Body} {3D} {Kinematic} {Recordings} across the {Rodent} {Behavioral} {Repertoire} - {SI}: \citep{marshall_continuous_2021}
 		\item Mapping {Sub}-{Second} {Structure} in {Mouse} {Behavior}: \citep{wiltschko_mapping_2015}
-		\item The {Mouse} {Action} {Recognition} {System} ({MARS}) software pipeline for automated analysis of social behaviors in mice: \citep{segalin_mouse_2021}
 		\item Neural control of affiliative touch in prosocial interaction: \citep{wu_neural_2021}
 		\item Partitioning variability in animal behavioral videos using semi-supervised variational autoencoders: \citep{whiteway_partitioning_2021}
 		\item Structure of the {Zebrafish} {Locomotor} {Repertoire} {Revealed} with {Unsupervised} {Behavioral} {Clustering}: \citep{marques_structure_2018}
@@ -50,6 +51,7 @@ Contribution.
 }
 \NOTE{
 	\begin{itemize}
+		\item The {Mouse} {Action} {Recognition} {System} ({MARS}) software pipeline for automated analysis of social behaviors in mice: \citep{segalin_mouse_2021}
 		\item {DeepEthogram}, a machine learning pipeline for supervised behavior classification from raw pixels: \citep{bohnslav_deepethogram_2021}
 		\item B-{SOiD}, an open-source unsupervised algorithm for identification and fast prediction of behaviors: \citep{hsu_b-soid_2021}
 		\item {JAABA}: interactive machine learning for automatic annotation of animal behavior: \citep{kabra_jaaba_2013}
