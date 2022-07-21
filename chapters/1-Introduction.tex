@@ -12,8 +12,14 @@ Quantification of rich and complex behavioral repertoires of the animals, consid
 
 Converting set of coordinates to meaningful spatio-temporal feature representations is an essential step for capturing time varying structure of behavior, as a static set of pose values are not sufficient to describe spatio-temporal complexities of behaviors.
 First step of many behavior mapping pipeline is generating hand-crafted features describing relative positions of body-parts, distances between body-parts, angles between body-parts, and how these values change over time, e.g., velocities and angular velocities \citep{kabra_jaaba_2013, hsu_b-soid_2021, marshall_continuous_2021, nilsson_simple_2020}.
-Alternatively, there exists several studies which directly compute behavioral representations from videos by employing deep learning \citep{bohnslav_deepethogram_2021}, or advanced computer vision techniques \citep{berman_mapping_2014, wiltschko_mapping_2015}.
-For both approaches, resulting behavioral representations are high-dimensional time series, which also can be used to generate a spectrogram representation as in \citet{berman_mapping_2014, todd_systematic_2017, marshall_continuous_2021}.
+Alternatively, there exists several studies which directly compute behavioral representations from videos by employing deep learning \citep{bohnslav_deepethogram_2021, wu_neural_2021}, or advanced computer vision techniques \citep{berman_mapping_2014, wiltschko_mapping_2015}.
+For both approaches, resulting behavioral representations are high-dimensional time series, which also can be used to generate a spectrogram representation as in \citet{berman_mapping_2014, todd_systematic_2017}, and  \citet{marshall_continuous_2021}.
+
+A popular approach is projecting high-dimensional time series of behavioral representations into a low-dimensional behavioral embedding; using either autoencoders \citep{whiteway_partitioning_2021, graving_vae-sne_2020} or manifold learning techniques, such as t-SNE \citep{maaten_visualizing_2008}, Isomap \citep{tenenbaum_global_2000} and UMAP \citep{mcinnes_umap_2020} \citep{berman_mapping_2014, marshall_continuous_2021, hsu_b-soid_2021, deangelis_manifold_2019, mearns_deconstructing_2020}.
+Having appropriate behavioral representations available, one can perform supervised learning, given user-provided examples of behavioral categories.
+Various algorithms are used for the task of learning behaviors, such as SVM \citet{boser_training_1992} by \citet{hsu_b-soid_2021}, LSTM \citep{hochreiter_long_1997} by \citet{wu_neural_2021}, and random forest ensembles \citep{breiman_random_2001} by \citet{kabra_jaaba_2013} and \citet{nilsson_simple_2020}.
+Alternatively, unsupervised approaches are useful for discovering repeatedly and stereotypically exhibited behaviors, as ``behavioral clusters'' with clustering \citep{berman_mapping_2014, todd_systematic_2017, marques_structure_2018, marshall_continuous_2021} or ``behavioral states'' with state space models \citep{wiltschko_mapping_2015}.
+Advantage of benefiting unsupervised learning is to avoid annotator bias, annotation cost, and various shortcomings of depending on human definitions of behavior.
 
 Neuroscientist studying sleep have mainly focused on locomotor-type behaviors exhibited at night \citep{wiggin_covert_2020, nath_jellyfish_2017}, and attempts to understand underlying sleep-stages by measuring the overall displacement, and quiescence.
 For example, commercially available Drosophila Activity Monitor (DAMs, Inc., Waltham, Massachusett) are used extensively to  study circadian rhythms and sleep \citep{pfeiffenberger_processing_2010, pfeiffenberger_locomotor_2010}.
@@ -28,7 +34,7 @@ However, complete phenotyping of behavior repertoire of sleep, which we address 
 
 Challenges.
 
-Contribution.
+Our approach and contribution.
 
 Outline.
 
@@ -42,13 +48,13 @@ Outline.
 }
 \NOTE{
 	\begin{itemize}
-		\item A dictionary of behavioral motifs reveals clusters of genes affecting {Caenorhabditis} elegans locomotion: \citep{brown_dictionary_2013}
-		\item Deconstructing {Hunting} {Behavior} {Reveals} a {Tightly} {Coupled} {Stimulus}-{Response} {Loop}: \citep{mearns_deconstructing_2020}
 		\item Continuous {Whole}-{Body} {3D} {Kinematic} {Recordings} across the {Rodent} {Behavioral} {Repertoire} - {SI}: \citep{marshall_continuous_2021}
 		\item Mapping {Sub}-{Second} {Structure} in {Mouse} {Behavior}: \citep{wiltschko_mapping_2015}
 		\item Neural control of affiliative touch in prosocial interaction: \citep{wu_neural_2021}
 		\item Partitioning variability in animal behavioral videos using semi-supervised variational autoencoders: \citep{whiteway_partitioning_2021}
 		\item Structure of the {Zebrafish} {Locomotor} {Repertoire} {Revealed} with {Unsupervised} {Behavioral} {Clustering}: \citep{marques_structure_2018}
+		\item A dictionary of behavioral motifs reveals clusters of genes affecting {Caenorhabditis} elegans locomotion: \citep{brown_dictionary_2013}
+		\item Deconstructing {Hunting} {Behavior} {Reveals} a {Tightly} {Coupled} {Stimulus}-{Response} {Loop}: \citep{mearns_deconstructing_2020}
 	\end{itemize}
 }
 \NOTE{
