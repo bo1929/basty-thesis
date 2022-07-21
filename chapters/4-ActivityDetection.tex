@@ -34,7 +34,7 @@ where the resulting velocity-based feature vector is $\V{v}=\rbr{v_1, \cdots, v_
 
 \subsection{Micro-activity Bouts}\label{section:micro-activities}
 Behaviors exhibited during dormancy epochs are not necessarily accompanied by postural changes and the displacement of the animal's body.
-For instance, the pumping-like movement of the proboscis or switch-like movement of haltere tends to happen independent from the remaining body parts.
+For instance, the pumping-like movement of the proboscis or switch-like movement of haltere tends to happen independently from the remaining body parts.
 Thus, one needs to consider more than a single scalar value, as in the previous case of macro-activity.
 For each snapshot feature $s_i$, we sum all frequency channels $f$, i.e., timescales, utilizing the dynamic postural feature tensor $W$, as follows:
 \begin{equation}
@@ -48,8 +48,8 @@ For example, using the snapshot feature of the distance between haltere and post
 \section{Detecting Activities}\label{section:detecting-activities}
 \subsection{Unsupervised Approach}\label{section:unsupervised-detection}
 The straightforward approach for detecting macro activities would be determining a global threshold based on the distribution of the values of $\V{v}$ and $\V{u}$.
-Instead of determining such a threshold value, denoted by $c$, we use treat the distribution of $\V{v}$ and $\V{u}$ as a mixture of Gaussian distributions to detect an appropriate threshold value, separately for each experiment.
-This approach avoids the hassle of dealing with the varying distributions of $\V{v}$ and $\V{u}$ among different experiments, and constitute a solid ground for threshold value.
+Instead of determining such a threshold value, denoted by $c$, we use to treat the distribution of $\V{v}$ and $\V{u}$ as a mixture of Gaussian distributions to detect an appropriate threshold value, separately for each experiment.
+This approach avoids the hassle of dealing with the varying distributions of $\V{v}$ and $\V{u}$ among different experiments and constitutes a solid ground for the threshold value.
 
 Consider a mixture of univariate Gaussian distributions with $K$ components, $z=1, \cdots, K$, sorted by their corresponding mean values $\mu_1, \cdots, \mu_K$, and with full covariance matrices. Then we can define $K-1$ many decision boundaries by:
 \begin{equation}
@@ -76,17 +76,17 @@ After determining thresholds $c_i$ for each $\V{u}_i$, we construct the followin
 		\MicroActivity & = \Set{t}{\bigvee\nolimits_{i=1}^{N_G} u_{t,i} > c_i, \ t \in \Dormancy}.
 	\end{aligned}
 \end{equation}
-For a frame to be identified as micro-activity, it is sufficient if at least one feature to be above the corresponding threshold.
-This is due to the fact that, micro-activities are manifested by the displacement of only a small subset of body-parts locations.
+For a frame to be identified as micro-activity, it is sufficient if at least one feature is above the corresponding threshold.
+This is due to the fact that micro-activities are manifested by the displacement of only a small subset of body parts' locations.
 
 \subsection{Supervised Approach}\label{section:supervised-detection}
 Annotations contain 5 behavioral categories, namely grooming, postural adjustments, proboscis pumping, haltere switch, and feeding.
 These behavioral categories correspond to the micro-activities that we are interested in.
-We formulate a binary classification problem by considering all behavioral categories as positive class, and the rest as negative class.
-After constructing the $\Dormancy$ set with the unsupervised approach described in the Section~\ref{section:unsupervised-detection}, we train a random forest of decision trees \citep{breiman_random_2001} with all the frames of annotated flies' $\Dormancy$ set.
-Similar to unsupervised approach, we use $\V{u}_i$ as the training features.
+We formulate a binary classification problem by considering all behavioral categories as the positive class, and the rest as the negative class.
+After constructing the $\Dormancy$ set with the unsupervised approach described in Section~\ref{section:unsupervised-detection}, we train a random forest of decision trees \citep{breiman_random_2001} with all the frames of annotated flies' $\Dormancy$ set.
+Similar to the unsupervised approach, we use $\V{u}_i$ as the training features.
 For a single annotated fly, the resulting training feature matrix is $\V{U} \in \reals^{T \times N_G}$.
-In contrast to the original publication \citep{breiman_random_2001}, we use the Scikit-learn \citep{pedregosa_scikit-learn_2011} implementation combines classifiers by averaging their probabilistic prediction, instead of letting each classifier vote for a single class.
-$\MicroActivity$ set is constructed with the frames predicted as the positive class, corresponding to the union of annotated behavioral categories, and similarly $\Quiescence$ set consists of the frames predicted as the negative class.
+In contrast to the original publication \citep{breiman_random_2001}, we use the Scikit-learn \citep{pedregosa_scikit-learn_2011} implementation which combines classifiers by averaging their probabilistic prediction, instead of letting each classifier vote for a single class.
+$\MicroActivity$ set is constructed with the frames predicted as the positive class, corresponding to the union of annotated behavioral categories. Similarly, the $\Quiescence$ set consists of the frames predicted as the negative class.
 
-Configuration and the parameters of the random forest of decision trees is given in the Section~\ref{section:employing-proposed-pipeline}, and its performance is evaluated and compared with the unsupervised approach in the same section as well.
+Configuration and the parameters of the random forest ensemble of decision trees is given in Section~\ref{section:employing-proposed-pipeline}, and its performance is evaluated and compared with the unsupervised approach in the same section as well.

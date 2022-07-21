@@ -271,15 +271,15 @@ The resulting two feature matrices are $\V{S} \in \mathbb{R}^{T \times \rbr{2\ca
 
 \section{Computation of Dynamic Postural Features}\label{section:dynamic-postural-features}
 Instantaneous values of spatio-temporal features do not provide a sufficient description of complex postural dynamics of behaviors.
-Understanding the output of a complex biological system, in our case  the behavior, can only be achieved by studying multiple timescales concurrently.
+Understanding the output of a complex biological system, in our case the behavior, can only be achieved by studying multiple timescales concurrently.
 Previous studies attempted to search behavioral motifs, e.g., repeated sub-sequences of actions with finite length, within the behavioral time series \citep{ye_time_2011, brown_dictionary_2013}.
 However, as \citet{berman_mapping_2014} states, this paradigm usually requires problems of temporal alignment and relative phasing between different scales.
-Alternatively, extending spatio-temporal features to capture postural dynamics at different timescales eliminate requirements of temporal alignment and motif based analysis.
+Alternatively, extending spatio-temporal features to capture postural dynamics at different timescales eliminate the requirements of temporal alignment and motif-based analysis.
 In order to extend the spatio-temporal features to dynamic postural features, we applied wavelet transformation (similar to \citet{berman_mapping_2014}) and computed moving statistics at different timescales (similar to \citet{kabra_jaaba_2013}), respectively for the snapshot feature set ($\V{S}$) and the gradient feature set ($\V{G}$).
 
 \subsection{Moving Statistics of Gradient Features}
 Gradient features only reflect the instantaneous values of velocities with respect to the sampling rate.
-In order to capture how these values change within a given interval, the moving statistics of gradient features such as the such as the mean and the standard deviation are  computed with a sliding window approach.
+In order to capture how these values change within a given interval, the moving statistics of gradient features such as the mean and the standard deviation are  computed with a sliding window approach.
 Let $\tau$ be the window size parameter, i.e., the timescale of interest, then the moving mean of the corresponding gradient feature $\V{g}_{i}$ is given by the function $\mu_\tau$, as given below:
 \begin{equation}
 	\mu_{\tau}(g_{i,t}) = \sfrac{1}{\min\{t+\tau,\, T\}-\max\{t-\tau,\, 1\}+1} \sum_{t^{\prime}=\max\{t-\tau,\, 1\}}^{\min\{t+\tau,\, T\}} g_{i, t^{\prime}}.
@@ -321,7 +321,7 @@ For the discrete sequence of snapshot feature $\V{s}_i$ with sampling period $\D
 where $t^\prime, t \in \mathbb{Z}$ and $ 1 \leq t^\prime \leq T$ \citep{torrence_practical_1998}.
 
 \subsubsection{Normalization of Wavelet Power Spectrum}
-In order to ensure that wavelet transforms (Equation~\ref{eq:wavelet-practical}) at each frequency $f$ are directly comparable to each other and to the other transformed time series, the transformation $W_f$ has to be normalized at each frequency $f$ to have unit energy.
+In order to ensure that wavelet transforms (Equation~\ref{eq:wavelet-practical}) at each frequency $f$, are directly comparable to each other and to the other transformed time series, the transformation $W_f$ has to be normalized at each frequency $f$ to have unit energy.
 This normalization for the Morlet wavelet at frequency $f$ is as follows:
 \begin{equation}
 	C(f) = \frac{\pi^{-\frac{1}{4}}}{\sqrt{2a(f)}}\exp{\sfrac{1}{4}\rbr{w_0-\sqrt{w_0^2+2}}^2}.
