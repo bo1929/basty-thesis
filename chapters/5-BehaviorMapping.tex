@@ -5,19 +5,19 @@ Our ultimate goal is to have a fine-grained categorization of the behaviors obse
 
 The behavior mapping stage starts by generating low dimensional behavioral embeddings from the high dimensional behavioral representation matrix $\V{\hat{W}}$, but only the rows corresponding to the $\MicroActivity$ are included in the mapping.
 Rest of the frames, namely the $\Quiescence$ set and $\MacroActivity$ set directly assigned to quiescent and moving categories.
-In the Section~\ref{section:behavioral-embeddings}, behavioral embedding generation is discussed in detail, including supervised, semi-supervised and unsupervised approaches.
-We use semi-supervised pair UMAP embeddings, described in the Section~\ref{section:pair-embeddings}, to map frames to behaviors.
+In Section~\ref{section:behavioral-embeddings}, behavioral embedding generation is discussed in detail, including supervised, semi-supervised, and unsupervised approaches.
+We use semi-supervised pair UMAP embeddings, described in Section~\ref{section:pair-embeddings}, to map frames to behaviors.
 
-The next step is a novel nearest neighbor analysis in the generated low dimensional behavioral spaces, as we detail in the Section~\ref{section:nearest-neighbors-classification}.
-Nearest neighbor analysis consists of several parts.
-First one is the computation of the behavioral weights (Section ~\ref{section:behavioral-weights}).
+The next step is a novel nearest neighbor analysis in the generated low-dimensional behavioral spaces, as we detail in Section~\ref{section:nearest-neighbors-classification}.
+The nearest neighbor analysis consists of several parts.
+The first one is the computation of the behavioral weights (Section ~\ref{section:behavioral-weights}).
 Next, we combine behavioral weights provided by each ``view'', i.e., annotated experiment by forming a committee (Section~\ref{section:committee-by-voting}).
 Finally, post-processing is described in the Section~\ref{section:postprocessing-predictions}.
 
 \section{Behavioral Embeddings}\label{section:behavioral-embeddings}
-The dynamic postural features are able to capture many different timescales, however their high-dimensional structure makes it challenging to directly exploit behavioral representations in analysis, learning, and visualization.
+The dynamic postural features are able to capture many different timescales, however, their high-dimensional structure makes it challenging to directly exploit behavioral representations in analysis, learning, and visualization.
 For example, the behavioral representation matrix ($\V{\hat{W}}$) computed from dynamic postural features ($\V{W}$) with $20$ spatio-temporal features and $25$ timescales (i.e., frequency channels) has $20 \times 25 {=} 500$ columns.
-Since the correlation between different spatio-temporal features (e.g., distance between head and proboscis and cartesian pose values of proboscis) and different timescales are often strong (see Figure~\ref{figure:correlations-btw-features}), one may expect that the topological structure of the high dimensional behavioral representations ($\V{\hat{W}}$) can be accurately represented in a lower dimensional space.
+Since the correlation between different spatio-temporal features (e.g., the distance between head and proboscis and cartesian pose values of proboscis) and different timescales are often strong (see Figure~\ref{figure:correlations-btw-features}), one may expect that the topological structure of the high dimensional behavioral representations ($\V{\hat{W}}$) can be accurately represented in a lower dimensional space.
 Therefore, we would like to find a low-dimensional embedding that captures the important features of the dataset.
 The embedding we compute should minimize local distortions, since trajectories pause near a repeatable position whenever a particular stereotyped behavior is observed \citep{berman_mapping_2014, deangelis_manifold_2019, ali_timecluster_2019}.
 
@@ -34,11 +34,11 @@ Similarly, it has been shown that manifold learning based dimensionality reducti
 Moreover, the trade-off of preserving local distances over global distances does not introduce any significant disadvantages in the latter stages of the behavioral pipeline.
 
 We use UMAP for its superior performance in many aspects.
-\citet{mcinnes_umap_2020} demonstrates that a $k$-nearest neighbor classifier trained on UMAP embeddings achieves higher accuracy for large $k$ values, compared to PCA, t-SNE, LargeVis and Laplacian Eigenmaps since it captures non-local scales in a markedly effective way and local scales comparably or better.
+\citet{mcinnes_umap_2020} demonstrates that a $k$-nearest neighbor classifier trained on UMAP embeddings achieves higher accuracy for large $k$ values, compared to PCA, t-SNE, LargeVis, and Laplacian Eigenmaps since it captures non-local scales in a markedly effective way and local scales comparably or better.
 Thus, it can be argued that UMAP has captured more of the global and topological structure of the benchmark datasets than its counterparts, t-SNE and LargeVis.
 Another reason for choosing UMAP over other alternatives is that it tends to produce more stable embeddings.
-It is capable of producing sub-sample embeddings which are very close to the full embedding even for sub-samples of $5\%$ of the dataset, outperforming the results of t-SNE and LargeVis.
-Finally, computational performance of UMAP scales well with the number of samples, the embedding dimensionality and the data dimensionality, compared to t-SNE LargeVis, and Eigenmaps, resulting significantly lower run-times on various datasets such as  COIL-20 \citep{nene_columbia_1996}, Fashion-MNIST \citep{xiao_fashion-mnist_2017}, and GoogleNews \citep{mikolov_distributed_2013}.
+It is capable of producing sub-sample embeddings that are very close to the full embedding even for sub-samples of $5\%$ of the dataset, outperforming the results of t-SNE and LargeVis.
+Finally, the computational performance of UMAP scales well with the number of samples, the embedding dimensionality and the data dimensionality, compared to t-SNE LargeVis, and Eigenmaps, resulting in significantly lower run-times on various datasets such as  COIL-20 \citep{nene_columbia_1996}, Fashion-MNIST \citep{xiao_fashion-mnist_2017}, and GoogleNews \citep{mikolov_distributed_2013}.
 Run-time performance of the dimensionality reduction algorithm is an important concern in the behavioral mapping pipeline, as the number of samples and the data dimensionality is often on the order of $10^6$ and $10^2$, respectively.
 
 UMAP and other non-linear dimensionality reduction algorithms that attempt to use a mathematical structure akin to a $k$-nearest neighbor graph to approximate a manifold, follow a similar basic structure as below \citep{mcinnes_umap_2020}.
@@ -61,13 +61,13 @@ We use the Hellinger distance \citep{hellinger_neue_1909} to quantify the simila
 	\operatorname{Hellinger}(P,Q)={\frac {1}{\sqrt {2}}}\;{\sqrt {\sum _{i=1}^{k}({\sqrt {p_{i}}}-{\sqrt {q_{i}}})^{2}}}.
 \end{equation}
 Then, based on the Hellinger distances, UMAP constructs a weighted $k$-NN graph using nearest neighbor descent \citep{dong_efficient_2011}.
-Then, the $k$-NN graph is modified by making edges directed and defining the new weights using local Riemannian metric of each data point.
+Then, the $k$-NN graph is modified by making edges directed and defining the new weights using the local Riemannian metric of each data point.
 After this step, there exist two edges with disagreeing weights between the nearest neighbors, as the local metrics differ.
 UMAP combines those weights by using $t$-conorm and the resulting weight can be interpreted as the probability of at least one of the two directed edge to exist.
 
-Finally, UMAP uses a force directed graph layout algorithm in low dimensional space where attractive and repulsive forces are defined based on the gradients, optimizing the edge-wise cross-entropy between the original weighted graph and equivalent weighted graph induced by the embeddings.
+Finally, UMAP uses a force-directed graph layout algorithm in low dimensional space where attractive and repulsive forces are defined based on the gradients, optimizing the edge-wise cross-entropy between the original weighted graph and equivalent weighted graph induced by the embeddings.
 The algorithm proceeds by iteratively applying attractive and repulsive forces at each edge or vertex.
-Since the ``true'' graph captures the topology of the source data, the approximated graph also matches the overall topology of the data, and thus produces a meaningful low dimensional representation.
+Since the ``true'' graph captures the topology of the source data, the approximated graph also matches the overall topology of the data, and thus produces a meaningful low-dimensional representation.
 A detailed mathematical and algorithmic description of the UMAP algorithm can be found in \citep{mcinnes_umap_2020}, and it is skipped here as it goes beyond the scope of this work.
 
 \begin{comment}
@@ -116,7 +116,7 @@ Each frame $f$, corresponds to a time point $t_f\in \MicroActivity$.
 UMAP may be used to embed high-dimensional behavioral representations of each experiment separately to obtain disparate behavioral embeddings. Treating each experiment separately is useful for several purposes.
 
 For example, using supervised UMAP for annotated experiments, we can explore behavioral sub-categories in annotations as annotations are very high-level, biased and general categorization of behaviors. For instance, one annotation category, e.g., "grooming", can be consisted of two different clusters in the behavioral embedding space, corresponding to "grooming of head" and "grooming of abdomen" (see Figure~\ref{figure:supervised-disparate-zoomin-annotations}).
-Defining very specific and low-level behavioral categories is not feasible and prone to error, a post-annotation analysis using disparate embeddings helps us to zoom in annotated behaviors.
+Defining very specific and low-level behavioral categories is not feasible and prone to error, a post-annotation analysis using disparate embeddings helps us to zoom in on annotated behaviors.
 Another scenario of benefiting disparate embeddings is using unsupervised UMAP for annotated and/or unannotated experiments separately.
 We can visualize how behavioral repertoire is represented in the low dimensional embeddings space and analyze which features drives different regions and clusters of the behavioral embeddings (see Figure~\ref{figure:unsupervised-disparate-behavioral-regions}).
 
@@ -139,7 +139,7 @@ We can visualize how behavioral repertoire is represented in the low dimensional
 Ideally, we would like to embed all experiments into a shared joint behavioral space, and using such an embedding would enable us to discover stereotypical and common behaviors among different flies.
 However, we observed that this is only possible to a certain extent and such joint embeddings tend to not mix well as the number of experiments increases.
 When we jointly compute a behavioral space using all available experiments,  the resulting embedding is usually not totally homogeneous in terms of flies and experiments.
-We observed that similar behaviors might end up embedded in different regions, and multiple clusters consisting of highly similar behaviors emerges.
+We observed that similar behaviors might end up embedded in different regions, and multiple clusters consisting of highly similar behaviors emerge.
 
 Especially for the joint treatment of annotated experiments, supervised UMAP fails to embed similar behaviors of different experiments closely and homogeneously.
 There are many factors contributing to this impairment of supervised joint embeddings, such as behavioral variations among flies and experiments,  differences in orientation while exhibiting similar behaviors, and broad definitions of annotation categories.
