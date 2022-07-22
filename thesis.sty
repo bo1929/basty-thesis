@@ -1,46 +1,70 @@
 %%%%%%%%%%%%
 % Packages %
 %%%%%%%%%%%%
-\usepackage{caption}
-\usepackage{booktabs}
+\usepackage{import}
+
+\usepackage{makeidx} 
+\usepackage{endnotes} 
+\usepackage{rotating}
+\usepackage{rotfloat}
+\usepackage[final]{pdfpages} 
+\usepackage[ragged]{footmisc}
+\usepackage[dotinlabels]{titletoc}
+\usepackage[nogroupskip, toc]{glossaries}
+
+\usepackage{lipsum}
+\usepackage{comment}
+
+\usepackage[
+    format=plain,
+    textfont=normal,
+    justification=justified,
+    singlelinecheck=false,
+    font=normal
+    ]{caption}
 \usepackage{subcaption}
 \usepackage{hyperref}
-\usepackage{float}
 \usepackage{xcolor}
+
+\usepackage{appendix}
+\usepackage{placeins}
+\usepackage{listings}
+\usepackage{lmodern}
 \usepackage{adjustbox}
 \usepackage{parskip}
+
 \usepackage{graphicx}
-\usepackage{placeins}
+\usepackage{float}
 \usepackage{svg}
-\usepackage{appendix}
-\usepackage{physics}
-\usepackage{mathtools}
+
+\usepackage{setspace}
+\usepackage{xspace}
+
+\usepackage{booktabs}
+\usepackage{multirow}
+
 \usepackage{amsmath}
 \usepackage{amsbsy}
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{amsfonts}
-\usepackage{algorithm}
-\usepackage{comment}
-\usepackage[noend]{algpseudocode}
-\usepackage{multirow}
-\usepackage{setspace}
-\usepackage{xfrac}
-\usepackage{natbib}
-\usepackage{lipsum}
-\usepackage{bm}
-\usepackage{upgreek}
-\usepackage{lmodern}
-\usepackage{import}
-\usepackage{listings}
-\usepackage{xspace}
+\usepackage{mathtools}
+\usepackage{physics}
 \usepackage[
   warnings-off={
     mathtools-colon,
     mathtools-overbracket
     }
   ]{unicode-math}
-  
+\usepackage{xfrac}
+\usepackage{upgreek}
+\usepackage{bm}
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+\usepackage{natbib}
+
 %%%%%%%%%%%%%%%
 % Definitions %
 %%%%%%%%%%%%%%%
@@ -69,37 +93,52 @@
 \newcommand{\integers}{\mathbb{Z}}
 \newcommand{\rangedots}{\mathinner{\ldotp \ldotp}}
 \newcommand{\concat}{\; \middle| \;}
-\newcommand\orient[1]{\operatorname{orient}(#1)}
+
 \newcommand\rbr[1]{\left(#1\right)}
 \newcommand\sqbr[1]{\left[#1\right]}
 \newcommand\cbr[1]{\left\{#1\right\}}
 \newcommand\abr[1]{\langle#1\rangle}
+
 \newcommand\set[1]{\left\{ \, #1 \, \right\}}
 \newcommand\Set[2]{\left\{ \, #1 \; \colon \; #2 \, \right\}}
-\newcommand{\V}[1]{\symrm{\symbf{#1}}}
-\newcommand{\dist}[2]{\distance \left( #1, #2 \right)}
-\newcommand{\NNi}[3]{{#1\mathrm{\textnormal{-}NN}}_#2 \left( #3 \right)}
-\newcommand{\NN}[2]{{#1\mathrm{\textnormal{-}NN}} \left( #2 \right)}
+
 \newcommand{\function}[2]{\operatorname{#1} \left( #2 \right)}
+\newcommand{\dist}[2]{\distance \left( #1, #2 \right)}
+
 \newcommand{\g}[1]{\operatorname{s} \left( #1 \right)}
-\newcommand{\Ann}[1]{#1^{\plus}}
-\newcommand{\Unann}[1]{#1^{\sminus}}
-\newcommand{\exptAnn}{\Ann{\symrm{expt}}}
-\newcommand{\exptUnann}{\Unann{\symrm{expt}}}
-\newcommand{\entropy}[1]{\symrm{H}\rbr{#1}}
+
+\newcommand{\V}[1]{\symrm{\symbf{#1}}}
 \newcommand{\qmatrix}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
 \newcommand{\qbor}{\quad \textnormal{or} \quad}
 \newcommand{\qbwhere}{\quad \textnormal{where} \quad}
 \newcommand{\dband}{\; \textnormal{and} \;}
+
 \newcommand{\ProbP}{\operatorname{\text{I\kern-0.15em P}}}
-\newcommand{\CondProb}[2]{\ProbP \left( #1 \;\middle|\; #2 \right)}
 \newcommand{\Prob}[1]{\ProbP \left( #1 \right)}
+\newcommand{\CondProb}[2]{\ProbP \left( #1 \;\middle|\; #2 \right)}
+\newcommand{\entropy}[1]{\symrm{H}\rbr{#1}}
+
+% Ad-hoc abbreviations
+\newcommand{\NNi}[3]{{#1\mathrm{\textnormal{-}NN}}_#2 \left( #3 \right)}
+\newcommand{\NN}[2]{{#1\mathrm{\textnormal{-}NN}} \left( #2 \right)}
+
+\newcommand{\Ann}[1]{#1^{\plus}}
+\newcommand{\Unann}[1]{#1^{\sminus}}
+
+\newcommand{\exptAnn}{\Ann{\symrm{expt}}}
+\newcommand{\exptUnann}{\Unann{\symrm{expt}}}
+
+\newcommand\orient[1]{\operatorname{orient}(#1)}
+
 \newcommand{\vote}{\symsf{vote}}
 \newcommand{\Vvote}{\symsf{\symbf{{vote}}}}
+
 \newcommand{\Dormancy}{\symsf{Dormancy}}
 \newcommand{\MacroActivity}{\symsf{Macro \mhyphen activity}}
 \newcommand{\Quiescence}{\symsf{Quiescence}}
 \newcommand{\MicroActivity}{\symsf{Micro \mhyphen activity}}
+
 \newcommand{\predAnn}{\symsf{pred \mhyphen a}}
 \newcommand{\VpredAnn}{\symsf{\symbf{{pred \mhyphen a}}}}
 \newcommand{\trueAnn}{\symsf{true \mhyphen a}}
@@ -108,10 +147,6 @@
 \let\bsim\sim 
 \renewcommand{\sim}{{\bsim}}
 \renewcommand{\d}[1]{\ensuremath{\operatorname{d}\!{#1}}}
-
-\newcommand{\TODO}[1]{\textcolor{red}{[\texttt{TODO:} #1]}}
-\newcommand{\NOTE}[1]{\textcolor{lacivert}{[\texttt{NOTE:} #1]}}
-\newcommand{\CITE}{\textcolor{purple}{[\texttt{CITE}]}}
 
 \newlength{\dhatheight}
 \newcommand{\doublehat}[1]{%
@@ -123,21 +158,27 @@
 
 \algrenewcommand\algorithmiccomment[1]{\hfill \# \textit{#1}}
 
-%%%%%%%%%%%%
-% Settings %
-%%%%%%%%%%%%
-\bibliographystyle{apalike}
-\onehalfspacing
+\newcommand{\TODO}[1]{\textcolor{red}{[\texttt{TODO:} #1]}}
+\newcommand{\NOTE}[1]{\textcolor{lacivert}{[\texttt{NOTE:} #1]}}
+\newcommand{\CITE}{\textcolor{purple}{[\texttt{CITE}]}}
 
-\setlength{\arrayrulewidth}{0.6mm}
-\setlength{\tabcolsep}{10pt}
-\renewcommand{\arraystretch}{1.05}
+\makeindex
+
+%%%%%%%%%%%%
+% Style Settings %
+%%%%%%%%%%%%
+\onehalfspacing
 \hypersetup{
   colorlinks   = true, % Colours links instead of ugly boxes
   urlcolor     = blue, % Colour for external hyperlinks
   linkcolor    = black, % Colour of internal links
   citecolor   = black % Colour of citations
 }
+
+% Table formatting
+\setlength{\arrayrulewidth}{0.6mm}
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.05}
 
 % Algorithm formatting
 \renewcommand\floatpagefraction{0.95}
@@ -147,4 +188,14 @@
 
 % Caption formatting
 \captionsetup{labelfont=bf}
+\captionsetup{labelsep=none}
+\DeclareCaptionLabelSeparator{none}{ }
 
+% Footnote formatting
+\setlength{\footnotesep}{\baselineskip} 
+\setlength{\footskip}{1.5em} 
+\renewcommand\footnotelayout{\fontsize{9}{9}\selectfont}
+\setlength{\footnotemargin}{0em}
+
+% Citation style
+\bibliographystyle{apalike} 

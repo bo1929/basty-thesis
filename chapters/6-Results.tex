@@ -172,12 +172,12 @@ Accordingly, behavioral annotations can be extended.
 
 \begin{figure}[hbt!]
 	\centering
-	\begin{subfigure}[b]{0.55\linewidth}
+	\begin{subfigure}[b]{0.545\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/BehavioralScores-RepertoireDifference.pdf}
 		\caption{Behavioral score values, before $\textnormal{L-}1$ normalization. \label{figure:repertoire-score-comparison}}
 	\end{subfigure}%
-	\centering
-	\begin{subfigure}[b]{0.45\linewidth}
+    \hfill
+	\begin{subfigure}[b]{0.445\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Entropy-RepertoireDifference.pdf}
 		\caption{Entropy values. The red line is the mean. \label{figure:repertoire-entropy-comparison}}
 	\end{subfigure}%
@@ -222,7 +222,7 @@ Hence, a more fine-grained analysis and detailed examination are necessary to ga
 Using annotated behavioral categories, we further examine more closely how activities manifested during sleep.
 In Figure~\ref{figure:heatmap-microactivity}, experiments are temporally divided into 5-minute bins, and activity is quantified as the ratio between the number of annotated frames to the total number of frames ($900$ frames). Such a quantification provides us a view of sleep which demonstrates that many activities occur without the displacement of the fly's body.
 
-\begin{figure}[h!]
+\begin{figure}[htb!]
 	\centering
 	\begin{subfigure}[b]{0.95\linewidth}
 		\centering
@@ -238,7 +238,7 @@ In Figure~\ref{figure:heatmap-microactivity}, experiments are temporally divided
 	\end{subfigure}%
 
 	\centering
-	\begin{subfigure}[htb!]{0.95\linewidth}
+	\begin{subfigure}[b!]{0.95\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/TimeSpent-perBehavior-Ann.pdf}
 		\caption{Time spent while exhibiting each behavioral category for all experiments. \label{figure:time-spent-in-behaviors}}
