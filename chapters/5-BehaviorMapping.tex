@@ -225,7 +225,7 @@ As described in Section~\ref{section:nearest-neighbors-classification}, semi-sup
 \section{Nearest Neighbor Analysis and Classification}\label{section:nearest-neighbors-classification}
 One of our ultimate goals is to annotate an experiment using already annotated ones.
 In previous sections and chapters, we described feature extraction, activity detection, and computation of behavioral embeddings.
-In this section, we describe a novel nearest neighbor based classification approach, which has to tackle following challenges:
+In this section, we describe a novel nearest neighbor based classification approach, which has to tackle the following challenges:
 \begin{itemize}
 	\item sparsity of behavioral expressions,
 	\item imbalanced distribution of behavioral categories,
@@ -237,8 +237,8 @@ Our approach consists of two steps, briefly stated as follows:
 	\item computing behavioral weights of an unannotated experiment, using its semi-supervised pair embeddings for each annotated  experiment,
 	\item combining behavioral weights of the unannotated experiment with an annotated experiment committee by voting.
 \end{enumerate}
-We compute the behavioral weights with our nearest neighbor based approach by considering sparsity of behavioral expressions and imbalanced distribution of behavioral categories, as described in Section~\ref{section:behavioral-weights}.
-In the Section~\ref{section:committee-by-voting}, we detail the committee by voting approach, which helps us to deal with variation between experiments by providing multiple ``views'' on observed behavioral expression that we attempt to annotate. Finally, the post-processing of resulting predictions is described in the Section~\ref{section:postprocessing-predictions}.
+We compute the behavioral weights with our nearest neighbor based approach by considering the sparsity of behavioral expressions and imbalanced distribution of behavioral categories, as described in Section~\ref{section:behavioral-weights}.
+In Section~\ref{section:committee-by-voting}, we detail the committee-by-voting approach, which helps us to deal with variation between experiments by providing multiple ``views'' on observed behavioral expressions that we attempt to annotate. Finally, the post-processing of resulting predictions is described in Section~\ref{section:postprocessing-predictions}.
 
 \subsection{Behavioral Weights}\label{section:behavioral-weights}
 Consider two experiments, an annotated one $\exptAnn$, and an unannotated one $\exptUnann$, and their semi-supervised pair embedding, respectively $\Ann{\V{E}}=\qmatrix{\Ann{\V{e}}_1, \cdots \Ann{\V{e}_{\Ann{F}}}}$ and $\Unann{\V{E}}=\qmatrix{\Unann{\V{e}}_1, \cdots \Unann{\V{e}}_{\Unann{F}}}$.
@@ -257,7 +257,7 @@ We add a small number $\epsilon$ ($10^{{-}6}$) to the denominator to avoid numer
 The resulting vector $\V{b}_f = \qmatrix{b_{f,1}, \cdots, b_{f,K}}$ weights the similarity of the frame $f$ to each behavioral category in the shared embedding space based on nearest neighbors.
 
 Naturally, the number of occurrences or durations of the behavior bouts are different for each behavioral category, and therefore, $\Ann{\V{y}}$ is highly imbalanced.
-As a result, number of nearest neighbors and $\V{b}_f$ are biased in favor of frequently occurring and long-bout behaviors.
+As a result, the number of nearest neighbors and $\V{b}_f$ are biased in favor of frequently occurring and long-bout behaviors.
 For instance, pumping-like movements of the proboscis occur more frequently in longer bouts than switch-like movements of the haltere.
 Especially when $k$ is large, it becomes crucial to consider the imbalanced distribution of behavior occurrences, since the embedding space will be dominated by frequent behaviors.
 Thus, incorporating this imbalance into the formulation may help to improve the recall of rarely occurring short-bout behaviors and precision of frequently occurring long-bout behaviors.
@@ -286,7 +286,7 @@ The goal is to combine the behavioral weights of an unannotated experiment $\exp
 
 Let $\V{\hat{b}}_f^{k,l}$ denote the behavioral weights of $\exptUnann_k$ computed with $\exptAnn_l$.
 Each annotated experiment contributes to the overall behavioral score of $\exptUnann_k$; in other words, annotated experiments, forming a committee,  vote according to $\V{\hat{b}}_f^{k,l}$.
-Each annotated experiment provides a different view to the behavioral repertoire, as in the case of pair embeddings (see Section~\ref{section:pair-embeddings}).
+Each annotated experiment provides a different view of the behavioral repertoire, as in the case of pair embeddings (see Section~\ref{section:pair-embeddings}).
 Before describing hard voting and soft voting approaches, there is one more step to discuss.
 
 There exists a significant variation among the exhibited behavioral repertoires in the experiments.
@@ -300,11 +300,11 @@ The contribution of votes of $\exptAnn_l$ to the committee formed for $\exptUnan
 If $\max_i \hat{b}_{f,i}$ is close to $\sfrac{1}{K}$, which means that the computed vector weights the behaviors uniformly, then the factors $\rbr{\log_2(K) - \entropy{\V{\hat{b}}_f^{k,l}}}$ or $\rbr{ 1 - \max_{1 \leq j \leq K} \hat{b}_{f,j}^{k,l}}$ may be used to decrease the ``importance'' of the vote.
 
 Now, after computing behavioral votes for each annotated and unannotated experiment pair, we can combine those votes for a single unannotated experiment $\exptUnann_k$  by forming a committee of annotated experiments $\exptAnn_1, \cdots, \exptAnn_{\Ann{R}}$.
-The predicted behavioral category at frame $k$ of $\exptUnann_k$ is given by combined votes of the committee.
+The predicted behavioral category at frame $k$ of $\exptUnann_k$ is given by the combined votes of the committee.
 The predicted behavioral category at frame $k$ of $\exptUnann_k$, denoted by $\hat{y}^k_f$, is given by combined votes of the committee.
 To obtain the overall aggregate view of the committee, we can follow two alternative voting schemes, namely hard voting (i.e., majority rule voting) or soft voting.
-At this point, we may want to have scores for each behavioral category rather than hard-labels.
-Such score information might be desired to capture complex and hierarchical structure of the behaviors.
+At this point, we may want to have scores for each behavioral category rather than hard labels.
+Such score information might be desired to capture the complex and hierarchical structure of the behaviors.
 Behaviors sometimes occur simultaneously, and sometimes observed behaviors might manifest similarities to more than one behavioral category \citep{berman_predictability_2016}.
 Hence, one may also use the combined vote scores directly, without computing the $\argmax$.
 
@@ -323,7 +323,7 @@ In contrast to majority voting (hard voting), the soft voting scheme assigns the
 \subsubsection{Behavioral Scores}
 Definitions of behavioral categories might be broad, and expressed behaviors sometimes are a combination of multiple behavioral categories.
 For example, a switch-like movement of the haltere can simultaneously occur with a postural adjustment.
-Also, one may also want to examine and interpret top-$k$ predictions, especially when there exist many narrow behavioral categories.
+One may also want to examine and interpret top-$k$ predictions, especially when there exist many narrow behavioral categories.
 Thus, in addition to assigning categories to frames, it is also useful to compute and report scores for behavioral categories based on the votes contributed by each annotated experiment.
 Moreover, such scores can be utilized as confidence scores and might be helpful to analyze differences in the behavioral repertoire (see Figure~\ref{figure:behavioral-score-distributions} and Figure~\ref{figure:repertoire-difference}).
 

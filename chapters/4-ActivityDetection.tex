@@ -23,8 +23,8 @@ After that, in the Section~\ref{section:detecting-activities}, we discuss two di
 
 \section{Quantifying Activities}\label{section:quantifying-activities} \subsection{Dormancy and Macro-activity Epochs}\label{section:dormancy-and-macroactivity}
 When a fly is awake, many behaviors are manifested by featuring major postural changes and displacement of the body in different ways.
-We categorize this type of behaviors under the umbrella term of macro-activity, and dormancy is defined as the lack of macro-activities and characterized by micro-activities.
-One can characterize macro-activities without considering its sub-categories by using the velocities, i.e., gradient features.
+We categorize these types of behaviors under the umbrella term of macro-activity, and dormancy is defined as the lack of macro-activities and characterized by micro-activities.
+One can characterize macro-activities without considering their sub-categories by using the velocities, i.e., gradient features.
 In order to distinguish sub-categories of macro-activities, such as walking and rearing, more detailed and descriptive features are required.
 However, in our case, computing a single scalar value to capture the overall movement of a fly result is  sufficient  for detecting macro-activity epochs. We define this feature value by summing the gradient features for all timescales, utilizing the dynamic postural feature tensor $M^\mu$, as follows:
 \begin{equation}\label{equation:displacement}
@@ -89,4 +89,4 @@ For a single annotated fly, the resulting training feature matrix is $\V{U} \in 
 In contrast to the original publication \citep{breiman_random_2001}, we use the Scikit-learn \citep{pedregosa_scikit-learn_2011} implementation which combines classifiers by averaging their probabilistic prediction, instead of letting each classifier vote for a single class.
 $\MicroActivity$ set is constructed with the frames predicted as the positive class, corresponding to the union of annotated behavioral categories. Similarly, the $\Quiescence$ set consists of the frames predicted as the negative class.
 
-Configuration and the parameters of the random forest ensemble of decision trees is given in Section~\ref{section:employing-proposed-pipeline}, and its performance is evaluated and compared with the unsupervised approach in the same section as well.
+Configuration and the parameters of the random forest ensemble of decision trees are given in Section~\ref{section:employing-proposed-pipeline}, and its performance is evaluated and compared with the unsupervised approach in the same section as well.

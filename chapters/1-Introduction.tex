@@ -43,12 +43,12 @@ Their main focus has been on behaviors that feature major postural and positiona
 
 In this work, we develop \texttt{basty} (Automated \underline{B}ehavioral \underline{A}nalysis of A\underline{s}leep Frui\underline{t} Fl\underline{y}), a novel, end-to-end pipeline made public as a configurable, open source, and easy-to-use software package\footnote{\texttt{basty}, implemented in Python, is publicly available at \url{https://github.com/bo1929/basty}}.
 \texttt{basty} directly operates on the output of the pose estimation tools, such as DeepLabCut \citep{mathis_deeplabcut_2018} and SLEAP \cite{pereira_sleap_2022}.
-Unlike previous behavior mapping studies, we focus on behavioral repertoire exhibited during dormancy, i.e., in-place behaviors such as grooming, switch-like haltere movement, postural adjustments.
+Unlike previous behavior mapping studies, we focus on behavioral repertoire exhibited during dormancy, i.e., in-place behaviors such as grooming, switch-like haltere movement, and postural adjustments.
 Similar to previous studies, our approach is start by computing meaningful behavioral representations.
-To this end, \texttt{basty} offers an easily configurable and flexible framework, which includes a novel preprocessing step, extensive spatio-temporal feature computation and spectrogram generation.
+To this end, \texttt{basty} offers an easily configurable and flexible framework, which includes a novel preprocessing step, extensive spatio-temporal feature computation, and spectrogram generation.
 Enabling analysis of sleep experiments and biological inference, \texttt{basty} allows detecting activities in long sleep experiments (14-16 hours).
-Activity detection can be done both in an supervised manner and unsupervised manner by using Gaussian mixture model and random forest ensembles, respectively.
-The proposed pipeline includes a novel supervised behavior mapping approach, which take advantage of semi-supervised dimensionality reduction and nearest neighbors analysis in a low dimensional behavioral space.
+Activity detection can be done both in a supervised manner and unsupervised manner by using the Gaussian mixture model and random forest ensembles, respectively.
+The proposed pipeline includes a novel supervised behavior mapping approach, which takes advantage of semi-supervised dimensionality reduction and nearest neighbors analysis in a low dimensional behavioral space.
 
 We evaluate our pipeline with a dataset of sleep deprivation and wild-type sleep experiments, focusing on five behavioral categories: grooming, feeding, proboscis pumping, haltere switch, and postural adjustments.
 Notably, automated quantification of switch-like movement of haltere is achieved for the first time in this work.
@@ -60,10 +60,10 @@ Our analysis reveals spatio-temporal characteristics of the behaviors and their 
 The thesis is organized as follows:
 \begin{itemize}
 	\item In Chapter~\ref{chapter:expt-data-collection} section, we describe how the sleep experiments are conducted.
-	      We present the technical details for the collection of fly video recordings, and pose estimation data.
+	      We present the technical details for the collection of fly video recordings and pose estimation data.
 	\item Feature extraction stage is described in the Chapter~\ref{chapter:feature-extraction} in detail.
-	      This chapter includes preprocessing, computation of spatio-temporal features, and wavelet transformation and sliding window moving statistics for the generation dynamic postural features.
-	\item In Chapter~\ref{chapter:activity-detection}, we explain our approach for quantifying activities, and extracting bouts of micro-activities observed during the sleep.
+	      This chapter includes preprocessing, computation of spatio-temporal features, wavelet transformation, and sliding window moving statistics for the generation of dynamic postural features.
+	\item In Chapter~\ref{chapter:activity-detection}, we explain our approach for quantifying activities and extracting bouts of micro-activities observed during sleep.
 	\item We describe our approach for fine-grained categorization of the exhibited behaviors in Chapter~\ref{chapter:behavior-mapping}.
 	      In particular, behavioral embedding generation is discussed in Section~\ref{section:behavioral-embeddings}, and we explain nearest neighbor analysis in Section~\ref{section:nearest-neighbors-classification}.
 	\item Evaluation of the pipeline and configurations that we used in \texttt{basty} is given in the Chapter~\ref{chapter:results}.

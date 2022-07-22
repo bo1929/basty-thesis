@@ -60,7 +60,7 @@ We evaluate both unsupervised and supervised approaches, recall, and accuracy va
 	\caption[Performance summary of activity detection and micro-activity detection.]{Performance summary of activity detection and micro-activity detection.
 		The red line indicates the macro average of accuracy scores achieved for each split.
 		High recall scores are desired for behavioral categories, as opposed to quiescent frames.
-		Supervised and unsupervised detections are given respectively in the left subfigure and in the right subfigure. \label{figure:detection-performance}}
+		Supervised and unsupervised detections are given respectively in the left subfigure and the right subfigure. \label{figure:detection-performance}}
 \end{figure}
 
 For unsupervised activity detection, the threshold $c$ is set to the decision boundary $\lambda_1$ of two Gaussian components for the construction of the $\Dormancy$ set.
@@ -150,7 +150,7 @@ Since the evaluation is done with the $\MicroActivity$ set is more realistic, th
 The most robust detection is achieved for proboscis pumping and postural adjustment behavioral categories, respectively, achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
 The maximum $\textnormal{F-}1$ score achieved for grooming is $0.60$ for FlyF1-03082020164520 split, whereas $\textnormal{F-}1$ scores of haltere switch behavioral category do not exceed $0.4$.
 AUC scores for the proboscis pumping often exceed $0.95$, implying robust detection for almost all the splits.
-We observe that detection performance varies greatly among different experiments. This variation can be due to a number of reasons, but most likely reasons are related to tracking performance and annotation quality, as well as behavioral repertoires of flies.
+We observe that detection performance varies greatly among different experiments. This variation can be due to several reasons, but most likely reasons are related to tracking performance and annotation quality, as well as behavioral repertoires of flies.
 Considering all splits together, we achieve a macro average of $0.8$ AUC score with a one-versus-rest approach.
 
 As discussed in Chapter~\ref{chapter:introduction}, the behavioral repertoire of the fruit fly is much richer than the behavioral categories that we considered.
@@ -164,7 +164,7 @@ Therefore, compared to FlyF14-0817202, the haltere switch is an unseen and lacki
 We expect to identify this using behavioral scores.
 Indeed, behavioral scores reflect the difference in the behavioral repertoires of the annotated flies.
 As it can be seen in Figure~\ref{figure:repertoire-score-comparison}, behavioral scores obtained based on FlyF14-0817202's behavioral repertoire are much more confident about the correct behavioral category, whereas behavioral scores obtained based on FlyM13-08172021's behavioral repertoire are more uniform-like and total score is often shared among multiple behavioral categories.
-Using the entropy of the behavioral score, one can quantify the existence of unseen and new behavioral categories in a more systematic way.
+Using the entropy of the behavioral score, one can quantify the existence of unseen and new behavioral categories more systematically.
 In Figure~\ref{figure:repertoire-entropy-comparison}, we compare entropy distributions of the behavioral scores obtained using annotated experiments FlyM13-08172021 and FlyF14-0817202.
 We can immediately see that scores obtained based on the FlyM13-08172021's repertoire have higher entropy, with a mean of $0.41$, whereas for the other one mean is $0.15$.
 For instance, if the entropy of a frame's score is greater than $0.2$, it may be recommended to visit them and investigate the reason.
