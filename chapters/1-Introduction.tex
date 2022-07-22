@@ -2,13 +2,13 @@
 \chapter{Introduction}\label{chapter:introduction}
 Sleep is an essential behavioral program conserved across the animal kingdom, in diverse species ranging from jellyfish to humans, whose function remains unknown \citep{campbell_animal_1984, nath_jellyfish_2017}.
 In mammals, sleep consists of multiple stages marked by physiological changes, including reductions in muscle tone and distinct electrophysiological activity patterns in the brain \citep{corner_sleep_1977, sauer_dynamics_2003} In invertebrates, sleep has largely been studied as a unitary process and identified by bouts of consolidated immobility.
-Thus, careful characterization of underlying changes in behavior and physiology is needed for understanding the functional role of sleep, and characterizing distinct sleep stages in powerful genetic model systems such as \textit{Drosophila Melanogaster}.
+Thus, careful characterization of underlying changes in behavior and physiology is needed for understanding the functional role of sleep and characterizing distinct sleep stages in powerful genetic model systems such as \textit{Drosophila Melanogaster}.
 
 Recent technical advances enabled automated quantification of behaviors, and this has opened up a new field of ``computational ethology'' \citep{anderson_toward_2014, datta_computational_2019}.
-Particularly, the recent progress in deep learning has lead to the emergence of  methods for tracking animal motion, which provided the opportunity of studying naturalistic behavior at an unprecedented resolution \citep{pereira_quantifying_2020}.
+Particularly, the recent progress in deep learning has led to the emergence of  methods for tracking animal motion, which provided the opportunity of studying naturalistic behavior at an unprecedented resolution \citep{pereira_quantifying_2020}.
 Developments of pose estimation and tracking tools such as DeepLabCut \citep{mathis_deeplabcut_2018} and SLEAP \citep{pereira_fast_2019, pereira_sleap_2022} collecting spatio-temporal data about the animals possible.
-However, this data only consist of coordinate values in two or three-dimensional spatial domains, depending on the employed tracking tool.
-Quantifying the animals' rich and complex behavioral repertoires, considering its temporal structure and ambiguity, is inherently a difficult problem without clear ground truth, as discussed in \citet{pereira_quantifying_2020}.
+However, this data only consists of coordinate values in two or three-dimensional spatial domains, depending on the employed tracking tool.
+Quantifying the animals' rich and complex behavioral repertoires, considering their temporal structure and ambiguity, is inherently a difficult problem without clear ground truth, as discussed in \citet{pereira_quantifying_2020}.
 
 Because a static set of pose values are not sufficient to describe spatio-temporal complexities of behaviors, converting positional coordinates to meaningful spatio-temporal feature representations is an essential step for capturing the time-varying structure of behaviors.
 The first step of many behavior mapping pipelines is generating hand-crafted features describing relative positions of body parts, distances between body parts, angles between body parts, and how these values change over time, e.g., velocities and angular velocities \citep{kabra_jaaba_2013, hsu_b-soid_2021, marshall_continuous_2021, nilsson_simple_2020}.
@@ -38,7 +38,7 @@ Moreover, during sleep, the behavioral repertoire of fruit flies substantially c
 For instance, proboscis pumping is an in-place behavior, which is not necessarily accompanied by a positional or postural change in the rest of the body.
 Another such example is the switch-like behavior of the haltere that is characterized by the haltere's positional change in the order of microns and eventuates rapidly within a second.
 Therefore, our task of phenotyping sleep requires tackling behaviors defined by unobtrusive changes that sparsely occur during long sleep cycles.
-Previously developed behavior mapping models  does not cover these behaviour.
+Previously developed behavior mapping models  do not cover these behaviors.
 Their main focus has been on behaviors that feature major postural and positional changes, such as walking and wing waggle.
 
 In this work, we develop \texttt{basty} (Automated \underline{B}ehavioral \underline{A}nalysis of A\underline{s}leep Frui\underline{t} Fl\underline{y}), a novel, end-to-end pipeline made public as a configurable, open source, and easy-to-use software package\footnote{\texttt{basty}, implemented in Python, is publicly available at \url{https://github.com/bo1929/basty}}.
