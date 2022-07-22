@@ -41,59 +41,32 @@ Therefore, our task of phenotyping sleep requires tackling behaviors defined by 
 Previously developed behavior mapping models are not designed with such behaviors in mind.
 Their main focus has been on behaviors that feature major postural and positional changes, such as walking and wing waggle.
 
-In this work, we develop \texttt{basty} (Automated \underline{B}ehavioral \underline{A}nalysis of A\underline{s}leep Frui\underline{t} Fl\underline{y}), a novel, end-to-end pipeline made public as a configurable, open source, and easy-to-use software package\footnote{\texttt{basty} is publicly available at \url{https://github.com/bo1929/basty}}.
+In this work, we develop \texttt{basty} (Automated \underline{B}ehavioral \underline{A}nalysis of A\underline{s}leep Frui\underline{t} Fl\underline{y}), a novel, end-to-end pipeline made public as a configurable, open source, and easy-to-use software package\footnote{\texttt{basty}, implemented in Python, is publicly available at \url{https://github.com/bo1929/basty}}.
 \texttt{basty} directly operates on the output of the pose estimation tools, such as DeepLabCut \citep{mathis_deeplabcut_2018} and SLEAP \cite{pereira_sleap_2022}.
 Unlike previous behavior mapping studies, we focus on behavioral repertoire exhibited during dormancy, i.e., in-place behaviors such as grooming, switch-like haltere movement, postural adjustments.
 Similar to previous studies, our approach is start by computing meaningful behavioral representations.
 To this end, \texttt{basty} offers an easily configurable and flexible framework, which includes a novel preprocessing step, extensive spatio-temporal feature computation and spectrogram generation.
 Enabling analysis of sleep experiments and biological inference, \texttt{basty} allows detecting activities in long sleep experiments (14-16 hours).
-Activity detection can be done both in an supervised manner (using Gaussian mixture model) and unsupervised manner (using random forest ensembles \citep{breiman_random_2001}).
-We proposes a novel supervised behavior mapping approach, which take advantage of semi-supervised dimensionality reduction and nearest neighbors analysis in a low dimensional behavioral space for behavior mapping.
+Activity detection can be done both in an supervised manner and unsupervised manner by using Gaussian mixture model and random forest ensembles, respectively.
+The proposed pipeline includes a novel supervised behavior mapping approach, which take advantage of semi-supervised dimensionality reduction and nearest neighbors analysis in a low dimensional behavioral space.
 
-% We evaluate our pipeline with a dataset of sleep deprivation and wild-type sleep experiments, focusing on five behavioral categories.
-% Results show that our pipeline successfully maps behavioral categories, achieving an AUC score of 0.8, and it can detect unobserved behaviors and differences in behavioral repertoires.
-% Furthermore, we present an analysis of the behavioral repertoire exhibited during sleep by examining spatio-temporal characteristics of the behaviors and their temporal organization; in both wild-type sleep and sleep-deprived experiments.
-% Automated quantification of switch-like movement of haltere is achieved for the first time in this work.
+We evaluate our pipeline with a dataset of sleep deprivation and wild-type sleep experiments, focusing on five behavioral categories: grooming, feeding, proboscis pumping, haltere switch, and postural adjustments.
+Notably, automated quantification of switch-like movement of haltere is achieved for the first time in this work.
+Results show that our pipeline successfully maps behavioral categories, achieving an AUC score of 0.8 with limited supervision.
+We also demonstrate that our approach enables detecting unobserved behaviors and differences in behavioral repertoires.
+Furthermore, we present an analysis of the behavioral repertoire exhibited during sleep.
+Our analysis reveals spatio-temporal characteristics of the behaviors and their temporal organization; in both wild-type sleep and sleep-deprived experiments.
 
-% Sleep is a highly conserved behavior program across the animal kingdom, hinting at its essential value.
-% In order to decipher the functions of sleep, careful characterization of the underlying changes in behavior and physiology is needed in powerful genetic model systems such as Drosophila Melanogaster.
-% Recent advances in machine learning have enabled tracking of body parts and robust pose estimation in videos; however, automated quantification of behaviors requires mapping from a pair of spatial coordinates to behavioral categories.
-% Detection and successful mapping of behaviors exhibited during sleep come with unique challenges.
-% Existing methods and pipelines are developed with behaviors defined by macro postural changes ignoring subtle movements during sleep.
-% Our task of phenotyping sleep requires tackling behaviors defined by unobtrusive changes that sparsely occur during long sleep cycles.
-% To this end, we develop \texttt{basty} (Automated \underline{B}ehavioral \underline{A}nalysis of A\underline{s}leep Frui\underline{t} Fl\underline{y}), a novel, end-to-end pipeline made public as a configurable, open source, and easy-to-use software package.
-% Our pipeline enables several analyses, such as computing meaningful behavioral representations, detecting activities in long sleep experiments (14-16 hours), and nearest neighbors analysis in a low dimensional behavioral space.
-% We evaluate our pipeline with a dataset of sleep deprivation and wild-type sleep experiments, focusing on five behavioral categories.
-% Results show that our pipeline successfully maps behavioral categories, achieving an AUC score of 0.8, and it can detect unobserved behaviors and differences in behavioral repertoires.
-% Furthermore, we present an analysis of the behavioral repertoire exhibited during sleep by examining spatio-temporal characteristics of the behaviors and their temporal organization; in both wild-type sleep and sleep-deprived experiments.
-
-Outline.
-
-\NOTE{
-	\begin{itemize}
-		\item Systematic exploration of unsupervised methods for mapping behavior: \citep{todd_systematic_2017}
-		\item Predictability and hierarchy in \textit{{Drosophila}} behavior: \citep{berman_predictability_2016}
-		\item The manifold structure of limb coordination in walking {Drosophila}: \citep{deangelis_manifold_2019}
-		\item {{VAE}-{SNE}: a deep generative model for simultaneous dimensionality reduction and clustering}: \citep{graving_vae-sne_2020}
-	\end{itemize}
-}
-\NOTE{
-	\begin{itemize}
-		\item Continuous {Whole}-{Body} {3D} {Kinematic} {Recordings} across the {Rodent} {Behavioral} {Repertoire} - {SI}: \citep{marshall_continuous_2021}
-		\item Mapping {Sub}-{Second} {Structure} in {Mouse} {Behavior}: \citep{wiltschko_mapping_2015}
-		\item Neural control of affiliative touch in prosocial interaction: \citep{wu_neural_2021}
-		\item Partitioning variability in animal behavioral videos using semi-supervised variational autoencoders: \citep{whiteway_partitioning_2021}
-		\item Structure of the {Zebrafish} {Locomotor} {Repertoire} {Revealed} with {Unsupervised} {Behavioral} {Clustering}: \citep{marques_structure_2018}
-		\item A dictionary of behavioral motifs reveals clusters of genes affecting {Caenorhabditis} elegans locomotion: \citep{brown_dictionary_2013}
-		\item Deconstructing {Hunting} {Behavior} {Reveals} a {Tightly} {Coupled} {Stimulus}-{Response} {Loop}: \citep{mearns_deconstructing_2020}
-	\end{itemize}
-}
-\NOTE{
-	\begin{itemize}
-		\item The {Mouse} {Action} {Recognition} {System} ({MARS}) software pipeline for automated analysis of social behaviors in mice: \citep{segalin_mouse_2021}
-		\item {DeepEthogram}, a machine learning pipeline for supervised behavior classification from raw pixels: \citep{bohnslav_deepethogram_2021}
-		\item B-{SOiD}, an open-source unsupervised algorithm for identification and fast prediction of behaviors: \citep{hsu_b-soid_2021}
-		\item {JAABA}: interactive machine learning for automatic annotation of animal behavior: \citep{kabra_jaaba_2013}
-		\item Simple {Behavioral} {Analysis} ({SimBA}) – an open source toolkit for computer classification of complex social behaviors in experimental animals: \citep{nilsson_simple_2020}
-	\end{itemize}
-}
+The thesis is organized as follows:
+\begin{itemize}
+	\item In Chapter~\ref{chapter:expt-data-collection} section, we describe how the sleep experiments are conducted.
+	      We present the technical details for the collection of fly video recordings, and pose estimation data.
+	\item Feature extraction stage is described in the Chapter~\ref{chapter:feature-extraction} in detail.
+	      This chapter includes preprocessing, computation of spatio-temporal features, and wavelet transformation and sliding window moving statistics for the generation dynamic postural features.
+	\item In Chapter~\ref{chapter:activity-detection}, we explain our approach for quantifying activities, and extracting bouts of micro-activities observed during the sleep.
+	\item We describe our approach for fine-grained categorization of the exhibited behaviors in Chapter~\ref{chapter:behavior-mapping}.
+	      In particular, behavioral embedding generation is discussed in Section~\ref{section:behavioral-embeddings}, and we explain nearest neighbor analysis in Section~\ref{section:nearest-neighbors-classification}.
+	\item Evaluation of the pipeline and configurations that we used in \texttt{basty} is given in the Chapter~\ref{chapter:results}.
+	      We also analyze the behavioral repertoire of the asleep fruit fly in terms of spatio-temporal characteristics later in this chapter.
+	\item We conclude our work and discuss future directions in Chapter~\ref{chapter:conclusion}.
+\end{itemize}

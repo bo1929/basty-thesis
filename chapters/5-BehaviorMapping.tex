@@ -1,12 +1,12 @@
 \setlength{\parindent}{0pt}
-\chapter{Behavior Mapping}
+\chapter{Behavior Mapping}\label{chapter:behavior-mapping}
 \section{Overview of Behavior Mapping}
 Our ultimate goal is to have a fine-grained categorization of the behaviors observed during dormancy. Thus, it is not sufficient to detect the activities and construct the sets $\MicroActivity$ and $\MacroActivity$. Behavior mapping stage is the most critical and novel part of the pipeline, and in this stage, we discover and predict stereotypical behaviors by mapping each frame in the sets $\MicroActivity$.
 
 The behavior mapping stage starts by generating low dimensional behavioral embeddings from the high dimensional behavioral representation matrix $\V{\hat{W}}$, but only the rows corresponding to the $\MicroActivity$ are included in the mapping.
 Rest of the frames, namely the $\Quiescence$ set and $\MacroActivity$ set directly assigned to quiescent and moving categories.
 In Section~\ref{section:behavioral-embeddings}, behavioral embedding generation is discussed in detail, including supervised, semi-supervised, and unsupervised approaches.
-We use semi-supervised pair UMAP embeddings, described in Section~\ref{section:pair-embeddings}, to map frames to behaviors.
+We use semi-supervised pair UMAP embeddings, described in Section~\ref{section:pair-embeddings}, to project behavioral representations into a low-dimensional behavior embedding.
 
 The next step is a novel nearest neighbor analysis in the generated low-dimensional behavioral spaces, as we detail in Section~\ref{section:nearest-neighbors-classification}.
 The nearest neighbor analysis consists of several parts.
