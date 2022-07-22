@@ -29,7 +29,7 @@
 
 \def\domjurya{Asst. Prof. Onur Varol\xspace}
 \def\domjuryb{Prof. Gözde Bozdağı Akar\xspace}
-\def\domjuryc{Asst. Prof. Onur Varol\xspace}
+\def\domjuryc{Assoc. Prof. Ercüment Çiçek\xspace}
 
 \def\uniloc{İstanbul, Türkiye\xspace}
 \def\uni{Sabancı Üniversitesi\xspace}
@@ -45,9 +45,14 @@
 \def\monthtr{Temmuz}
 \def\year{2022}
 
+% Abbreviations.
+% \newglossaryentry{Abbr}{name=Abbr, description={Abbreviation.}}
+% \makenoidxglossaries
+\renewcommand*\glspostdescription{\dotfill}
+
 \begin{document}
-\pagenumbering{gobble}
-% Cover, approval and copyright
+\sloppy
+\pagenumbering{gobble}% Cover, approval and copyright
 \import{"frontmatter"}{cover}
 \import{"frontmatter"}{approval}
 \import{"frontmatter"}{copyright}
@@ -63,10 +68,39 @@
 
 % TOC, lists of figures, tables, and algorithms
 % -----------------------------------------------
+\clearpage\pagebreak
 \tableofcontents
-\listoffigures
-\listoftables
+
+\clearpage\pagebreak
+\addcontentsline{toc}{chapter}{\listtablename}
+{\let\oldnumberline\numberline\renewcommand{\numberline}{\tablename~\oldnumberline}\listoftables}
+
+\clearpage\pagebreak
+\addcontentsline{toc}{chapter}{\listfigurename}
+{\let\oldnumberline\numberline\renewcommand{\numberline}{\figurename~\oldnumberline}\listoffigures}
+
+% \clearpage\pagebreak
+% \printnoidxglossary[title=\textbf{LIST OF ABBREVIATONS}]
+
+\clearpage\pagebreak
 % \listofalgorithms
+
+% -----------------------------------------------
+\clearpage\pagebreak 
+\pagestyle{headings}
+\pagenumbering{arabic}
+\onehalfspacing 
+% -----------------------------------------------
+\pagestyle{fancy} 
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.0pt}
+ \rhead[]{}
+ \chead[]{}
+ \lhead[]{}
+ \lfoot[]{}
+ \cfoot[]{\thepage} 
+ \rfoot[]{}
+% -----------------------------------------------
 
 % Chapters
 % -----------------------------------------------
@@ -80,9 +114,44 @@
 \import{"chapters"}{6-Results}
 \import{"chapters"}{7-bastySoftwarePackage}
 \import{"chapters"}{8-Conclusion}
+
+% -----------------------------------------------
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.0pt}
+ \rhead[]{}
+ \chead[]{}
+ \lhead[]{}
+ \lfoot[]{}
+ \cfoot[]{\thepage} 
+ \rfoot[]{}
+% -----------------------------------------------
+
 % Bibliography
 % -----------------------------------------------
-\singlespace
-\addcontentsline{toc}{chapter}{Bibliography}
+\clearpage \pagebreak \singlespace \normalsize
+\addcontentsline{toc}{chapter}{BIBLIOGRAPHY}
 \bibliography{refs}
 \end{document}
+
+\makeatletter
+
+\renewcommand\tableofcontents{%
+\null\hfill\textbf{\contentsname}\hfill\null\par
+  \vspace{2\baselineskip}
+  \@starttoc{toc}%
+}
+\makeatother
+
+\addtocontents{toc}{\vspace{1em}}
+
+\usepackage[titles]{tocloft}
+
+\renewcommand{\cfttoctitlefont}{\hfill}
+\renewcommand{\cftaftertoctitle}{\hfill\mbox{}}
+\renewcommand{\cftloftitlefont}{\hfill}
+\renewcommand{\cftafterloftitle}{\hfill\mbox{}}
+\renewcommand{\cftlottitlefont}{\hfill}
+\renewcommand{\cftafterlottitle}{\hfill\mbox{}}
+\renewcommand{\cftlottitlefont}{\hfill}
+\renewcommand{\cftafterlottitle}{\hfill\mbox{}}
+\setlength{\cftbeforetoctitleskip}{-\baselineskip}

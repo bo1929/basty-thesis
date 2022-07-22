@@ -1,5 +1,5 @@
 \setlength{\parindent}{0pt}
-\chapter{Results}\label{chapter:results}
+\chapter{\bf RESULTS}\label{chapter:results}
 \section{Employing the Pipeline and  Evaluation}\label{section:employing-proposed-pipeline}
 A total of 11 experiments (7 wild-type sleep and 4 sleep-deprived) and their annotations are split into 10 training experiments and 1 test experiment for all combinations.
 We report results and evaluate each split and demonstrate varying performance for different splits.
@@ -86,7 +86,7 @@ Then, with the generated behavioral embeddings, nearest neighbors analysis is pe
 In each semi-supervised embedding, we computed $25$ nearest annotated neighbors of the frames, and contributions of the neighbors are weighted disproportional to its distance, using the Euclidean distance, as formally given in the Equation~\ref{equation:nn-weights}.
 After that, weights are normalized with the $\log_2$ number of occurrences of behavioral category of contributing neighbors, and then $\textnormal{L}_1$ normalized to make behavioral weights sum up to $1$ (see Equation ~\ref{equation:behavioral-weight-occurence-normalization}, ~\ref{equation:behavioral-weight-activation}). Finally, we summed each behavioral weight, obtained from a different ``view'' (i.e., annotated experiment), and $\textnormal{L}_1$ normalized again to end up with the final behavioral score values.
 
-\begin{figure}[htb!]
+\begin{figure}[hbt!]
 	\centering
 	\includegraphics[width=\linewidth]{figures/BehavioralScoresDistributions_perBehavior.pdf}
 	\caption[Distributions of behavioral score values of each behavioral category for all splits.]{Distributions of behavioral score values of each behavioral category for all splits.
@@ -153,6 +153,24 @@ AUC scores for the proboscis pumping often exceed $0.95$, implying robust detect
 We observe that detection performance varies greatly among different experiments. This variation can be due to several reasons, but most likely reasons are related to tracking performance and annotation quality, as well as behavioral repertoires of flies.
 Considering all splits together, we achieve a macro average of $0.8$ AUC score with a one-versus-rest approach.
 
+\begin{figure}[htb!]
+	\centering
+	\begin{subfigure}[b]{0.545\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/BehavioralScores-RepertoireDifference.pdf}
+		\caption{Behavioral score values, before $\textnormal{L}_1$ normalization. \label{figure:repertoire-score-comparison}}
+	\end{subfigure}%
+    \hfill
+	\begin{subfigure}[b]{0.445\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/Entropy-RepertoireDifference.pdf}
+		\caption{Entropy values. The red line is the mean. \label{figure:repertoire-entropy-comparison}}
+	\end{subfigure}%
+	\caption[Histogram of entropy values and box-plot of the behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.]{Histogram of entropy values and box-plot of behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.
+		Here, the behavioral repertoire of FlyF1-03082020 is predicted separately with two different annotated experiments, namely FlyF14-08172021 and FlyM13-08172021.
+		Behavioral scores and entropy values are computed for the haltere switch behavior.
+		The latter one lacks the haltere switch behavior, and as a result, behavioral scores tend to have higher entropy.
+		Results demonstrate the ability of the proposed pipeline to detect and discover unseen unannotated behavioral categories using behavioral scores.\label{figure:repertoire-difference}}
+\end{figure}
+
 As discussed in Chapter~\ref{chapter:introduction}, the behavioral repertoire of the fruit fly is much richer than the behavioral categories that we considered.
 Moreover, there exists a great amount of variation among flies' behavioral repertoire and behavioral visits (see Section~\ref{section:analyzing-behavioral-repertoires}).
 Thus, we also investigate our pipeline's ability to detect unseen behavioral categories by utilizing behavioral scores.
@@ -170,24 +188,6 @@ We can immediately see that scores obtained based on the FlyM13-08172021's reper
 For instance, if the entropy of a frame's score is greater than $0.2$, it may be recommended to visit them and investigate the reason.
 Accordingly, behavioral annotations can be extended.
 
-\begin{figure}[hbt!]
-	\centering
-	\begin{subfigure}[b]{0.545\linewidth}
-		\centering\includegraphics[width=\linewidth]{figures/BehavioralScores-RepertoireDifference.pdf}
-		\caption{Behavioral score values, before $\textnormal{L-}1$ normalization. \label{figure:repertoire-score-comparison}}
-	\end{subfigure}%
-    \hfill
-	\begin{subfigure}[b]{0.445\linewidth}
-		\centering\includegraphics[width=\linewidth]{figures/Entropy-RepertoireDifference.pdf}
-		\caption{Entropy values. The red line is the mean. \label{figure:repertoire-entropy-comparison}}
-	\end{subfigure}%
-	\caption[Histogram of entropy values and box-plot of the behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.]{Histogram of entropy values and box-plot of behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.
-		Here, the behavioral repertoire of FlyF1-03082020 is predicted separately with two different annotated experiments, namely FlyF14-08172021 and FlyM13-08172021.
-		Behavioral scores and entropy values are computed for the haltere switch behavior.
-		The latter one lacks the haltere switch behavior, and as a result, behavioral scores tend to have higher entropy.
-		Results demonstrate the ability of the proposed pipeline to detect and discover unseen unannotated behavioral categories using behavioral scores.\label{figure:repertoire-difference}}
-\end{figure}
-
 \section{Analyzing Behavioral Repertoires}\label{section:analyzing-behavioral-repertoires}
 In this section, we analyze the collected data of sleep experiments to discover how behaviors that we are interested in are exhibited.
 Starting from a broad perspective, the briefest description of sleep experiments can be done by quantifying the displacement of the flies placed in the chamber.
@@ -196,14 +196,14 @@ We observe that the long dormancy epochs are interrupted by relatively short mac
 In addition to short macro activity bouts, we observe very small displacements all over the night, which indicates there exist micro-activities other than major positional and postural changes.
 Hence, a more fine-grained analysis and detailed examination are necessary to gain insight, as this work attempts to achieve.
 
-\begin{figure}[t!]
+\begin{figure}[htb!]
 	\centering
-	\begin{subfigure}[b]{0.95\linewidth}
+	\begin{subfigure}[b]{0.995\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Velocity-WT-1T.pdf}
 		\caption{Wild type.}
 	\end{subfigure}%
 
-	\begin{subfigure}[b]{0.95\linewidth}
+	\begin{subfigure}[b]{0.995\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Velocity-SD-1T.pdf}
 		\caption{Sleep-deprived.}
 	\end{subfigure}%
@@ -212,8 +212,8 @@ Hence, a more fine-grained analysis and detailed examination are necessary to ga
 		Displacement values are computed as described in Equation~\ref{equation:displacement} and smoothed with a rolling mean of a 1-minute window.\label{figure:displacement}}
 \end{figure}
 
-\begin{figure}[b!]
-	\centering\includegraphics[width=0.95\linewidth]{figures/ActivityBinned-Ann-WT-5T.pdf}
+\begin{figure}[htb!]
+	\centering\includegraphics[width=0.995\linewidth]{figures/ActivityBinned-Ann-WT-5T.pdf}
 	\caption[Binned temporal heatmap of activities.]{Binned temporal heatmap of activities.
 		Each bin is $5$ minutes, corresponding to $9000$ frames.
 		Activity value is computed as the ratio of the number of annotated frames and the total number of frames in that bin. \label{figure:heatmap-microactivity}}
@@ -224,21 +224,21 @@ In Figure~\ref{figure:heatmap-microactivity}, experiments are temporally divided
 
 \begin{figure}[htb!]
 	\centering
-	\begin{subfigure}[b]{0.95\linewidth}
+	\begin{subfigure}[b]{0.995\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/FeatureDistributions_perBehavior-Ann.pdf}
 		\caption{Summation of all frequency channels of behavioral representation value for each spatio-temporal feature.\label{figure:feature-distributions}}
 	\end{subfigure}%
 
 	\centering
-	\begin{subfigure}[b]{0.95\linewidth}
+	\begin{subfigure}[b]{0.995\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/BoutDurationDistributions-Ann.pdf}
 		\caption{Kernel density estimations of bout durations for each behavioral category. The variance of bout durations within and across behavioral categories demonstrates the rich behavioral repertoire. \label{figure:bout-durations}}
 	\end{subfigure}%
 
 	\centering
-	\begin{subfigure}[b!]{0.95\linewidth}
+	\begin{subfigure}[b!]{0.995\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{figures/TimeSpent-perBehavior-Ann.pdf}
 		\caption{Time spent while exhibiting each behavioral category for all experiments. \label{figure:time-spent-in-behaviors}}
@@ -248,7 +248,7 @@ In Figure~\ref{figure:heatmap-microactivity}, experiments are temporally divided
 
 In addition to the temporal organization of the activities, we are also interested in the characteristics of each behavioral category such as total time spent, bout durations, kinematics, and feature value distributions.
 In order to visualize feature distributions of each behavioral category, we sum behavioral representation values of all frequency channels for each spatio-temporal feature.
-For a single frame, resulting values sum up to $1$ as they are $\textnormal{L-}1$ normalized.
+For a single frame, resulting values sum up to $1$ as they are $\textnormal{L}_1$ normalized.
 In Figure~\ref{figure:feature-distributions}, we see how behavioral categories are defined by spatial characteristics.
 As expected, proboscis-related features play a significant role in characterizing feeding and proboscis pumping.
 Similarly, features related to leg and thorax are more apparent for grooming and postural adjustment.
@@ -265,13 +265,13 @@ We observe a great variance for time spent exhibiting haltere switch among exper
 
 \begin{figure}[htb!]
 	\centering
-	\begin{subfigure}[b]{0.975\linewidth}
+	\begin{subfigure}[b]{0.995\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/Heatmap_BehavioralVisit-Ann.pdf}
 		\caption{Rate of behavioral visits during the sleep within each $5$ sleep percentage bin. Each row is normalized, to sum up to $1$.}
 	\end{subfigure}%
 
 	\centering
-	\begin{subfigure}[b]{0.975\linewidth}
+	\begin{subfigure}[b]{0.995\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/CumulativeLine_BehavioralVisit-Ann.pdf}
 		\centering\includegraphics[width=\linewidth]{figures/MeanCumRofC_BehavioralVisit-Ann.pdf}
 		\caption{Cumulative behavioral visits for each behavior, behaviors with less than 2 bouts are excluded.}

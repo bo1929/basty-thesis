@@ -1,20 +1,33 @@
 %%%%%%%%%%%%
 % Packages %
 %%%%%%%%%%%%
-\usepackage{import}
-
+\usepackage{pdflscape} 
+\usepackage{mathptmx} 
+\usepackage{calc} 
+\usepackage{fancyhdr} 
+\usepackage{multicol} 
+\usepackage{sectsty} 
+\usepackage{fullpage} 
+\usepackage{colortbl} 
 \usepackage{makeidx} 
 \usepackage{endnotes} 
 \usepackage{rotating}
 \usepackage{rotfloat}
 \usepackage{titlesec}
+\usepackage{ragged2e}
+\usepackage{epigraph}
+\usepackage[english]{babel}
+\usepackage[titles]{tocloft}
 \usepackage[ragged]{footmisc}
 \usepackage[final]{pdfpages} 
 \usepackage[dotinlabels]{titletoc}
 \usepackage[nogroupskip, toc]{glossaries}
 
 \usepackage{lipsum}
+\usepackage{import}
 \usepackage{comment}
+\usepackage{enumitem}
+\usepackage{etoolbox}
 
 \usepackage[
     format=plain,
@@ -26,13 +39,17 @@
 \usepackage{subcaption}
 \usepackage{hyperref}
 \usepackage{xcolor}
+\usepackage{subscript}
 
-\usepackage{appendix}
-\usepackage{placeins}
 \usepackage{listings}
+\usepackage{array}
+
 \usepackage{lmodern}
 \usepackage{adjustbox}
+\usepackage{indentfirst}
+\usepackage{placeins}
 \usepackage{parskip}
+\usepackage{dashbox}
 
 \usepackage{graphicx}
 \usepackage{float}
@@ -42,7 +59,12 @@
 \usepackage{xspace}
 
 \usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
 \usepackage{multirow}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{supertabular} 
 
 \usepackage{amsmath}
 \usepackage{amsbsy}
@@ -61,6 +83,7 @@
 \usepackage{upgreek}
 \usepackage{bm}
 
+\usepackage{appendix}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
 
@@ -169,12 +192,22 @@
 % Style Settings %
 %%%%%%%%%%%%
 \onehalfspacing
+\setlength{\epigraphwidth}{0.75\textwidth}
 \hypersetup{
   colorlinks   = true, % Colours links instead of ugly boxes
   urlcolor     = blue, % Colour for external hyperlinks
   linkcolor    = black, % Colour of internal links
   citecolor   = black % Colour of citations
 }
+
+% Theorm etc.
+\newtheorem{Theorem}{Theorem}[chapter] 
+\newtheorem{Hypothesis}{Hypothesis}[chapter] 
+\newtheorem{Proposition}{Proposition}[chapter] 
+\newtheorem{Corollary}{Corollary}[chapter] 
+\newtheorem{Lemma}{Lemma}[chapter] 
+\newtheorem{Remark}{Remark}[chapter] 
+\newtheorem{Definition}{Definition}[chapter] 
 
 % Table formatting
 \setlength{\arrayrulewidth}{0.6mm}
@@ -202,11 +235,77 @@
 \bibliographystyle{apalike} 
 
 % Chapter heading formatting
-% \titleformat{\chapter}{\vspace{4\baselineskip}\bf\normalsize\centering}{\thechapter}{1ex}{\bf \uppercase \vspace{3\baselineskip}}
+\titleformat{\chapter}[block]{\centering}{\vspace{4\baselineskip} \bf\centering \thechapter.}{\baselineskip}{\vspace{\baselineskip} \expandafter\MakeUppercase\expandafter \bf} 
 
-% \titleformat{\section}{\vspace{2\baselineskip}\bf\normalsize\centering}{\thesection}{1ex}{\bf \vspace{2\baselineskip}}
-% \titleformat{\subsection}{\vspace{2\baselineskip}\bf\normalsize}{\thesubsection}{1ex}{\bf \vspace{\baselineskip}} 
-% \titleformat{\subsubsection}{\vspace{2\baselineskip}\bf\normalsize}{\thesubsubsection}{1ex}{\bf \vspace{\baselineskip}}
+% Section heading formatting
+\titleformat{\section}[block]{\vspace{2\baselineskip}\bf\normalsize\centering}{\thesection}{1ex}{\bf \vspace{2\baselineskip}}
+\titleformat{\subsection}[block]{\vspace{2\baselineskip}\bf\normalsize}{\thesubsection}{1ex}{\bf \vspace{\baselineskip}} 
+\titleformat{\subsubsection}[block]{\vspace{2\baselineskip}\bf\normalsize}{\thesubsubsection}{1ex}{\bf \vspace{\baselineskip}}
+\titleformat{\part}[block]{\LARGE \centering}{\bf Part \thepart}{0em}{\hline \vspace{0.5cm} \bf}
+\titlespacing{\part}{0pt}{0.5in}{2.0cm} 
 
-% \titleformat{\part}[display]{\LARGE \centering}{\bf Part \thepart}{0em}{\hline \vspace{0.5cm} \bf}
-% \titlespacing{\part}{0pt}{0.5in}{2.0cm} 
+% SU style requirements
+\addto\captionsenglish{
+    \renewcommand{\contentsname}{\MakeUppercase{\bf Table of Contents}}
+}
+\addto\captionsenglish{
+    \renewcommand{\listtablename}{\bf LIST OF TABLES}
+}
+\addto\captionsenglish{
+    \renewcommand{\listfigurename}{\bf LIST OF FIGURES}
+}
+\addto\captionsenglish{
+    \renewcommand{\bibsection}{\centering \textbf{BIBLIOGRAPHY} \vspace{3\baselineskip}}
+}
+
+\AtBeginEnvironment{quote}{\vspace{\baselineskip}}
+\AtEndEnvironment{quote}{\vspace{\baselineskip}}
+
+\newcounter{acount}\renewcommand{\theacount}{\arabic{acount}}
+\AtBeginEnvironment{enumerate}{\stepcounter{acount}}
+\setlist[enumerate]{label=\theacount.\arabic*,ref=\theacount.\arabic*} 
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+\newenvironment{tightcenter}{%
+    \setlength\topsep{0pt}
+    \setlength\parskip{0pt}
+    \begin{center}
+        }{%
+    \end{center}
+}
+
+\makeatletter
+
+\renewcommand*\l@chapter[2]{%
+ \ifnum \c@tocdepth >\m@ne
+ \addpenalty{-\@highpenalty}%
+ \vskip 1.0em \@plus\p@
+ \setlength\@tempdima{1.5em}%
+ \begingroup
+ \parindent \z@ \rightskip \@pnumwidth
+ \parfillskip -\@pnumwidth
+ \leavevmode \bfseries
+ \advance\leftskip\@tempdima
+ \hskip -\leftskip
+ #1\nobreak\leaders\hbox{\normalfont$\m@th
+ \mkern \@dotsep mu\hbox{.}\mkern \@dotsep
+ mu$}\hfill \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+ \penalty\@highpenalty
+ \endgroup
+ \fi}
+ 
+\renewcommand*{\@dotsep}{1.25}
+
+\newcommand\appendix@chapter[1]{%
+ \refstepcounter{chapter}%
+ \def\app@ct{\bf APPENDIX \@Alph\c@chapter #1 \vspace{-4em}}
+ \orig@chapter*{\app@ct}%
+ \markboth{\MakeUppercase{\app@ct}}{\MakeUppercase{\app@ct}}
+ \addcontentsline{toc}{chapter}{\app@ct}%
+}
+
+\let\orig@chapter\chapter
+\g@addto@macro\appendix{\let\chapter\appendix@chapter}
+
+\makeatother

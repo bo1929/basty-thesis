@@ -1,5 +1,5 @@
 \setlength{\parindent}{0pt}
-\chapter{Feature Extraction}\label{chapter:feature-extraction}
+\chapter{\bf FEATURE EXTRACTION}\label{chapter:feature-extraction}
 \section{Overview of Feature Extraction}
 For a single experiment data, i.e., a single fruit fly recorded between ZT10 and ZT2 (zeitgeber time 10 and 2), feature extraction consists of four consecutive steps,  where the input in the present stage is the output of the previous one.
 In this study, the input of the first step is the raw output signal of the tracking and pose estimation model which is produced by DeepLabCut, a toolbox for markerless pose estimation.
@@ -117,7 +117,7 @@ where $\mathcal{O}$ is the set of index pairs of left and right counterparts and
 Applying the procedures described above for each left and right counterparts results in computing $\V{X}^{\omicron}$ and $\V{Y}^{\omicron}$.
 Such oriented versions of the original data matrices can be used instead of $\V{X}$ and $\V{Y}$ in the rest of the pipeline, if desired.
 
-\subsubsection{Detecting Occlusions Using Prediction Scores \& Anomalous Pose Values}\label{section:detecting-occlusions}
+\subsubsection{Finding Occlusions using Prediction Scores \& Anomalous Pose Values}\label{section:detecting-occlusions}
 Major postural changes and overlapping body parts during movements result in some body parts being occluded for a short interval of time.
 These types of occlusions may span several frames to several seconds.
 Since the pose estimation model makes predictions for such data points, it is necessary to detect and process such data points.
@@ -202,19 +202,19 @@ where $\Delta t$ is the sampling period, and it is equal to $\sfrac{1}{\textnorm
 
 \begin{figure}[ht!]
 	\centering
-	\begin{subfigure}[ht!]{0.32\linewidth}
+	\begin{subfigure}[b]{0.33\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/ExampleTrajectory-ProboscisPumping.pdf}
 		\caption{Pumping-like movement of the proboscis.}
 	\end{subfigure}%
 	\hfill
 	\centering
-	\begin{subfigure}[ht!]{0.32\linewidth}
+	\begin{subfigure}[b]{0.33\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/ExampleTrajectory-PosturalAdjustment.pdf}
 		\caption{Postural adjustment and movement of the thorax.}
 	\end{subfigure}%
 	\hfill
 	\centering
-	\begin{subfigure}[ht!]{0.32\linewidth}
+	\begin{subfigure}[b]{0.33\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/ExampleTrajectory-HaltereSwitch_3.pdf}
 		\caption{Switch-like movement of the haltere.}
 	\end{subfigure}%
@@ -280,6 +280,7 @@ In order to extend the spatio-temporal features to dynamic postural features, we
 \subsection{Moving Statistics of Gradient Features}
 Gradient features only reflect the instantaneous values of velocities with respect to the sampling rate.
 In order to capture how these values change within a given interval, the moving statistics of gradient features such as the mean and the standard deviation are  computed with a sliding window approach.
+
 Let $\tau$ be the window size parameter, i.e., the timescale of interest, then the moving mean of the corresponding gradient feature $\V{g}_{i}$ is given by the function $\mu_\tau$, as given below:
 \begin{equation}
 	\mu_{\tau}(g_{i,t}) = \sfrac{1}{\min\{t+\tau,\, T\}-\max\{t-\tau,\, 1\}+1} \sum_{t^{\prime}=\max\{t-\tau,\, 1\}}^{\min\{t+\tau,\, T\}} g_{i, t^{\prime}}.
