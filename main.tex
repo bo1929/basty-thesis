@@ -8,7 +8,7 @@
     tmargin=2.5cm,
     bmargin=2.5cm
     ]{geometry}
-% \usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc}
 % \usepackage{showframe}
 \usepackage{thesis}
 
@@ -86,26 +86,27 @@
 % \listofalgorithms
 
 % -----------------------------------------------
-\clearpage\pagebreak 
+\clearpage\pagebreak
 \pagestyle{headings}
 \pagenumbering{arabic}
-\onehalfspacing 
+\onehalfspacing
 % -----------------------------------------------
-\pagestyle{fancy} 
+\pagestyle{fancy}
 \renewcommand{\headrulewidth}{0.0pt}
 \renewcommand{\footrulewidth}{0.0pt}
- \rhead[]{}
- \chead[]{}
- \lhead[]{}
- \lfoot[]{}
- \cfoot[]{\thepage} 
- \rfoot[]{}
+\rhead[]{}
+\chead[]{}
+\lhead[]{}
+\lfoot[]{}
+\cfoot[]{\thepage}
+\rfoot[]{}
 % -----------------------------------------------
 
 % Chapters
 % -----------------------------------------------
 % Start Arabic page numbering from 1
-\clearpage \pagenumbering{arabic} \setcounter{page}{1} \onehalfspacing
+\clearpage \pagenumbering{arabic} \setcounter{page}{1}
+\onehalfspacing
 \import{"chapters"}{1-Introduction}
 \import{"chapters"}{2-DataCollection}
 \import{"chapters"}{3-FeatureExtraction}
@@ -118,12 +119,12 @@
 % -----------------------------------------------
 \renewcommand{\headrulewidth}{0.0pt}
 \renewcommand{\footrulewidth}{0.0pt}
- \rhead[]{}
- \chead[]{}
- \lhead[]{}
- \lfoot[]{}
- \cfoot[]{\thepage} 
- \rfoot[]{}
+\rhead[]{}
+\chead[]{}
+\lhead[]{}
+\lfoot[]{}
+\cfoot[]{\thepage}
+\rfoot[]{}
 % -----------------------------------------------
 
 % Bibliography
@@ -136,9 +137,9 @@
 \makeatletter
 
 \renewcommand\tableofcontents{%
-\null\hfill\textbf{\contentsname}\hfill\null\par
-  \vspace{2\baselineskip}
-  \@starttoc{toc}%
+	\null\hfill\textbf{\contentsname}\hfill\null\par
+	\vspace{2\baselineskip}
+	\@starttoc{toc}%
 }
 \makeatother
 
