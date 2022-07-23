@@ -25,12 +25,13 @@ Results demonstrate that our pipeline robustly detects activities, and successfu
 Overall, \texttt{basty} achieves a macro average of 0.8 AUC score.
 Moreover, we demonstrate its ability to detect unobserved behaviors and differences between behavioral repertoires.
 
-% Limitations.
-Although we focus on five behavioral categories, in fact, behavioral repertoire of dormant Drosophila Melanogaster is much richer. In fact,
+Although we focus on 5 behavioral categories, in fact, the behavioral repertoire of dormant Drosophila Melanogaster is much richer. There exist behaviors that do not fall into any of 5 the defined categories. 
+As behaviors need to be annotated, the problem of ``lumping'' versus ``splitting'' emerges due to the nature of behaviors. For instance, we lump face grooming and abdomen grooming under a single category of grooming.
+Therefore, a future direction is extending the considered behavioral categories, and even splitting existing categories into more strictly defined subcategories. 
+
+The approach of segmentation of continuous and hierarchical behaviors into categorical components is necessarily human-biased and does not reflect the true nature of behaviors. A sequence of simple behaviors together might hierarchically generate compositional behaviors. Similarly, two behaviors might accompany each other, resulting in a composite behavior. One can utilize behavioral scores to analyze such structures, however, in its current state, our pipeline does not directly deal with composite and compositional behaviors.
+Hence, \texttt{basty} can be extended to analyze such behaviors in the future.
 
 3D tracking
-
-
-% Future work.
 
 % How does this research enables other research, sleep phenotyping, molecular biology experiments to identify genetic programs, etc.
