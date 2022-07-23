@@ -32,6 +32,7 @@ Therefore, a future direction is extending the considered behavioral categories,
 The approach of segmentation of continuous and hierarchical behaviors into categorical components is necessarily human-biased and does not reflect the true nature of behaviors. A sequence of simple behaviors together might hierarchically generate compositional behaviors. Similarly, two behaviors might accompany each other, resulting in a composite behavior. One can utilize behavioral scores to analyze such structures, however, in its current state, our pipeline does not directly deal with composite and compositional behaviors.
 Hence, \texttt{basty} can be extended to analyze such behaviors in the future.
 
-3D tracking
+Popular pose estimation tools, such as DeepLabCut and SLEAP, perform tracking on the videos recorded with a single camera, and hence, the inference is done in the two-dimensional projection. The resulting pose estimation data does directly reflect the true spatial characteristics and contains  many missing points due to occlusions. However, the true spatial characteristics of behaviors can only be captured in three-dimensional space.
+Our pipeline, \texttt{basty}, can easily be configured to operate on three-dimensional pose values, as three-dimensional pose estimation tools become more available in the future.
 
 % How does this research enables other research, sleep phenotyping, molecular biology experiments to identify genetic programs, etc.
