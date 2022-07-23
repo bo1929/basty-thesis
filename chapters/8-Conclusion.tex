@@ -13,13 +13,15 @@ Yet still, challenges remain open.
 While behaviors exhibited by awake animals tend to be characterized by major postural and positional changes, the behavioral repertoire of asleep animals includes subtle movements and unobtrusive changes that sparsely occur during long sleep cycles.
 Thus, exploring and quantifying the behavioral repertoire of sleep requires special care and additional considerations.
 
-To this end, we developed
+To this end, we develop a multi-stage and end-to-end behavior mapping pipeline, specifically designed for animals in dormancy state, and release it as a configurable and easy-to-use software package, called \texttt{basty}.
+Our approach consists of computing representations capturing complex spatio-temporal characteristics of behaviors, detecting micro-activities exhibited in long-duration sleep bouts, and mapping detected activities utilizing a nearest neighbor based analysis on the low-dimensional behavioral embeddings.
+Our pipeline is able to handle noisy pose estimation data, with missing points (i.e., occlusions), through rigorous pre-processing and post-processing steps.
+Using novel approaches such as semi-supervised pair embeddings approach and experiment committee by voting, \texttt{basty} can tackle mapping of rich behavioral repertoire of dormant fruit fly with limited supervision.
 
 We evaluated,
 
 % Limitations.
 
 % Future work.
-
 
 % How does this research enables other research, sleep phenotyping, molecular biology experiments to identify genetic programs, etc.

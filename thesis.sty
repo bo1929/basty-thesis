@@ -1,6 +1,13 @@
 %%%%%%%%%%%%
 % Packages %
 %%%%%%%%%%%%
+\usepackage[
+    rmargin=2.5cm,
+    lmargin=3.5cm,
+    tmargin=2.5cm,
+    bmargin=2.5cm
+    ]{geometry}
+
 \usepackage{pdflscape} 
 \usepackage{mathptmx} 
 \usepackage{calc} 
@@ -19,9 +26,7 @@
 \usepackage[english]{babel}
 \usepackage[titles]{tocloft}
 \usepackage[ragged]{footmisc}
-\usepackage[final]{pdfpages} 
 \usepackage[dotinlabels]{titletoc}
-\usepackage[nogroupskip, toc]{glossaries}
 
 \usepackage{lipsum}
 \usepackage{import}
@@ -86,6 +91,7 @@
 \usepackage{appendix}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
+\usepackage[intoc, english]{nomencl}
 
 \usepackage{natbib}
 
@@ -200,7 +206,7 @@
   citecolor   = black % Colour of citations
 }
 
-% Theorm etc.
+% Theorem etc.
 \newtheorem{Theorem}{Theorem}[chapter] 
 \newtheorem{Hypothesis}{Hypothesis}[chapter] 
 \newtheorem{Proposition}{Proposition}[chapter] 
@@ -258,9 +264,6 @@
     \renewcommand{\bibsection}{\centering \textbf{BIBLIOGRAPHY} \vspace{3\baselineskip}}
 }
 
-\AtBeginEnvironment{quote}{\vspace{\baselineskip}}
-\AtEndEnvironment{quote}{\vspace{\baselineskip}}
-
 \newcounter{acount}\renewcommand{\theacount}{\arabic{acount}}
 \AtBeginEnvironment{enumerate}{\stepcounter{acount}}
 \setlist[enumerate]{label=\theacount.\arabic*,ref=\theacount.\arabic*} 
@@ -274,8 +277,6 @@
         }{%
     \end{center}
 }
-
-\makeatletter
 
 \renewcommand*\l@chapter[2]{%
  \ifnum \c@tocdepth >\m@ne
@@ -294,18 +295,5 @@
  \penalty\@highpenalty
  \endgroup
  \fi}
- 
-\renewcommand*{\@dotsep}{1.25}
 
-\newcommand\appendix@chapter[1]{%
- \refstepcounter{chapter}%
- \def\app@ct{\bf APPENDIX \@Alph\c@chapter #1 \vspace{-4em}}
- \orig@chapter*{\app@ct}%
- \markboth{\MakeUppercase{\app@ct}}{\MakeUppercase{\app@ct}}
- \addcontentsline{toc}{chapter}{\app@ct}%
-}
-
-\let\orig@chapter\chapter
-\g@addto@macro\appendix{\let\chapter\appendix@chapter}
-
-\makeatother
+\makeatletter

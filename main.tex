@@ -8,19 +8,19 @@
     tmargin=2.5cm,
     bmargin=2.5cm
     ]{geometry}
-\usepackage[utf8]{inputenc}
 % \usepackage{showframe}
 \usepackage{thesis}
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 % Thesis Main Document %
 %%%%%%%%%%%%%%%%%%%%%%%%
-% Define thesis name, author, advisor, etc.
+% -----------------------------------------------
+% Information
 % ---------------------------------------------------
 \def\thesistitle{Automated Behavioral Analysis of Asleep Fruit Fly}
-\def\thesistitletr{Uyku Halindeki Meyve Sineğinin Davranışlarının Otomatik Analizi}
+\def\thesistitletr{Uyku Hal\.{ı}ndek\.{ı} Meyve S\.{ı}neğ\.{ı}n\.{ı}n Davranışlarının Otomat\.{ı}k Anal\.{ı}z\.{ı}}
 
-\def\student{Ali Osman Berk Şapcı\xspace}
+\def\student{Al\.{ı} Osman Berk Şapcı\xspace}
 
 \def\advisor{Asst. Prof. Öznur Taştan\xspace}
 \def\advisortr{Dr. Öğr. Üyesi  Öznur Taştan\xspace}
@@ -29,13 +29,13 @@
 
 \def\domjurya{Asst. Prof. Onur Varol\xspace}
 \def\domjuryb{Prof. Gözde Bozdağı Akar\xspace}
-\def\domjuryc{Assoc. Prof. Ercüment Çiçek\xspace}
+\def\domjuryc{Assoc. Prof. Ercüment Ç\.{ı}çek\xspace}
 
 \def\uniloc{İstanbul, Türkiye\xspace}
 \def\uni{Sabancı Üniversitesi\xspace}
 \def\school{Faculty of Engineering and Natural Sciences\xspace}
 \def\major{Computer Science and Engineering\xspace}
-\def\majortr{Bilgisayar Bilimi ve Mühendisliği\xspace}
+\def\majortr{B\.{ı}lg\.{ı}sayar B\.{ı}l\.{ı}m\.{ı} ve Mühend\.{ı}sl\.{ı}ğ\.{ı}\xspace}
 \def\degree{Master of Science\xspace}
 \def\degreetr{Y\"{u}ksek L\.{ı}sans\xspace}
 \def\degreeabv{MSc.\xspace}
@@ -44,52 +44,44 @@
 \def\month{July}
 \def\monthtr{Temmuz}
 \def\year{2022}
-
-% Abbreviations.
-% \newglossaryentry{Abbr}{name=Abbr, description={Abbreviation.}}
-% \makenoidxglossaries
-\renewcommand*\glspostdescription{\dotfill}
+% -----------------------------------------------
 
 \begin{document}
 \sloppy
-\pagenumbering{gobble}% Cover, approval and copyright
+\pagenumbering{gobble}
+% -----------------------------------------------
+% Frontmatter
+% -----------------------------------------------
+% Cover, approval and copyright
 \import{"frontmatter"}{cover}
 \import{"frontmatter"}{approval}
 \import{"frontmatter"}{copyright}
-
+% Start roman page numbering from 3
+\clearpage \pagebreak
+\pagenumbering{roman} \setcounter{page}{3}
 % Abstracts, acknowledgments, and dedication
-% -----------------------------------------------
-%  Start roman page numbering from 3
-\clearpage \pagenumbering{roman} \setcounter{page}{3}
 \import{"frontmatter"}{abstract}
 \import{"frontmatter"}{ozet}
 \import{"frontmatter"}{acknowledgment}
 \import{"frontmatter"}{dedication}
-
-% TOC, lists of figures, tables, and algorithms
-% -----------------------------------------------
-\clearpage\pagebreak
+\import{"frontmatter"}{nomencl}
+% TOC
+\clearpage \pagebreak
 \tableofcontents
-
+% Lists of figures
 \clearpage\pagebreak
 \addcontentsline{toc}{chapter}{\listtablename}
-{\let\oldnumberline\numberline\renewcommand{\numberline}{\tablename~\oldnumberline}\listoftables}
-
+{\let\onumline\numberline\renewcommand{\numberline}{\tablename~\onumline}\listoftables}
+% List of tables
 \clearpage\pagebreak
 \addcontentsline{toc}{chapter}{\listfigurename}
-{\let\oldnumberline\numberline\renewcommand{\numberline}{\figurename~\oldnumberline}\listoffigures}
-
+{\let\onumline\numberline\renewcommand{\numberline}{\figurename~\onumline}\listoffigures}
+% List of algorithms
 % \clearpage\pagebreak
-% \printnoidxglossary[title=\textbf{LIST OF ABBREVIATONS}]
-
-\clearpage\pagebreak
-% \listofalgorithms
-
+% \addcontentsline{toc}{chapter}{\listalgorithmname}
+% {\let\onumline\numberline\renewcommand{\numberline}{\figurename~\onumline}\listofalgorithms}
 % -----------------------------------------------
-\clearpage\pagebreak
-\pagestyle{headings}
-\pagenumbering{arabic}
-\onehalfspacing
+
 % -----------------------------------------------
 \pagestyle{fancy}
 \renewcommand{\headrulewidth}{0.0pt}
@@ -102,10 +94,12 @@
 \rfoot[]{}
 % -----------------------------------------------
 
+% -----------------------------------------------
 % Chapters
 % -----------------------------------------------
+\clearpage \pagebreak
 % Start Arabic page numbering from 1
-\clearpage \pagenumbering{arabic} \setcounter{page}{1}
+\pagenumbering{arabic} \setcounter{page}{1}
 \onehalfspacing
 \import{"chapters"}{1-Introduction}
 \import{"chapters"}{2-DataCollection}
@@ -115,6 +109,7 @@
 \import{"chapters"}{6-Results}
 \import{"chapters"}{7-bastySoftwarePackage}
 \import{"chapters"}{8-Conclusion}
+% -----------------------------------------------
 
 % -----------------------------------------------
 \renewcommand{\headrulewidth}{0.0pt}
@@ -127,32 +122,11 @@
 \rfoot[]{}
 % -----------------------------------------------
 
+% -----------------------------------------------
 % Bibliography
 % -----------------------------------------------
 \clearpage \pagebreak \singlespace \normalsize
 \addcontentsline{toc}{chapter}{BIBLIOGRAPHY}
 \bibliography{refs}
+% -----------------------------------------------
 \end{document}
-
-\makeatletter
-
-\renewcommand\tableofcontents{%
-	\null\hfill\textbf{\contentsname}\hfill\null\par
-	\vspace{2\baselineskip}
-	\@starttoc{toc}%
-}
-\makeatother
-
-\addtocontents{toc}{\vspace{1em}}
-
-\usepackage[titles]{tocloft}
-
-\renewcommand{\cfttoctitlefont}{\hfill}
-\renewcommand{\cftaftertoctitle}{\hfill\mbox{}}
-\renewcommand{\cftloftitlefont}{\hfill}
-\renewcommand{\cftafterloftitle}{\hfill\mbox{}}
-\renewcommand{\cftlottitlefont}{\hfill}
-\renewcommand{\cftafterlottitle}{\hfill\mbox{}}
-\renewcommand{\cftlottitlefont}{\hfill}
-\renewcommand{\cftafterlottitle}{\hfill\mbox{}}
-\setlength{\cftbeforetoctitleskip}{-\baselineskip}
