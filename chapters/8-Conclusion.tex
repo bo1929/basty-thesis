@@ -2,19 +2,21 @@
 \chapter{\bf CONCLUSION}\label{chapter:conclusion}
 
 % Retell what you have done.
-Ethology, the scientific study of animal behavior, focuses on behavior under natural conditions and is a rapidly growing field. With its scientific roots in the late 19th and early 20th centuries, it became a well-recognized scientific discipline and yielded significant insight into general principles of the nervous system.
-Behavior, as arguably the most robust output of the brain, is needed to be deciphered to understand complex neurobiological phenomena, including sleep. The technical advances, ranging from imaging technologies to machine learning techniques, transformed ethology into a new computational discipline.
+Ethology, the scientific study of animal behavior, focuses on behavior under natural conditions, and it is a rapidly growing field. With its scientific roots in the late 19th and early 20th centuries, it gradually became a well-recognized research area and yielded significant insight into general principles of the nervous system.
+Behaviors are arguably the most robust outputs of the brain. The technical advances, ranging from imaging technologies to machine learning techniques, has recently transformed ethology into a new computational discipline.
+
+%, is needed to be deciphered to understand complex neurobiological phenomena, including sleep.
 
 In the past decade, remarkable tools based on computer vision and machine learning have been developed for automated quantification of animal behavior.
-Use of such tools in analyzing animal behaviors provided unprecedented insight into complex behaviors, such as hunting and mating \citep{mearns_deconstructing_2020, janisch_deciphering_2021}.
-Yet still, many questions remain unanswered.
-While behaviors exhibited by awake animals tend to be characterized by major postural and positional changes, the asleep animals go through subtle movements and unobtrusive postural changes that sparsely occur during long sleep cycles.
+The use of such tools in analyzing animal behaviors has provided unprecedented insight into complex behaviors, such as hunting and mating \citep{mearns_deconstructing_2020, janisch_deciphering_2021}.
+Yet, many questions remain unanswered.
+While behaviors exhibited by awake animals tend to be characterized by major postural and positional changes, the sleeping animals go through subtle movements and unobtrusive postural changes that sporadically  occur during long sleep cycles.
 Thus, exploring and quantifying the behavioral repertoire of sleep requires special care and additional considerations.
 
-To this end, we develop a multi-stage and end-to-end behavior mapping pipeline, specifically designed for animals in the dormancy state. We release it as a configurable and easy-to-use software package called \texttt{basty}.
-Our approach consists of computing representations capturing complex spatio-temporal characteristics of behaviors, detecting micro-activities exhibited in long-duration sleep bouts, and mapping detected activities utilizing a nearest neighbor based analysis on the low-dimensional behavioral embeddings.
-Our pipeline is able to handle noisy pose estimation data, with missing points (i.e., occlusions), through rigorous pre-processing and post-processing steps.
-Using novel approaches such as semi-supervised pair embeddings approach and experiment committee by voting, \texttt{basty} can tackle mapping of the rich behavioral repertoire of dormant fruit fly with limited supervision.
+To this end, we developed a multi-stage and end-to-end behavior mapping pipeline specifically designed for animals in the dormancy state. We release it as a freely accessible, configurable, and easy-to-use software package called \texttt{basty}.
+Our approach is to compute the representations for capturing complex spatio-temporal characteristics of behaviors, detecting micro-activities exhibited in long-duration sleep bouts, and mapping detected activities utilizing a nearest neighbor based analysis on the low-dimensional behavioral embeddings.
+Our pipeline can handle noisy pose estimation data, with missing points (i.e., occlusions), through rigorous pre-processing and post-processing steps.
+Using novel approaches such as semi-supervised pair embeddings approach and experiment committee by voting, \texttt{basty} can tackle mapping of the rich behavioral repertoire of dormant fruit flies with limited supervision.
 
 We evaluate our \texttt{basty} with a dataset of sleep deprivation and wild-type sleep experiments, focusing on five behavioral categories: grooming, feeding, proboscis pumping, haltere switch, and postural adjustments.
 Automated quantification of proboscis pumping and haltere switch is achieved for the first time in this work.
@@ -24,7 +26,7 @@ Results demonstrate that our pipeline robustly detects activities and successful
 Overall, \texttt{basty} achieves a macro average of 0.8 AUC score.
 Moreover, we demonstrate its ability to detect unobserved behaviors and differences between behavioral repertoires.
 
-Although we focus on 5 behavioral categories in fact the behavioral repertoire of dormant \textit{Drosophila Melanogaster} is much richer. There exist behaviors that do not fall into any of 5 the defined categories.
+Although we focus on 5 behavioral categories, in fact, the behavioral repertoire of dormant \textit{Drosophila Melanogaster} is much richer. There exist behaviors that do not fall into any of 5 the defined categories.
 As behaviors need to be annotated, the problem of ``lumping'' versus ``splitting'' emerges due to the nature of behaviors. For instance, we lump face grooming and abdomen grooming under a single category of grooming.
 Therefore, a future direction is extending the considered behavioral categories and even splitting existing categories into finer subcategories.
 
@@ -35,6 +37,6 @@ One can utilize behavioral scores to analyze such structures; however, in its cu
 Hence, \texttt{basty} can be extended to analyze such behaviors in the future.
 
 Popular pose estimation tools, such as DeepLabCut and SLEAP, perform tracking on the videos recorded with a single camera, and hence, the inference is made in the two-dimensional projection.
-The resulting pose estimation data directly reflect the true spatial characteristics and contain  many missing points due to occlusions.
+The resulting pose estimation data do not directly reflect the true spatial characteristics and contain many missing points due to occlusions.
 However, the true spatial characteristics of behaviors can only be captured in three-dimensional space.
-Our pipeline, \texttt{basty}, can easily be configured to operate on three-dimensional pose values as three-dimensional pose estimation tools become more available in the future.
+Our pipeline, \texttt{basty}, can easily be configured to operate on three-dimensional pose values as three-dimensional pose estimation tools become  increasingly available.
