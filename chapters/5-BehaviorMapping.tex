@@ -23,7 +23,7 @@ The embedding we compute should minimize local distortions, since trajectories p
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.70\linewidth]{figures/FeatureCorrelations-FlyF1DAnn-XY_labels.pdf}
-	\caption[Spearman's correlation coefficient between each feature value of behavioral representations.]{Spearman's correlation coefficient between each feature value of behavioral representations. Features are clustered and grouped based on the absolute value of the correlation values. Frequency channels $f_1, \cdots, f_20$ are dyadically spaced between $1$ Hz and $20$ Hz. \label{figure:correlations-btw-features}}
+	\caption[Spearman's correlation coefficient between each feature value of behavioral representations.]{Spearman's correlation coefficient between each feature value of behavioral representations. Features are clustered and grouped based on the absolute value of the correlation values. Frequency channels $f_1, \cdots, f_{20}$ are dyadically spaced between $1$ Hz and $20$ Hz. \label{figure:correlations-btw-features}}
 \end{figure}
 
 Many dimensionality reduction algorithms seek to preserve the pairwise distance structure among all the data samples, the well-known examples of such algorithms are PCA \citep{hotelling_analysis_1933}, and MDS \citep{kruskal_multidimensional_1964}.
@@ -150,7 +150,7 @@ However, utilizing unsupervised joint embeddings becomes problematic as the numb
 Using disparate embeddings does not allow one to embed an annotated and an unannotated experiment into a joint behavioral space, and joint embeddings poorly blend different experiments in a shared space.
 Instead, we propose a novel alternative approach to benefit from the semi-supervised dimensionality reduction capabilities of UMAP, while avoiding generating a hard-to-interpret embedding.
 In this approach, namely semi-supervised pair embeddings, we compute a joint behavioral space for each annotated and unannotated pair, using the available annotations.
-As a result, for $\Unann{R}$ unannotated experiments and  $\Unann{R}$ annotated experiments, a semi-supervised pair embedding will be generated for each $\Unann{R} \times \Ann{R}$ pair.
+As a result, for $\Ann{R}$ unannotated experiments and  $\Unann{R}$ annotated experiments, semi-supervised pair embeddings will be generated for each $\Unann{R} \times \Ann{R}$ pair.
 
 For a single unannotated experiment, a semi-supervised behavioral embedding for each annotated experiment provides different ``views''.
 Especially when the behavioral repertoire of the annotated and the unannotated experiments are similar, the provided ``view'' turns out to be an accurate, easy-to-interpret low-dimensional representation of the exhibited behaviors of the unannotated experiment.
@@ -262,7 +262,7 @@ Especially when $k$ is large, it becomes crucial to consider the imbalanced dist
 Thus, incorporating this imbalance into the formulation may help to improve the recall of rarely occurring short-bout behaviors and precision of frequently occurring long-bout behaviors.
 To achieve this, we normalize the scores previously computed, $b_{f,i}$, as a function of the number of occurrences of the behavioral category $i$ as follows:
 
-\begin{equation}\label{equation:behavioral-weight-occurence-normalization},
+\begin{equation}\label{equation:behavioral-weight-occurence-normalization}
 	b^\prime_{f,i} = \frac{b_{f,i}}{\rbr{1 + N^{\plus}_i}^p} \qbor \frac{b_{f,i}}{\log_k(1 + N^{\plus}_i)} \qbwhere p \in \set{0, \sfrac{1}{2}, 1}, k \in \set{2, 10},
 \end{equation}
 where $N^{\plus}_i = \card*{\Set{f}{y^{\plus}_f=i}}$ is the number of frames annotated as behavioral category $i$.
