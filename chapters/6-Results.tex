@@ -44,8 +44,9 @@ It is only used in the activity detection stage for constructing $\Dormancy$ set
 	\caption{Computed spatio-temporal features. \label{table:spatiotemporal-features}}
 \end{table}
 
-After constructing behavioral representation matrices, the activity detection stage of our pipeline takes place.
-Here reported recall scores are for the frame set $\MicroActivity$, and it is desired to achieve high recall scores, except for the ``quiescent and other'' category.
+After computing behavioral representations and constructing $\V{\hat{W}}$ for each experiment, the activity detection stage of our pipeline takes place.
+Here, reported recall scores are for the frame set $\MicroActivity$, and it is desired to achieve high recall scores, except for the ``quiescent and other'' category.
+Recall score for quiescent and other category corresponds to the false-positive rate.
 We evaluate both unsupervised and supervised approaches, recall, and accuracy values are shown in Figure~\ref{figure:detection-performance}.
 
 \begin{figure}[htb!]
@@ -61,15 +62,15 @@ We evaluate both unsupervised and supervised approaches, recall, and accuracy va
 	\end{subfigure}%
 	\caption[Performance summary of micro-activity detection.]{Performance summary of micro-activity detection.
 		The red line indicates the macro average of accuracy scores achieved for each split.
-		High recall scores are desired for behavioral categories, as opposed to quiescent frames.
+		High recall scores are desired for behavioral categories, as opposed to the false-positive rate for the negative category of quiescent and other.
 		Supervised and unsupervised detections are given respectively in the left subfigure and the right subfigure. \label{figure:detection-performance}}
 \end{figure}
 
-For unsupervised activity detection, the threshold $c$ is set to the decision boundary $\lambda_1$ of two Gaussian components for the construction of the $\Dormancy$ set.
-Similarly, thresholds $c_i$ for each $\V{u}_i$ value are the first decision boundaries of $3$ Gaussian components, sorted by their means.
+For unsupervised activity detection, the threshold $c$ is set to the decision boundary $\lambda_1$ of two Gaussian components for the construction of the $\Dormancy$ set, as described in Section~\ref{section:detecting-activities}.
+Similarly, thresholds $c_i$ for each $\V{u}_i$ value are determined as the first decision boundary $\lambda_1$ of $3$ Gaussian components sorted by their means.
 The resulting detection performance is quite poor for the switch-like behavior of haltere since this behavior occurs very subtly, and it is similar to quiescent frames.
-8 out of 11 splits have a recall score of less than $0.5$.
-Also, recall scores for two of the sleep-deprived experiment splits (FlyF19SDs) are below $0.15$, which makes it impossible to proceed with a successful mapping.
+8 out of 11 splits have a recall score of less than $0.5$ for haltere switch category.
+Moreover, for two of the sleep-deprived experiment splits (FlyF19SDs), proboscis pumping recall scores are below $0.15$, which makes it impossible to proceed with a successful mapping.
 
 In the supervised approach, a random forest of decision trees \citep{breiman_random_2001} is utilized with $10$ estimators, where the maximum depth of each tree is $5$ and the criterion is Gini impurity.
 For grooming, recall is always greater than $0.97$, which implies that we do not lose an insignificant amount of annotated frames.
