@@ -68,8 +68,8 @@ We evaluate both unsupervised and supervised approaches, recall, and accuracy va
 
 For unsupervised activity detection, the threshold $c$ is set to the decision boundary $\lambda_1$ of two Gaussian components for the construction of the $\Dormancy$ set, as described in Section~\ref{section:detecting-activities}.
 Similarly, thresholds $c_i$ for each $\V{u}_i$ value are determined as the first decision boundary $\lambda_1$ of $3$ Gaussian components sorted by their means.
-The resulting detection performance is quite poor for the switch-like behavior of haltere since this behavior occurs very subtly, and it is similar to quiescent frames.
-8 out of 11 splits have a recall score of less than $0.5$ for haltere switch category.
+The resulting detection performance is quite poor for the switch-like behavior of haltere since haltere switch behavior occurs very subtly and is similar to quiescent frames.
+8 out of 11 splits have a haltere switch recall score of less than $0.5$.
 Moreover, for two of the sleep-deprived experiment splits (FlyF19SDs), proboscis pumping recall scores are below $0.15$, which makes it impossible to proceed with a successful mapping.
 
 In the supervised approach, a random forest of decision trees \citep{breiman_random_2001} is utilized with $10$ estimators, where the maximum depth of each tree is $5$ and the criterion is Gini impurity.
