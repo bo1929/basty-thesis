@@ -1,7 +1,7 @@
 \setlength{\parindent}{0pt}
 \chapter{\bf BEHAVIOR MAPPING}\label{chapter:behavior-mapping}
 \section{Overview of Behavior Mapping}
-Our ultimate goal is to have a fine-grained categorization of the behaviors observed during dormancy. Thus, it is not sufficient to detect the activities and construct the sets $\MicroActivity$ and $\MacroActivity$. The behavior mapping stage is the most critical and the novel part of the pipeline, and in this stage, we discover and predict stereotypical behaviors by mapping each frame in the sets $\MicroActivity$.
+Our ultimate goal is to have a fine-grained categorization of the behaviors observed during dormancy. Thus, it is not sufficient to detect the activities and construct the sets $\MicroActivity$ and $\MacroActivity$. The behavior mapping stage is the most critical and novel part of the pipeline, and in this stage, we discover and predict stereotypical behaviors by mapping each frame in the sets $\MicroActivity$.
 
 The behavior mapping stage starts by generating low dimensional behavioral embeddings from the high dimensional behavioral representation matrix $\V{\hat{W}}$, but only the rows corresponding to the $\MicroActivity$ are included in the mapping.
 Rest of the frames, namely the $\Quiescence$ set and $\MacroActivity$ set directly assigned to quiescent and moving categories.
@@ -374,7 +374,7 @@ Given a window size $\tau$, the majority behavioral category in the surrounding 
 The window size $\tau$ is typically less than a second.
 
 \subsubsection{Elimination of Overly Long and Overly Short Bouts}
-We eliminate behavioral bouts whose durations are extremely short or extremely long, and hence contradict physical constraints and our temporal expectations.
+We eliminate behavioral bouts whose durations are extremely short or extremely long and hence contradict physical constraints and our temporal expectations.
 For each behavioral category $i$, we define two thresholds $\delta^{\symrm{short}}_i$ and $\delta^{\symrm{long}}_i$, namely upper bound and lower bound.
 Then, the behavioral bouts whose duration is longer or shorter than the corresponding thresholds are set to quiescence.
 \begin{equation}
