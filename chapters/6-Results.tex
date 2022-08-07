@@ -72,11 +72,11 @@ The resulting detection performance is quite poor for the switch-like behavior o
 8 out of 11 splits have a haltere switch recall score of less than $0.5$.
 Moreover, for two of the sleep-deprived experiment splits (FlyF19SDs), proboscis pumping recall scores are below $0.15$, which makes it impossible to proceed with a successful mapping.
 
-In the supervised approach, a random forest of decision trees \citep{breiman_random_2001} is utilized with $10$ estimators, where the maximum depth of each tree is $5$ and the criterion is Gini impurity.
-For grooming, recall is always greater than $0.97$, which implies that we do not lose an insignificant amount of annotated frames.
-Similarly, the recall score of feeding drops below $0.95$ only once.
-For proboscis pumping, 6 out of 11 splits have a recall score greater than $0.9$, and performance is relatively poor for two splits ($0.61$ and $0.56$ recall).
-Again, haltere switch is the most challenging behavioral category, but recall is often greater than $0.75$ as opposed to the unsupervised approach.
+In the supervised approach, a random forest of decision trees \citep{breiman_random_2001} is utilized with $10$ estimators. The maximum depth of each tree is $5$ and the criterion is Gini impurity.
+The recall scores of proboscis pumping category are always greater than $0.97$, which implies that we only lose an insignificant amount of annotated frames.
+Similarly, the recall score of feeding drops below $0.95$ only once to $0.80$.
+For proboscis pumping, 6 out of 11 splits have a recall score greater than $0.9$, and performance is relatively poor for only two of the splits ($0.61$ and $0.56$ recall).
+Haltere switch is again the most challenging behavioral category. However, recall is often greater than $0.75$ as opposed to the unsupervised approach.
 Considering its superior performance over the unsupervised approach, we proceed to behavior mapping by employing supervised detection.
 
 After activity detection, the next stage is behavior mapping, where the frames in the set $\MicroActivity$ are mapped to behavioral categories.
