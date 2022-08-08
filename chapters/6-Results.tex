@@ -81,32 +81,34 @@ Considering its superior performance over the unsupervised approach, we proceed 
 
 After activity detection, the next stage is behavior mapping, where the frames in the set $\MicroActivity$ are mapped to behavioral categories.
 The first step is the computation of behavioral embeddings.
-The semi-supervised pair embeddings described in the Section~\ref{section:pair-embeddings} computed for each annotated and unannotated experiment pair.
+In this step, the semi-supervised pair embeddings described in the Section~\ref{section:pair-embeddings} computed for each annotated and unannotated experiment pair.
 We set the embedding space dimension to 2, which $260$ dimensional behavioral representation matrix $\V{\hat{W}}$ is reduced to.
 The number of neighbors parameter of UMAP is set to $75$, the minimum distance parameter is determined as $0$, and the distance metric is Hellinger distance (Equation~\ref{equation:hellinger-distance}).
 
-Then, with the generated behavioral embeddings, nearest neighbors analysis is performed to assign behavioral scores to unannotated frames.
-In each semi-supervised embedding, we computed $25$ nearest annotated neighbors of the frames, and contributions of the neighbors are weighted disproportional to its distance, using the Euclidean distance, as formally given in the Equation~\ref{equation:nn-weights}.
-After that, weights are normalized with the $\log_2$ number of occurrences of behavioral category of contributing neighbors, and then $\textnormal{L}_1$ normalized to make behavioral weights sum up to $1$ (see Equation ~\ref{equation:behavioral-weight-occurence-normalization}, ~\ref{equation:behavioral-weight-activation}). Finally, we summed each behavioral weight, obtained from a different ``view'' (i.e., annotated experiment), and $\textnormal{L}_1$ normalized again to end up with the final behavioral score values.
+Then, utilizing the generated behavioral embeddings, nearest neighbors analysis is performed in order to assign behavioral scores to each unannotated frame.
+In each semi-supervised embedding, we computed $25$ nearest annotated neighbors of the frames, and contributions of the neighbors are weighted disproportional to their distances, using the Euclidean distance, as formally given in the Equation~\ref{equation:nn-weights}.
+After that, each nearest neighbor weights are normalized with the $\log_2$ number of occurrences of the corresponding behavioral category, and then $\textnormal{L}_1$ normalized to make behavioral weights sum up to $1$ (see Equation ~\ref{equation:behavioral-weight-occurence-normalization},~\ref{equation:behavioral-weight-activation}).
+Finally, we sum behavioral weights obtained from different ``views'' (i.e., annotated experiment), and $\textnormal{L}_1$ normalization is applied again to end up with the final behavioral score values.
 
-\begin{figure}[hbt!]
+\begin{figure}[htb!]
 	\centering
 	\includegraphics[width=\linewidth]{figures/BehavioralScoresDistributions_perBehavior.pdf}
-	\caption[Distributions of behavioral score values of each behavioral category for all splits.]{Distributions of behavioral score values of each behavioral category for all splits.
+	\caption[Distributions of behavioral score values of each behavioral category for all splits together.]{Distributions of behavioral score values of each behavioral category for all splits.
 		Each box-plot column demonstrates the behavioral score distributions of target behaviors for the corresponding annotation.\label{figure:behavioral-score-distributions}}
 \end{figure}
 
 The resulting score vectors are used for classification and also utilized as confidence scores.
 In Figure~\ref{figure:behavioral-score-distributions}, behavioral score distribution for each category is given for all splits together.
-Except for the feeding category, the median score of the correct target behavioral category is greater than $0.5$.
-Grooming and postural adjustment are the second most similar target behavior for each other, as expected.
-When the grooming behavior is short, it becomes more similar to short-duration moving and postural adjustment behavior.
-Behavioral scores are also helpful for revealing similarities and dissimilarities between behavioral categories and can be helpful for determining spatio-temporal feature sets.
-Although we normalized behavioral weights with the number of occurrences, which favors the relatively short duration and rare switch-like haltere behavior, we can see that its target behavior score does not exceed $0.1$ for wrong categories.
+Except for the feeding category, the median score of the correct target behavioral category is greater than $0.5$, and the computed behavioral scores successfully characterize categories.
 Compared to other behaviors, feeding has the poorest performance, with a median correct score of $0.2$.
 The postural adjustment category wrongly has the highest median score for feeding.
+Behavioral scores are also helpful for revealing similarities and dissimilarities between behavioral categories and can be helpful for determining appropriate spatio-temporal feature sets.
+For instance, grooming and postural adjustment categories are target behaviors having the second-highest behavioral scores for each other, as expected.
+When the grooming behavior is short, it becomes more similar to short-duration moving and postural adjustment behavior.
 Frames with feeding behavior annotation are often misidentified as postural adjustment, grooming, and proboscis pumping.
 As proboscis movement is common both for feeding and proboscis pumping, confusion with the proboscis pumping is expected for feeding.
+Another important observation reveals the robustness of the nearest neighbor analysis to the imbalanced distribution of behavioral categories.
+The normalization of behavioral weights with number of occurrences of behaviors favors behavior categories that are rare and relatively short-duration (such as haltere switch). However, we observe that haltere switch scores successfully capture the correct behavioral category, and does not exceed $0.1$ for wrong categories.
 
 \begin{figure}[htb!]
 	\centering
