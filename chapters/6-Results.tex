@@ -145,7 +145,7 @@ The normalization of behavioral weights with the number of occurrences of behavi
 		\label{figure:AUC}}
 \end{figure}
 
-We computed precision-recall and receiver operating characteristic curves for each split by employing the computed behavioral scores, and also computed interpreted weighted averages of curves, see Figure~\ref{figure:ROC-PRC} and Figure~\ref{figure:AUC}.
+We compute precision-recall and receiver operating characteristic curves for each split by employing the computed behavioral scores, and also calculate the interpolated weighted averages of the curves, see Figure~\ref{figure:ROC-PRC} and Figure~\ref{figure:AUC}.
 Evaluations are done by considering two subsets of frames: the subset of frames annotated as one of the behavioral categories (excluding the frames annotated as \QuiescentOther) and the $\MicroActivity$ set.
 The latter one contains false positive micro-activity frames, which is quantified as the recall score of \QuiescentOther category.
 False positive micro-activity frames affect \HaltereSwitch detection performance most, for instance, its weighted mean precision decreases by ${\sim}0.5$ for fixed recall at ${\sim}0.65$.
