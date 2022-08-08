@@ -106,7 +106,7 @@ Behavioral scores are also helpful for revealing similarities and dissimilaritie
 For instance, \Grooming and \PosturalAdjustment categories are target behaviors having the second-highest behavioral scores for each other, as expected.
 When the \Grooming behavior is short, it becomes more similar to short-duration moving and \PosturalAdjustment behavior.
 Frames with \Feeding behavior annotation are often misidentified as \PosturalAdjustment, \Grooming, and \ProboscisPumping.
-As proboscis movement is common both for \Feeding and \ProboscisPumping, confusion with the \ProboscisPumping is expected for \Feeding.
+As the movement of the proboscis is common both for \Feeding and \ProboscisPumping, confusion with the \ProboscisPumping is expected for \Feeding.
 Another important observation reveals the robustness of the nearest neighbor analysis to the imbalanced distribution of behavioral categories.
 The normalization of behavioral weights with the number of occurrences of behaviors favors behavior categories that are rare and relatively short-duration (such as \HaltereSwitch). However, we observe that \HaltereSwitch scores successfully capture the correct behavioral category, and do not exceed $0.1$ for wrong categories.
 
@@ -147,7 +147,7 @@ The normalization of behavioral weights with the number of occurrences of behavi
 
 We compute precision-recall and receiver operating characteristic curves for each split by employing the computed behavioral scores, and also calculate the interpolated weighted averages of the curves, see Figure~\ref{figure:ROC-PRC} and Figure~\ref{figure:AUC}.
 Evaluations are done by considering two subsets of frames: the subset of frames annotated as one of the behavioral categories (excluding the frames annotated as \QuiescentOther) and the $\MicroActivity$ set.
-The latter one contains false positive micro-activity frames, which is quantified as the recall score of \QuiescentOther category.
+The latter one contains false positive micro-activity frames, which are quantified as the recall score of \QuiescentOther category.
 False positive micro-activity frames affect \HaltereSwitch detection performance most, for instance, its weighted mean precision decreases by ${\sim}0.5$ for fixed recall at ${\sim}0.65$.
 This performance difference also shows the importance of achieving low recall for \QuiescentOther category in the activity detection stage.
 Since the evaluation is done with the $\MicroActivity$ set is more realistic, the following comments are made on considering it.
