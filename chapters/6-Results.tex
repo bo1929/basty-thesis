@@ -147,15 +147,15 @@ The normalization of behavioral weights with the number of occurrences of behavi
 
 We compute precision-recall and receiver operating characteristic curves for each split by employing the computed behavioral scores, and also calculate the interpolated weighted averages of the curves, see Figure~\ref{figure:ROC-PRC} and Figure~\ref{figure:AUC}.
 Evaluations are done by considering two subsets of frames: the subset of frames annotated as one of the behavioral categories (excluding the frames annotated as \QuiescentOther) and the $\MicroActivity$ set.
-The latter one contains false positive micro-activity frames, which are quantified as the recall score of \QuiescentOther category.
-False positive micro-activity frames affect \HaltereSwitch detection performance most, for instance, its weighted mean precision decreases by ${\sim}0.5$ for fixed recall at ${\sim}0.65$.
-This performance difference also shows the importance of achieving low recall for \QuiescentOther category in the activity detection stage.
-Since the evaluation is done with the $\MicroActivity$ set is more realistic, the following comments are made on considering it.
+The latter one contains false positive micro-activities, which are quantified as the recall score of the \QuiescentOther category in Figure~\ref{figure:detection-performance}.
+False positive micro-activities affect \HaltereSwitch detection performance most. Weighted mean precision score of \HaltereSwitch decreases by ${\sim}0.5$ for fixed interpolated recall score of $0.65$.
+This dramatic performance difference also indicates the importance of achieving low false-positive rate for \QuiescentOther category in the activity detection stage.
+Since the application of our pipeline to unannotated data requires tackling with false-positive activities as well, the following comments are made on the evaluation that is done by considering \Microactivity set.
 
 The most robust detection is achieved for \ProboscisPumping and \PosturalAdjustment behavioral categories, respectively, achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
 The maximum $\textnormal{F-}1$ score achieved for \Grooming is $0.60$ for FlyF1-03082020164520 split, whereas $\textnormal{F-}1$ scores of \HaltereSwitch behavioral category do not exceed $0.4$.
 AUC scores for the \ProboscisPumping often exceed $0.95$, implying robust detection for almost all the splits.
-We observe that detection performance varies greatly among different experiments. This variation can be due to several reasons, but most likely reasons are related to tracking performance and annotation quality, as well as behavioral repertoires of flies.
+We observe that detection performance varies greatly among different experiments. This variation can be due to several reasons, and usually reasons are related to tracking performance and annotation quality, as well as behavioral repertoires of flies.
 Considering all splits together, we achieve a macro average of $0.8$ AUC score with a one-versus-rest approach.
 
 \begin{figure}[htb!]
@@ -172,7 +172,7 @@ Considering all splits together, we achieve a macro average of $0.8$ AUC score w
 	\caption[Histogram of entropy values and box-plot of the behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.]{Histogram of entropy values and box-plot of behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.
 		Here, the behavioral repertoire of FlyF1-03082020 is predicted separately with two different annotated experiments, namely FlyF14-08172021 and FlyM13-08172021.
 		Behavioral scores and entropy values are computed for the \HaltereSwitch behavior.
-		The latter one lacks the \HaltereSwitch behavior, and as a result, behavioral scores tend to have higher entropy.
+		The latter one (FlyM13) lacks the \HaltereSwitch behavior, and as a result, behavioral scores tend to have higher entropy.
 		Results demonstrate the ability of the proposed pipeline to detect and discover unseen unannotated behavioral categories using behavioral scores.\label{figure:repertoire-difference}}
 \end{figure}
 
