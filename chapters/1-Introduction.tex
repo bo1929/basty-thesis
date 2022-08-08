@@ -24,18 +24,18 @@ The advantage of benefiting from unsupervised learning is to avoid annotator bia
 Neuroscientists studying sleep have mainly focused on locomotor-type behaviors exhibited at night \citep{wiggin_covert_2020, nath_jellyfish_2017}, and attempts to understand underlying sleep stages by measuring the overall displacement and quiescence.
 For example, the commercially available Drosophila Activity Monitor (DAMs, Inc., Waltham, Massachusetts) is used extensively to study circadian rhythms and sleep \citep{pfeiffenberger_processing_2010, pfeiffenberger_locomotor_2010}.
 Relatively advanced systems, such as Ethoscopes \citep{geissmann_ethoscopes_2017}, have also been developed in recent years.
-Featuring supervised machine learning, Ethoscopes learns to detect not only walking activity but also micro-activities (for example, in-place movements such as grooming and egg laying) but without a fine-grained categorization of micro-activities to more specific behaviors \citep{geissmann_most_2019}.
-Hinting at the importance of analyzing rich behavioral repertoire exhibited during sleep, \citet{van_alphen_deep_2021}, analyzed the functional role of proboscis pumping behavior, but without automatizing behavioral analysis, proboscis pumping behavior is quantified by manually scanning through the videos.
+Featuring supervised machine learning, Ethoscopes learns to detect not only walking activity but also micro-activities (for example, in-place movements such as \Grooming and egg laying) but without a fine-grained categorization of micro-activities to more specific behaviors \citep{geissmann_most_2019}.
+Hinting at the importance of analyzing rich behavioral repertoire exhibited during sleep, \citet{van_alphen_deep_2021}, analyzed the functional role of \ProboscisPumping behavior, but without automatizing behavioral analysis, \ProboscisPumping behavior is quantified by manually scanning through the videos.
 Ad-hoc solutions, specifically dedicated to a single or a small subset of behaviors have also been introduced.
-For example, \citet{itskov_automated_2014} presents a method that utilizes capacitive measurements for automated quantification of feeding behavior.
-Another such ad-hoc solution is developed by \citet{qiao_automated_2018} and achieves automated analysis of long-term grooming behavior in \textit{Drosophila Melanogaster}.
+For example, \citet{itskov_automated_2014} presents a method that utilizes capacitive measurements for automated quantification of \Feeding behavior.
+Another such ad-hoc solution is developed by \citet{qiao_automated_2018} and achieves automated analysis of long-term \Grooming behavior in \textit{Drosophila Melanogaster}.
 Their method, including hardware and a platform for video recordings, maps fly activity onto a three-dimensional behavior space and utilizes a $k$-nearest neighbors classifier.
 However, detailed phenotyping of the behavioral repertoire of sleep, which we aim to achieve in this work, has not been addressed in the literature.
 
 The inherent structure of sleep is mainly characterized by reduced muscle activity and long dormancy epochs.
 Thus, observable behaviors are exhibited much more scarcely and rarely, compared to wakefulness.
 Moreover, during sleep, the behavioral repertoire of fruit flies substantially consists of in-place behaviors rather than major postural and positional.
-For instance, proboscis pumping is an in-place behavior, which is not necessarily accompanied by a positional or postural change in the rest of the body.
+For instance, \ProboscisPumping is an in-place behavior, which is not necessarily accompanied by a positional or postural change in the rest of the body.
 Another such example is the switch-like behavior of the haltere that is characterized by the haltere's positional change in the order of microns and eventuates rapidly within a second.
 Therefore, our task of phenotyping sleep requires tackling behaviors defined by unobtrusive changes that sparsely occur during long sleep cycles.
 Previously developed behavior mapping models  do not cover these behaviors.
@@ -43,14 +43,14 @@ Their main focus has been on behaviors that feature major postural and positiona
 
 In this work, we develop \texttt{basty} (Automated \underline{B}ehavioral \underline{A}nalysis of A\underline{s}leep Frui\underline{t} Fl\underline{y}), a novel, end-to-end pipeline made public as a configurable, open source, and easy-to-use software package\footnote{\texttt{basty}, implemented in Python, is publicly available at \url{https://github.com/bo1929/basty}}.
 \texttt{basty} directly operates on the output of the pose estimation tools, such as DeepLabCut \citep{mathis_deeplabcut_2018} and SLEAP \cite{pereira_sleap_2022}.
-Unlike previous behavior mapping studies, we focus on behavioral repertoire exhibited during dormancy, i.e., in-place behaviors such as grooming, switch-like haltere movement, and postural adjustment.
+Unlike previous behavior mapping studies, we focus on behavioral repertoire exhibited during dormancy, i.e., in-place behaviors such as \Grooming, switch-like haltere movement, and \PosturalAdjustment.
 Similar to previous studies, our approach starts by computing meaningful behavioral representations.
 To this end, \texttt{basty} offers an easily configurable and flexible framework, which includes a novel preprocessing step, extensive spatio-temporal feature computation, and spectrogram generation.
 Enabling analysis of sleep experiments and biological inference, \texttt{basty} allows detecting activities in long sleep experiments (14-16 hours).
 Activity detection can be done both in a supervised manner and unsupervised manner by using the Gaussian mixture model and random forest ensembles, respectively.
 The proposed pipeline includes a novel supervised behavior mapping approach, which takes advantage of semi-supervised dimensionality reduction and nearest neighbors analysis in a low dimensional behavioral space.
 
-We evaluate our pipeline with a dataset of sleep deprivation and wild-type sleep experiments, focusing on five behavioral categories: grooming, feeding, proboscis pumping, haltere switch, and postural adjustment.
+We evaluate our pipeline with a dataset of sleep deprivation and wild-type sleep experiments, focusing on five behavioral categories: \Grooming, \Feeding, \ProboscisPumping, \HaltereSwitch, and \PosturalAdjustment.
 Notably, automated quantification of switch-like movement of the haltere and pumping-like proboscis behavior is achieved for the first time in this work.
 Results show that our pipeline successfully maps behavioral categories, achieving an AUC score of 0.8 with limited supervision.
 We also demonstrate that our approach enables detecting unobserved behaviors and differences in behavioral repertoires.

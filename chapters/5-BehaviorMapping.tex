@@ -4,7 +4,7 @@
 Our ultimate goal is to have a fine-grained categorization of the behaviors observed during dormancy. Thus, it is not sufficient to detect the activities and construct the sets $\MicroActivity$ and $\MacroActivity$. The behavior mapping stage is the most critical and novel part of the pipeline, and in this stage, we discover and predict stereotypical behaviors by mapping each frame in the sets $\MicroActivity$.
 
 The behavior mapping stage starts by generating low dimensional behavioral embeddings from the high dimensional behavioral representation matrix $\V{\hat{W}}$, but only the rows corresponding to the $\MicroActivity$ are included in the mapping.
-Rest of the frames, namely the $\Quiescence$ set and $\MacroActivity$ set directly assigned to quiescent and moving categories.
+Rest of the frames, namely the $\Quiescence$ set and $\MacroActivity$ set directly assigned to \QuiescentOther and \Moving categories.
 In Section~\ref{section:behavioral-embeddings}, behavioral embedding generation is discussed in detail, including supervised, semi-supervised, and unsupervised approaches.
 We use semi-supervised pair UMAP embeddings, described in Section~\ref{section:pair-embeddings}, to project behavioral representations into a low-dimensional behavior embedding.
 The next step is a novel nearest neighbor analysis in the generated low-dimensional behavioral spaces, as we detail in Section~\ref{section:nearest-neighbors-classification}.
@@ -114,7 +114,7 @@ Each frame $f$, corresponds to a time point $t_f\in \MicroActivity$.
 \subsection{Disparate Embeddings}\label{section:disparate-embeddings}
 UMAP may be used to embed high-dimensional behavioral representations of each experiment separately to obtain disparate behavioral embeddings. Treating each experiment separately is useful for several purposes.
 
-For example, using supervised UMAP for annotated experiments, we can explore behavioral sub-categories in annotations as annotations are very high-level, biased and general categorization of behaviors. For instance, one annotation category, e.g., "grooming", can be consisted of two different clusters in the behavioral embedding space, corresponding to "grooming of head" and "grooming of abdomen" (see Figure~\ref{figure:supervised-disparate-zoomin-annotations}).
+For example, using supervised UMAP for annotated experiments, we can explore behavioral sub-categories in annotations as annotations are very high-level, biased and general categorization of behaviors. For instance, one annotation category, e.g., "\Grooming", can be consisted of two different clusters in the behavioral embedding space, corresponding to "\Grooming of head" and "\Grooming of abdomen" (see Figure~\ref{figure:supervised-disparate-zoomin-annotations}).
 Defining very specific and low-level behavioral categories is not feasible and prone to error, a post-annotation analysis using disparate embeddings helps us to zoom in on annotated behaviors.
 Another scenario of benefiting disparate embeddings is using unsupervised UMAP for annotated and/or unannotated experiments separately.
 We can visualize how behavioral repertoire is represented in the low-dimensional embeddings space and analyze which features drive different regions and clusters of the behavioral embeddings (see Figure~\ref{figure:unsupervised-disparate-behavioral-regions}).
@@ -177,7 +177,7 @@ As described in Section~\ref{section:nearest-neighbors-classification}, semi-sup
 \citet{mcinnes_hdbscan_2017} \citet{campello_density-based_2013}
 \NOTE{
 	We always use soft clustering feature of HDBSCAN, since it is very beneficial to have a composite assignment for a data-point.
-	For example, 0.7 grooming, 0.3 proboscis pumping may indicate that those two behaviors are simultaneously exhibited or a combination of both is exhibited etc.
+	For example, 0.7 \Grooming, 0.3 \ProboscisPumping may indicate that those two behaviors are simultaneously exhibited or a combination of both is exhibited etc.
 	We can always take $\argmax$ if a categorical label is needed.
 }
 
@@ -321,7 +321,7 @@ In contrast to majority voting (hard voting), the soft voting scheme assigns the
 
 \subsubsection{Behavioral Scores}
 Definitions of behavioral categories might be broad, and expressed behaviors sometimes are a combination of multiple behavioral categories.
-For example, a switch-like movement of the haltere can simultaneously occur with a postural adjustment.
+For example, a switch-like movement of the haltere can simultaneously occur with a \PosturalAdjustment.
 One may also want to examine and interpret top-$k$ predictions, especially when there exist many narrow behavioral categories.
 Thus, in addition to assigning categories to frames, it is also useful to compute and report scores for behavioral categories based on the votes contributed by each annotated experiment.
 Moreover, such scores can be utilized as confidence scores and might be helpful to analyze differences in the behavioral repertoire (see Figure~\ref{figure:behavioral-score-distributions} and Figure~\ref{figure:repertoire-difference}).
@@ -360,7 +360,7 @@ where $\mathsf{bout}^0_t$ and $\mathsf{bout}^1_t$ are respectively the beginning
 We have sensible expectations about the duration of behavioral bouts of each behavioral category acquired by human annotators.
 For instance, a bout of proboscis's pumping-like movement should not be shorter than $200$ millisecond, as bout duration distributions of annotations indicate.
 In addition to annotations, we may have reasons for physical and biological constraints.
-An example is that grooming behavior, bout duration of grooming can not exceed a couple of minutes, probability of observing a grooming behavior lasted longer than $2$ minutes is extremely low \citep{qiao_automated_2018}.
+An example is that \Grooming behavior, bout duration of \Grooming can not exceed a couple of minutes, probability of observing a \Grooming behavior lasted longer than $2$ minutes is extremely low \citep{qiao_automated_2018}.
 Considering such constraints and temporal expectations, we apply the following post-processing procedures, and parameters should be determined based on the behavioral repertoire of interest.
 Post-processing procedures are especially helpful for avoiding misleading classification of the time points with erroneous tracking of body parts.
 Each procedure is optional but should be applied in the given order.

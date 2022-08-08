@@ -18,16 +18,16 @@ Our approach is to compute the representations for capturing complex spatio-temp
 Our pipeline can handle noisy pose estimation data, with missing points (i.e., occlusions), through rigorous pre-processing and post-processing steps.
 Using novel approaches such as semi-supervised pair embeddings approach and experiment committee by voting, \texttt{basty} can tackle mapping of the rich behavioral repertoire of dormant fruit flies with limited supervision.
 
-We evaluate our \texttt{basty} with a dataset of sleep deprivation and wild-type sleep experiments, focusing on five behavioral categories: grooming, feeding, proboscis pumping, haltere switch, and postural adjustment.
-Automated quantification of proboscis pumping and haltere switch is achieved for the first time in this work.
+We evaluate our \texttt{basty} with a dataset of sleep deprivation and wild-type sleep experiments, focusing on five behavioral categories: \Grooming, \Feeding, \ProboscisPumping, \HaltereSwitch, and \PosturalAdjustment.
+Automated quantification of \ProboscisPumping and \HaltereSwitch is achieved for the first time in this work.
 Such behaviors are potentially related to behaviorally defined states of sleep, similar to the REM sleep (rapid eye movement sleep) phase observed in mammals and birds.
-For example, \citet{van_alphen_deep_2021} claims that proboscis pumping is accompanied by decreased brain activity and raised arousal thresholds, which might indicate a deep sleep state.
+For example, \citet{van_alphen_deep_2021} claims that \ProboscisPumping is accompanied by decreased brain activity and raised arousal thresholds, which might indicate a deep sleep state.
 Results demonstrate that our pipeline robustly detects activities and successfully maps behavioral categories.
 Overall, \texttt{basty} achieves a macro average of 0.8 AUC score.
 Moreover, we demonstrate its ability to detect unobserved behaviors and differences between behavioral repertoires.
 
 Although we focus on 5 behavioral categories, in fact, the behavioral repertoire of dormant \textit{Drosophila Melanogaster} is much richer. There exist behaviors that do not fall into any of 5 the defined categories.
-As behaviors need to be annotated, the problem of ``lumping'' versus ``splitting'' emerges due to the nature of behaviors. For instance, we lump face grooming and abdomen grooming under a single category of grooming.
+As behaviors need to be annotated, the problem of ``lumping'' versus ``splitting'' emerges due to the nature of behaviors. For instance, we lump face \Grooming and abdomen \Grooming under a single category of \Grooming.
 Therefore, a future direction is extending the considered behavioral categories and even splitting existing categories into finer subcategories.
 
 The approach of segmentation of continuous and hierarchical behaviors into categorical components is necessarily human-biased and does not reflect the true nature of behaviors.

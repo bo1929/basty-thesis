@@ -45,8 +45,8 @@ It is only used in the activity detection stage for constructing $\Dormancy$ set
 \end{table}
 
 After computing behavioral representations and constructing $\V{\hat{W}}$ for each experiment, the activity detection stage of our pipeline takes place.
-Here, reported recall scores are for the frame set $\MicroActivity$, and it is desired to achieve high recall scores, except for the ``quiescent and other'' category.
-Recall score for quiescent and other category corresponds to the false-positive rate.
+Here, reported recall scores are for the frame set $\MicroActivity$, and it is desired to achieve high recall scores, except for the \QuiescentOther category.
+Recall score for \QuiescentOther category corresponds to the false-positive rate.
 We evaluate both unsupervised and supervised approaches, recall, and accuracy values are shown in Figure~\ref{figure:detection-performance}.
 
 \begin{figure}[htb!]
@@ -62,20 +62,20 @@ We evaluate both unsupervised and supervised approaches, recall, and accuracy va
 	\end{subfigure}%
 	\caption[Performance summary of micro-activity detection.]{Performance summary of micro-activity detection.
 		The red line indicates the macro average of accuracy scores achieved for each split.
-		High recall scores are desired for behavioral categories, as opposed to the false-positive rate for the negative category of quiescent and other.
+		High recall scores are desired for behavioral categories, as opposed to the false-positive rate for the negative category of \QuiescentOther.
 		Supervised and unsupervised detections are given respectively in the left subfigure and the right subfigure. \label{figure:detection-performance}}
 \end{figure}
 
 For unsupervised activity detection, the threshold $c$ is set to the decision boundary $\lambda_1$ of two Gaussian components for the construction of the $\Dormancy$ set, as described in Section~\ref{section:detecting-activities}.
 Similarly, thresholds $c_i$ for each $\V{u}_i$ value are determined as the first decision boundary $\lambda_1$ of $3$ Gaussian components sorted by their means.
-The resulting detection performance is quite poor for the switch-like behavior of haltere since haltere switch behavior occurs very subtly and is similar to quiescent frames.
-8 out of 11 splits have a haltere switch recall score of less than $0.5$.
-Moreover, for two of the sleep-deprived experiment splits (FlyF19SDs), proboscis pumping recall scores are below $0.15$, which makes it impossible to proceed with a successful mapping.
+The resulting detection performance is quite poor for the switch-like behavior of haltere since \HaltereSwitch behavior occurs very subtly and is similar to quiescent frames.
+8 out of 11 splits have a \HaltereSwitch recall score of less than $0.5$.
+Moreover, for two of the sleep-deprived experiment splits (FlyF19SDs), \ProboscisPumping recall scores are below $0.15$, which makes it impossible to proceed with a successful mapping.
 
 In the supervised approach, a random forest of decision trees \citep{breiman_random_2001} is utilized with $10$ estimators. The maximum depth of each tree is $5$ and the criterion is Gini impurity.
-The recall scores of proboscis pumping category are always greater than $0.97$, which implies that we only lose an insignificant amount of annotated frames.
-Similarly, the recall score of feeding drops below $0.95$ only once to $0.80$.
-For proboscis pumping, 6 out of 11 splits have a recall score greater than $0.9$, and performance is relatively poor for only two of the splits ($0.61$ and $0.56$ recall).
+The recall scores of \ProboscisPumping category are always greater than $0.97$, which implies that we only lose an insignificant amount of annotated frames.
+Similarly, the recall score of \Feeding drops below $0.95$ only once to $0.80$.
+For \ProboscisPumping, 6 out of 11 splits have a recall score greater than $0.9$, and performance is relatively poor for only two of the splits ($0.61$ and $0.56$ recall).
 Haltere switch is again the most challenging behavioral category. However, recall is often greater than $0.75$ as opposed to the unsupervised approach.
 Considering its superior performance over the unsupervised approach, we proceed to behavior mapping by employing supervised detection.
 
@@ -99,16 +99,16 @@ Finally, we sum behavioral weights obtained from different ``views'' (i.e., anno
 
 The resulting score vectors are used for classification and also utilized as confidence scores.
 In Figure~\ref{figure:behavioral-score-distributions}, behavioral score distribution for each category is given for all splits together.
-Except for the feeding category, the median score of the correct target behavioral category is greater than $0.5$, and the computed behavioral scores successfully characterize categories.
-Compared to other behaviors, feeding has the poorest performance, with a median correct score of $0.2$.
-The postural adjustment category wrongly has the highest median score for feeding.
+Except for the \Feeding category, the median score of the correct target behavioral category is greater than $0.5$, and the computed behavioral scores successfully characterize categories.
+Compared to other behaviors, \Feeding has the poorest performance, with a median correct score of $0.2$.
+The \PosturalAdjustment category wrongly has the highest median score for \Feeding.
 Behavioral scores are also helpful for revealing similarities and dissimilarities between behavioral categories and can be helpful for determining appropriate spatio-temporal feature sets.
-For instance, grooming and postural adjustment categories are target behaviors having the second-highest behavioral scores for each other, as expected.
-When the grooming behavior is short, it becomes more similar to short-duration moving and postural adjustment behavior.
-Frames with feeding behavior annotation are often misidentified as postural adjustment, grooming, and proboscis pumping.
-As proboscis movement is common both for feeding and proboscis pumping, confusion with the proboscis pumping is expected for feeding.
+For instance, \Grooming and \PosturalAdjustment categories are target behaviors having the second-highest behavioral scores for each other, as expected.
+When the \Grooming behavior is short, it becomes more similar to short-duration moving and \PosturalAdjustment behavior.
+Frames with \Feeding behavior annotation are often misidentified as \PosturalAdjustment, \Grooming, and \ProboscisPumping.
+As proboscis movement is common both for \Feeding and \ProboscisPumping, confusion with the \ProboscisPumping is expected for \Feeding.
 Another important observation reveals the robustness of the nearest neighbor analysis to the imbalanced distribution of behavioral categories.
-The normalization of behavioral weights with the number of occurrences of behaviors favors behavior categories that are rare and relatively short-duration (such as haltere switch). However, we observe that haltere switch scores successfully capture the correct behavioral category, and do not exceed $0.1$ for wrong categories.
+The normalization of behavioral weights with the number of occurrences of behaviors favors behavior categories that are rare and relatively short-duration (such as \HaltereSwitch). However, we observe that \HaltereSwitch scores successfully capture the correct behavioral category, and do not exceed $0.1$ for wrong categories.
 
 \begin{figure}[htb!]
 	\centering
@@ -145,16 +145,16 @@ The normalization of behavioral weights with the number of occurrences of behavi
 		\label{figure:AUC}}
 \end{figure}
 
-Using behavioral computed behavioral scores, we computed precision-recall and receiver operating characteristic curves for each split, and also computed interpreted weighted averages of curves, see Figure~\ref{figure:ROC-PRC} and Figure~\ref{figure:AUC}.
-Evaluations are done by considering two subsets of frames, the first subset is the frames annotated as one of the behavioral categories and the other one is the $\MicroActivity$ set.
-The latter one contains false positive micro-activity frames, which is quantified as the recall score of quiescent and other category.
-False positive micro-activity frames affect haltere switch detection performance most, for instance, its weighted mean precision decreases by ${\sim}0.5$ for fixed recall at ${\sim}0.65$.
-This performance difference also shows the importance of achieving low recall for quiescent and other category in the activity detection stage.
+We computed precision-recall and receiver operating characteristic curves for each split by employing the computed behavioral scores, and also computed interpreted weighted averages of curves, see Figure~\ref{figure:ROC-PRC} and Figure~\ref{figure:AUC}.
+Evaluations are done by considering two subsets of frames: the subset of frames annotated as one of the behavioral categories (excluding the frames annotated as \QuiescentOther) and the $\MicroActivity$ set.
+The latter one contains false positive micro-activity frames, which is quantified as the recall score of \QuiescentOther category.
+False positive micro-activity frames affect \HaltereSwitch detection performance most, for instance, its weighted mean precision decreases by ${\sim}0.5$ for fixed recall at ${\sim}0.65$.
+This performance difference also shows the importance of achieving low recall for \QuiescentOther category in the activity detection stage.
 Since the evaluation is done with the $\MicroActivity$ set is more realistic, the following comments are made on considering it.
 
-The most robust detection is achieved for proboscis pumping and postural adjustment behavioral categories, respectively, achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
-The maximum $\textnormal{F-}1$ score achieved for grooming is $0.60$ for FlyF1-03082020164520 split, whereas $\textnormal{F-}1$ scores of haltere switch behavioral category do not exceed $0.4$.
-AUC scores for the proboscis pumping often exceed $0.95$, implying robust detection for almost all the splits.
+The most robust detection is achieved for \ProboscisPumping and \PosturalAdjustment behavioral categories, respectively, achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
+The maximum $\textnormal{F-}1$ score achieved for \Grooming is $0.60$ for FlyF1-03082020164520 split, whereas $\textnormal{F-}1$ scores of \HaltereSwitch behavioral category do not exceed $0.4$.
+AUC scores for the \ProboscisPumping often exceed $0.95$, implying robust detection for almost all the splits.
 We observe that detection performance varies greatly among different experiments. This variation can be due to several reasons, but most likely reasons are related to tracking performance and annotation quality, as well as behavioral repertoires of flies.
 Considering all splits together, we achieve a macro average of $0.8$ AUC score with a one-versus-rest approach.
 
@@ -171,8 +171,8 @@ Considering all splits together, we achieve a macro average of $0.8$ AUC score w
 	\end{subfigure}%
 	\caption[Histogram of entropy values and box-plot of the behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.]{Histogram of entropy values and box-plot of behavioral scores computed using one unannotated and two annotated experiments with varying behavioral repertoires.
 		Here, the behavioral repertoire of FlyF1-03082020 is predicted separately with two different annotated experiments, namely FlyF14-08172021 and FlyM13-08172021.
-		Behavioral scores and entropy values are computed for the haltere switch behavior.
-		The latter one lacks the haltere switch behavior, and as a result, behavioral scores tend to have higher entropy.
+		Behavioral scores and entropy values are computed for the \HaltereSwitch behavior.
+		The latter one lacks the \HaltereSwitch behavior, and as a result, behavioral scores tend to have higher entropy.
 		Results demonstrate the ability of the proposed pipeline to detect and discover unseen unannotated behavioral categories using behavioral scores.\label{figure:repertoire-difference}}
 \end{figure}
 
@@ -181,9 +181,9 @@ Moreover, there exists a great amount of variation among flies' behavioral reper
 Thus, we also investigate our pipeline's ability to detect unseen behavioral categories by utilizing behavioral scores.
 Such an ability is important for avoiding misleading the user of the pipeline. It may also be desired to reconsider defined and annotated behavioral categories, and may further lead to interesting biological observations.
 To this end, we consider the following experimental setting: behavior mapping of an unannotated experiment (FlyF1-03082020) is done separately for two annotated experiments, namely FlyF14-0817202 and FlyM13-08172021.
-Then, behavioral scores of the FlyF1-03082020's frames with haltere switch annotation are compared between FlyF14-0817202 guided mapping and FlyM13-08172021 guided mapping.
+Then, behavioral scores of the FlyF1-03082020's frames with \HaltereSwitch annotation are compared between FlyF14-0817202 guided mapping and FlyM13-08172021 guided mapping.
 As it can be seen from Figure~\ref{figure:time-spent-in-behaviors}, FlyF1-03082020 and FlyF14-0817202 spent ${\sim}4$ minutes by exhibiting switch-like haltere movement behavior, whereas FlyM13-08172021 spent no more than $5$ seconds.
-Therefore, compared to FlyF14-0817202, the haltere switch is an unseen and lacking behavioral category for FlyM13-08172021.
+Therefore, compared to FlyF14-0817202, the \HaltereSwitch is an unseen and lacking behavioral category for FlyM13-08172021.
 We expect to identify this using behavioral scores.
 Indeed, behavioral scores reflect the difference in the behavioral repertoires of the annotated flies.
 As it can be seen in Figure~\ref{figure:repertoire-score-comparison}, behavioral scores obtained based on FlyF14-0817202's behavioral repertoire are much more confident about the correct behavioral category, whereas behavioral scores obtained based on FlyM13-08172021's behavioral repertoire are more uniform-like and total score is often shared among multiple behavioral categories.
@@ -255,14 +255,14 @@ In addition to the temporal organization of the activities, we are also interest
 In order to visualize feature distributions of each behavioral category, we sum behavioral representation values of all frequency channels for each spatio-temporal feature.
 For a single frame, resulting values sum up to $1$ as they are $\textnormal{L}_1$ normalized.
 In Figure~\ref{figure:feature-distributions}, we see how behavioral categories are defined by spatial characteristics.
-As expected, proboscis-related features play a significant role in characterizing feeding and proboscis pumping.
-Similarly, features related to leg and thorax are more apparent for grooming and postural adjustment.
+As expected, proboscis-related features play a significant role in characterizing \Feeding and \ProboscisPumping.
+Similarly, features related to leg and thorax are more apparent for \Grooming and \PosturalAdjustment.
 
 Behaviors differ in terms of bout durations as well.
 Kernel density estimations of bout duration distributions for each behavioral category are given in Figure~\ref{figure:bout-durations}.
-Haltere switch rarely exceeds several seconds, and postural adjustment behaviors usually occur within ${\sim}4$ seconds, and both have relatively low variance $4.4$, and $8.2$ seconds, respectively.
-Feeding, proboscis pumping, and grooming tend to have longer bouts with greater variances.
-For example, the bout duration distribution of grooming has a variance of $15$ seconds, and the mean bout duration is $6.2$ seconds.
+Haltere switch rarely exceeds several seconds, and \PosturalAdjustment behaviors usually occur within ${\sim}4$ seconds, and both have relatively low variance $4.4$, and $8.2$ seconds, respectively.
+Feeding, \ProboscisPumping, and \Grooming tend to have longer bouts with greater variances.
+For example, the bout duration distribution of \Grooming has a variance of $15$ seconds, and the mean bout duration is $6.2$ seconds.
 
 \begin{figure}[ht!]
 	\centering
@@ -292,13 +292,13 @@ For example, the bout duration distribution of grooming has a variance of $15$ s
 
 Another important aspect of fruit flies' behavioral repertoires is the total time spent while exhibiting each behavior (see Figure~\ref{figure:time-spent-in-behaviors}).
 Grooming is the most exhibited behavior in terms of total time spent, with an average of $19.9$ minutes, and a standard deviation of $5.2$ minutes.
-We observe a great variance for time spent exhibiting haltere switch among experiments, the average, and the standard deviation are $4.5$ minutes and $5.9$ respectively.
+We observe a great variance for time spent exhibiting \HaltereSwitch among experiments, the average, and the standard deviation are $4.5$ minutes and $5.9$ respectively.
 
 Characterization of underlying changes in behaviors is essential for understanding sleep, and thus, we also examine behavioral visits that occurred during flies' sleep.
 To evaluate different experiments jointly, we align sleep bouts by dividing the longest dormancy epoch into bins.
 In Figure~\ref{figure:temporal-organization-behavior}, behavioral visits are plotted with a joint $x$-axis, namely the sleep percentages.
-The most immediate observation about the temporal organization of the behavioral categories is of haltere switch.
-The occurrence of haltere switch is not uniform along the time, for 3 sleep-deprived and 3 wild-type sleep experiments $90\%$ of the haltere switch occurrences are after $40$ sleep percentage.
+The most immediate observation about the temporal organization of the behavioral categories is of \HaltereSwitch.
+The occurrence of \HaltereSwitch is not uniform along the time, for 3 sleep-deprived and 3 wild-type sleep experiments $90\%$ of the \HaltereSwitch occurrences are after $40$ sleep percentage.
 For 8 out of 11 experiments, more than $40\%$ of the switch-like haltere movements occur between $60$ and $80$ sleep percentages.
-Moreover, for 4 out of 11 experiments, $80\%$ of haltere switch behaviors are observed between this interval.
-Another observation is that grooming behaviors are more likely to occur in the last $40$ sleep percentage and very unlikely to occur within the first $20$ sleep percentage.
+Moreover, for 4 out of 11 experiments, $80\%$ of \HaltereSwitch behaviors are observed between this interval.
+Another observation is that \Grooming behaviors are more likely to occur in the last $40$ sleep percentage and very unlikely to occur within the first $20$ sleep percentage.
