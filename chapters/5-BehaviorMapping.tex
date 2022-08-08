@@ -172,55 +172,6 @@ As described in Section~\ref{section:nearest-neighbors-classification}, semi-sup
 	\caption[Semi-supervised pair embeddings with an annotated and an unannotated experiment.]{Semi-supervised pair embeddings with an annotated and an unannotated experiment. FlyM4-03062020 (annotated) provides a ``view'' on the behavioral repertoire of the FlyF15-08182021 (unannotated).}
 \end{figure}
 
-\begin{comment}
-\section{Soft Clustering}
-\citet{mcinnes_hdbscan_2017} \citet{campello_density-based_2013}
-\NOTE{
-	We always use soft clustering feature of HDBSCAN, since it is very beneficial to have a composite assignment for a data-point.
-	For example, 0.7 \Grooming, 0.3 \ProboscisPumping may indicate that those two behaviors are simultaneously exhibited or a combination of both is exhibited etc.
-	We can always take $\argmax$ if a categorical label is needed.
-}
-
-\subsection{Disparate Clustering}
-
-\NOTE{
-	If embedding is a disparate embedding, then we directly cluster each of them separately.
-	If a joint embedding or pair embedding is clustered, then experiments need to be extracted from the embedding space first, and then they need to be clustered separately.
-}
-
-\subsection{Joint Clustering}
-\NOTE{
-	This is only applicable to joint and pair embeddings. We cluster all the experiments in the behavioral embedding together.
-}
-
-\subsection{Crosswise Clustering}
-\NOTE{
-	This is again only applicable to joint and pair embeddings.
-	For joint embeddings, we exclude a subgroup of experiments.
-	For pair embeddings, we exclude one of the pair experiments.
-	Then rest of the embedding is clustered and clusters are formed.
-	Finally, for each excluded embedding, soft cluster membership vectors are computed based on the formed clusters.
-}
-
-\subsection{Mapping Clusters to Behavioral Categories}
-\NOTE{
-	If a clustering contains annotated experiments, we map that clusters in that clustering to a behavioral composition as follows ({\it subject to change, there are couple of alternatives})
-	\begin{equation}
-		m_\alpha = \frac{\textnormal{number of frames with annotation }\alpha \textnormal{ in the cluster}}{\textnormal{total number of frames with annotation }\alpha}.
-	\end{equation}
-	So for each cluster, we end up with a vector $\mathbf{m}=(m_\alpha)$, represent it behavioral composition.
-}
-\NOTE{
-	Behavioral score of unannotated experiment will be computed using clustering membership score and behavioral composition mapping of those clusters.
-	For example, using semi-supervised pair embeddings and crosswise clustering; one can compute behavioral scores for a frame as follows;
-	\begin{equation}
-		y_\alpha = \sum_{c=0}^C m^c_\alpha
-	\end{equation}
-	where $C$ is the number of clusters, $\mathbf{m}^c$ is the behavioral composition of the cluster $c$.
-	As a result, for each frame, we end up with a behavioral score vector $\mathbf{y}=(y_\alpha)$.
-}
-\end{comment}
-
 \section{Nearest Neighbor Analysis and Classification}\label{section:nearest-neighbors-classification}
 One of our ultimate goals is to annotate an experiment using already annotated ones.
 In previous sections and chapters, we described feature extraction, activity detection, and computation of behavioral embeddings.

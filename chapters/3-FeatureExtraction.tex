@@ -291,7 +291,7 @@ Similarly, the moving standard deviation of a gradient feature $g_{i,t}$ by is c
 	\sigma_\tau(g_{i,t}) = \rbr{\sfrac{1}{\min\{t+\tau,\, T\}-\max\{t-\tau,\, 1\}+1} \sum_{t^{\prime}=\max\{t-\tau,\, 1\}}^{\min\{t+\tau,\, T\}} \rbr{\mu_{\tau}(g_{i,t}) - g_{i, t^{\prime}}}^2}^{\sfrac{1}{2}}
 \end{equation}
 
-Moving statistics feature generation approach has been used to learn animal behavior by \citet{kabra_jaaba_2013}, and \citet{marshall_continuous_2021} has also included such features into the analysis.
+Approach of feature generation by computing moving statistics has been used to learn animal behavior by \citet{kabra_jaaba_2013}, and \citet{marshall_continuous_2021} has also included such features into the analysis.
 
 \subsection{Wavelet Transformation of Snapshot Features}
 The wavelet domain is a useful representation of postural dynamics due to the following reasons given by \citet{berman_mapping_2014}, and the proposed spectrogram generation is used by others as well \citep{marshall_continuous_2021, todd_systematic_2017}.

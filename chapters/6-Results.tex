@@ -76,7 +76,7 @@ In the supervised approach, a random forest of decision trees \citep{breiman_ran
 The recall scores of \ProboscisPumping category are always greater than $0.97$, which implies that we only lose an insignificant amount of annotated frames.
 Similarly, the recall score of \Feeding drops below $0.95$ only once to $0.80$.
 For \ProboscisPumping, 6 out of 11 splits have a recall score greater than $0.9$, and performance is relatively poor for only two of the splits ($0.61$ and $0.56$ recall).
-Haltere switch is again the most challenging behavioral category. However, recall is often greater than $0.75$ as opposed to the unsupervised approach.
+\CHaltereSwitch is again the most challenging behavioral category. However, recall is often greater than $0.75$ as opposed to the unsupervised approach.
 Considering its superior performance over the unsupervised approach, we proceed to behavior mapping by employing supervised detection.
 
 After activity detection, the next stage is behavior mapping, where the frames in the set $\MicroActivity$ are mapped to behavioral categories.
@@ -260,8 +260,8 @@ Similarly, features related to leg and thorax are more apparent for \Grooming an
 
 Behaviors differ in terms of bout durations as well.
 Kernel density estimations of bout duration distributions for each behavioral category are given in Figure~\ref{figure:bout-durations}.
-Haltere switch rarely exceeds several seconds, and \PosturalAdjustment behaviors usually occur within ${\sim}4$ seconds, and both have relatively low variance $4.4$, and $8.2$ seconds, respectively.
-Feeding, \ProboscisPumping, and \Grooming tend to have longer bouts with greater variances.
+\CHaltereSwitch rarely exceeds several seconds, and \PosturalAdjustment behaviors usually occur within ${\sim}4$ seconds, and both have relatively low variance $4.4$, and $8.2$ seconds, respectively.
+\CFeeding, \ProboscisPumping, and \Grooming tend to have longer bouts with greater variances.
 For example, the bout duration distribution of \Grooming has a variance of $15$ seconds, and the mean bout duration is $6.2$ seconds.
 
 \begin{figure}[ht!]
@@ -291,7 +291,7 @@ For example, the bout duration distribution of \Grooming has a variance of $15$ 
 \end{figure}
 
 Another important aspect of fruit flies' behavioral repertoires is the total time spent while exhibiting each behavior (see Figure~\ref{figure:time-spent-in-behaviors}).
-Grooming is the most exhibited behavior in terms of total time spent, with an average of $19.9$ minutes, and a standard deviation of $5.2$ minutes.
+\CGrooming is the most exhibited behavior in terms of total time spent, with an average of $19.9$ minutes, and a standard deviation of $5.2$ minutes.
 We observe a great variance for time spent exhibiting \HaltereSwitch among experiments, the average, and the standard deviation are $4.5$ minutes and $5.9$ respectively.
 
 Characterization of underlying changes in behaviors is essential for understanding sleep, and thus, we also examine behavioral visits that occurred during flies' sleep.
