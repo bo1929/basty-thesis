@@ -80,7 +80,7 @@ For a frame to be identified as micro-activity, it is sufficient if at least one
 This is due to the fact that micro-activities are manifested by the displacement of only a small subset of body parts' locations.
 
 \subsection{Supervised Approach}\label{section:supervised-detection}
-Annotations contain 5 behavioral categories, namely grooming, postural adjustments, proboscis pumping, haltere switch, and feeding.
+Annotations contain 5 behavioral categories, namely grooming, postural adjustment, proboscis pumping, haltere switch, and feeding.
 These behavioral categories correspond to the micro-activities that we are interested in.
 We formulate a binary classification problem by considering all behavioral categories as the positive class, and the rest as the negative class.
 After constructing the $\Dormancy$ set with the unsupervised approach described in Section~\ref{section:unsupervised-detection}, we train a random forest of decision trees \citep{breiman_random_2001} with all the frames of annotated flies' $\Dormancy$ set.

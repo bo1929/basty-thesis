@@ -43,14 +43,14 @@ Their main focus has been on behaviors that feature major postural and positiona
 
 In this work, we develop \texttt{basty} (Automated \underline{B}ehavioral \underline{A}nalysis of A\underline{s}leep Frui\underline{t} Fl\underline{y}), a novel, end-to-end pipeline made public as a configurable, open source, and easy-to-use software package\footnote{\texttt{basty}, implemented in Python, is publicly available at \url{https://github.com/bo1929/basty}}.
 \texttt{basty} directly operates on the output of the pose estimation tools, such as DeepLabCut \citep{mathis_deeplabcut_2018} and SLEAP \cite{pereira_sleap_2022}.
-Unlike previous behavior mapping studies, we focus on behavioral repertoire exhibited during dormancy, i.e., in-place behaviors such as grooming, switch-like haltere movement, and postural adjustments.
+Unlike previous behavior mapping studies, we focus on behavioral repertoire exhibited during dormancy, i.e., in-place behaviors such as grooming, switch-like haltere movement, and postural adjustment.
 Similar to previous studies, our approach starts by computing meaningful behavioral representations.
 To this end, \texttt{basty} offers an easily configurable and flexible framework, which includes a novel preprocessing step, extensive spatio-temporal feature computation, and spectrogram generation.
 Enabling analysis of sleep experiments and biological inference, \texttt{basty} allows detecting activities in long sleep experiments (14-16 hours).
 Activity detection can be done both in a supervised manner and unsupervised manner by using the Gaussian mixture model and random forest ensembles, respectively.
 The proposed pipeline includes a novel supervised behavior mapping approach, which takes advantage of semi-supervised dimensionality reduction and nearest neighbors analysis in a low dimensional behavioral space.
 
-We evaluate our pipeline with a dataset of sleep deprivation and wild-type sleep experiments, focusing on five behavioral categories: grooming, feeding, proboscis pumping, haltere switch, and postural adjustments.
+We evaluate our pipeline with a dataset of sleep deprivation and wild-type sleep experiments, focusing on five behavioral categories: grooming, feeding, proboscis pumping, haltere switch, and postural adjustment.
 Notably, automated quantification of switch-like movement of the haltere and pumping-like proboscis behavior is achieved for the first time in this work.
 Results show that our pipeline successfully maps behavioral categories, achieving an AUC score of 0.8 with limited supervision.
 We also demonstrate that our approach enables detecting unobserved behaviors and differences in behavioral repertoires.
