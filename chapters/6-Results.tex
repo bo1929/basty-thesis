@@ -85,7 +85,7 @@ In this step, the semi-supervised pair embeddings described in the Section~\ref{
 We set the embedding space dimension to 2, which $260$ dimensional behavioral representation matrix $\V{\hat{W}}$ is reduced to.
 The number of neighbors parameter of UMAP is set to $75$, the minimum distance parameter is determined as $0$, and the distance metric is Hellinger distance (Equation~\ref{equation:hellinger-distance}).
 
-Then, utilizing the generated behavioral embeddings, nearest neighbors analysis is performed in order to assign behavioral scores to each unannotated frame.
+Then, utilizing the generated behavioral embeddings, a nearest neighbors analysis is performed in order to assign behavioral scores to each unannotated frame.
 In each semi-supervised embedding, we computed $25$ nearest annotated neighbors of the frames, and contributions of the neighbors are weighted disproportional to their distances, using the Euclidean distance, as formally given in the Equation~\ref{equation:nn-weights}.
 After that, each nearest neighbor weights are normalized with the $\log_2$ number of occurrences of the corresponding behavioral category, and then $\textnormal{L}_1$ normalized to make behavioral weights sum up to $1$ (see Equation ~\ref{equation:behavioral-weight-occurence-normalization},~\ref{equation:behavioral-weight-activation}).
 Finally, we sum behavioral weights obtained from different ``views'' (i.e., annotated experiment), and $\textnormal{L}_1$ normalization is applied again to end up with the final behavioral score values.
@@ -108,7 +108,7 @@ When the grooming behavior is short, it becomes more similar to short-duration m
 Frames with feeding behavior annotation are often misidentified as postural adjustment, grooming, and proboscis pumping.
 As proboscis movement is common both for feeding and proboscis pumping, confusion with the proboscis pumping is expected for feeding.
 Another important observation reveals the robustness of the nearest neighbor analysis to the imbalanced distribution of behavioral categories.
-The normalization of behavioral weights with number of occurrences of behaviors favors behavior categories that are rare and relatively short-duration (such as haltere switch). However, we observe that haltere switch scores successfully capture the correct behavioral category, and does not exceed $0.1$ for wrong categories.
+The normalization of behavioral weights with the number of occurrences of behaviors favors behavior categories that are rare and relatively short-duration (such as haltere switch). However, we observe that haltere switch scores successfully capture the correct behavioral category, and do not exceed $0.1$ for wrong categories.
 
 \begin{figure}[htb!]
 	\centering
