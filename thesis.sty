@@ -149,7 +149,11 @@
 \newcommand{\CondProb}[2]{\ProbP \left( #1 \;\middle|\; #2 \right)}
 \newcommand{\entropy}[1]{\symrm{H}\rbr{#1}}
 
-% Ad-hoc abbreviations
+\let\bsim\sim
+\renewcommand{\sim}{{\bsim}}
+\renewcommand{\d}[1]{\ensuremath{\operatorname{d}\!{#1}}}
+
+% Abbreviations
 \newcommand{\NNi}[3]{{#1\mathrm{\textnormal{-}NN}}_#2 \left( #3 \right)}
 \newcommand{\NN}[2]{{#1\mathrm{\textnormal{-}NN}} \left( #2 \right)}
 
@@ -169,14 +173,25 @@
 \newcommand{\Quiescence}{\symsf{Quiescence}}
 \newcommand{\MicroActivity}{\symsf{Micro \mhyphen activity}}
 
+\newcommand*\Grooming[0]{\textmd{grooming}\xspace}
+\newcommand*\CGrooming[0]{\textmd{Grooming}\xspace}
+\newcommand*\PosturalAdjustment[0]{\textmd{postural adjustment}\xspace}
+\newcommand*\CPosturalAdjustment[0]{\textmd{Postural adjustment}\xspace}
+\newcommand*\Feeding[0]{\textmd{feeding}\xspace}
+\newcommand*\CFeeding[0]{\textmd{Feeding}\xspace}
+\newcommand*\ProboscisPumping[0]{\textmd{proboscis pumping}\xspace}
+\newcommand*\CProboscisPumping[0]{\textmd{Proboscis pumping}\xspace}
+\newcommand*\HaltereSwitch[0]{\textmd{haltere switch}\xspace}
+\newcommand*\CHaltereSwitch[0]{\textmd{Haltere switch}\xspace}
+\newcommand*\QuiescentOther[0]{\textmd{quiescent \& other}\xspace}
+\newcommand*\CQuiescentOther[0]{\textmd{Quiescent \& other}\xspace}
+\newcommand*\Moving[0]{\textmd{moving}\xspace}
+\newcommand*\CMoving[0]{\textmd{Moving}\xspace}
+
 \newcommand{\predAnn}{\symsf{pred \mhyphen a}}
 \newcommand{\VpredAnn}{\symsf{\symbf{{pred \mhyphen a}}}}
 \newcommand{\trueAnn}{\symsf{true \mhyphen a}}
 \newcommand{\VtrueAnn}{\symsf{\symbf{{true \mhyphen a}}}}
-
-\let\bsim\sim
-\renewcommand{\sim}{{\bsim}}
-\renewcommand{\d}[1]{\ensuremath{\operatorname{d}\!{#1}}}
 
 \newlength{\dhatheight}
 \newcommand{\doublehat}[1]{%

@@ -150,7 +150,7 @@ Evaluations are done by considering two subsets of frames: the subset of frames 
 The latter one contains false positive micro-activities, which are quantified as the recall score of the \QuiescentOther category in Figure~\ref{figure:detection-performance}.
 False positive micro-activities affect \HaltereSwitch detection performance most. Weighted mean precision score of \HaltereSwitch decreases by ${\sim}0.5$ for fixed interpolated recall score of $0.65$.
 This dramatic performance difference also indicates the importance of achieving low false-positive rate for \QuiescentOther category in the activity detection stage.
-Since the application of our pipeline to unannotated data requires tackling with false-positive activities as well, the following comments are made on the evaluation that is done by considering \Microactivity set.
+Since the application of our pipeline to unannotated data requires tackling with false-positive activities as well, the following comments are made on the evaluation that is done by considering $\Microactivity$ set.
 
 The most robust detection is achieved for \ProboscisPumping and \PosturalAdjustment behavioral categories, respectively, achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
 The maximum $\textnormal{F-}1$ score achieved for \Grooming is $0.60$ for FlyF1-03082020164520 split, whereas $\textnormal{F-}1$ scores of \HaltereSwitch behavioral category do not exceed $0.4$.
@@ -184,17 +184,17 @@ To this end, we consider the following experimental setting: behavior mapping of
 Then, behavioral scores of the FlyF1-03082020's frames with \HaltereSwitch annotation are compared between FlyF14-0817202 guided mapping and FlyM13-08172021 guided mapping.
 As it can be seen from Figure~\ref{figure:time-spent-in-behaviors}, FlyF1-03082020 and FlyF14-0817202 spent ${\sim}4$ minutes by exhibiting switch-like haltere movement behavior, whereas FlyM13-08172021 spent no more than $5$ seconds.
 Therefore, compared to FlyF14-0817202, the \HaltereSwitch is an unseen and lacking behavioral category for FlyM13-08172021.
-We expect to identify this using behavioral scores.
+We expect to identify this difference using behavioral scores.
 Indeed, behavioral scores reflect the difference in the behavioral repertoires of the annotated flies.
 As it can be seen in Figure~\ref{figure:repertoire-score-comparison}, behavioral scores obtained based on FlyF14-0817202's behavioral repertoire are much more confident about the correct behavioral category, whereas behavioral scores obtained based on FlyM13-08172021's behavioral repertoire are more uniform-like and total score is often shared among multiple behavioral categories.
-Using the entropy of the behavioral score, one can quantify the existence of unseen and new behavioral categories more systematically.
+Using the entropy of the behavioral score, one can quantify the existence of unseen and new behavioral categories in a more systematic way.
 In Figure~\ref{figure:repertoire-entropy-comparison}, we compare entropy distributions of the behavioral scores obtained using annotated experiments FlyM13-08172021 and FlyF14-0817202.
-We can immediately see that scores obtained based on the FlyM13-08172021's repertoire have higher entropy, with a mean of $0.41$, whereas for the other one mean is $0.15$.
-For instance, if the entropy of a frame's score is greater than $0.2$, it may be recommended to visit them and investigate the reason.
-Accordingly, behavioral annotations can be extended.
+We can immediately see that scores obtained based on the FlyM13-08172021's repertoire have higher entropy, with a mean of $0.41$, whereas mean entropy for the other one is $0.15$.
+For instance, if the entropy of a frame's score vector is greater than $0.2$, it may be recommended to perform a manual check and investigate the reason.
+Accordingly, set of annotated behavioral categories might be extended.
 
 \section{Analyzing Behavioral Repertoires}\label{section:analyzing-behavioral-repertoires}
-In this section, we analyze the collected data of sleep experiments to discover how behaviors that we are interested in are exhibited.
+In this section, we analyze the collected data of sleep experiments to discover how behaviors that we are interested in are exhibited and organized.
 Starting from a broad perspective, the briefest description of sleep experiments can be done by quantifying the displacement of the flies placed in the chamber.
 In Figure~\ref{figure:displacement}, we plot velocity-based feature vectors $\V{u}$ between ZT10-ZT02 and ZT10-ZT06, respectively for each wild-type sleep and sleep-deprived experiment.
 We observe that the long dormancy epochs are interrupted by relatively short macro activity bouts during sleep.
