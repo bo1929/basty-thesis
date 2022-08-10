@@ -48,11 +48,11 @@ As we are interested in behaviors that are characterized by particular body part
 Obviously, it is impossible to capture a switch-like movement of haltere, when haltere is occluded.
 
 There are many types of occlusions.
-One type is short occlusions that often results from postural changes.
+One type is short occlusions that often result from postural changes.
 Imputation of the time series $\V{X}$ and $\V{Y}$ for such short occlusions is relatively easy since the number of consecutive missing data points is limited.
 However, this is not the case for long occlusions, which usually occur when the fly is in dormancy for an extended period of time.
-Especially for the body parts with left and right counterparts, fly's orientation can result in one of the counterparts being occluded for long dormancy periods.
-We use imputation and elimination of the corresponding data-points to deal with the occlusions.
+Especially for the body parts with left and right counterparts, the fly's orientation can result in one of the counterparts being occluded for long dormancy periods.
+We use imputation and elimination of the corresponding data points to deal with the occlusions.
 Before describing those approaches, we define a criterion for target occlusion.
 
 \subsubsection{Oriented Pose Values for Body Parts with Left \& Right Counterparts}\label{section:oriented-pose-values}
@@ -88,7 +88,7 @@ Therefore, this optional step is included in the behavioral mapping pipeline to 
 \end{figure}
 
 We use prediction scores to determine which body part should be used to compute oriented pose values.
-Let $i$ and $j$ be a pair of body parts which are left and right counterparts of each other, e.g., left and right haltere.
+Let $i$ and $j$ be a pair of body parts that are left and right counterparts of each other, e.g., left and right haltere.
 Then, one can use the $\V{l}_i$ and $\V{l}_j$ to predict if one of them is occluded at a particular time step $t$.
 Let $\orient{\V{x}_i, \V{x}_j}$ ($\orient{\V{y}_i, \V{y}_j}$) be a new pose vector that will be computed based on $\V{x}_i$ and $\V{x}_j$ ($\V{y}_i$ and $\V{y}_j$), e.g., a vector of oriented haltere pose values, composed of left and right haltere pose values.
 The following conditional procedures are proposed to compute oriented pose values from the left and right pose values by deciding the orientation of the fly for a counterpart body pair. The procedures below can be used separately or successively.
@@ -114,8 +114,8 @@ After applying the above procedures for a left and right counterpart pair $i$ an
 	\end{aligned}
 \end{equation}
 where $\mathcal{O}$ is the set of index pairs of left and right counterparts and $\bigcup_{\set{i,j} \in \mathcal{O}} \set{i,j}$ is the union of all indexes of such body part pairs.
-Applying the procedures described above for each left and right counterparts results in computing $\V{X}^{\omicron}$ and $\V{Y}^{\omicron}$.
-Such oriented versions of the original data matrices can be used instead of $\V{X}$ and $\V{Y}$ in the rest of the pipeline, if desired.
+Applying the procedures described above for each left and right counterpart results in computing $\V{X}^{\omicron}$ and $\V{Y}^{\omicron}$.
+Such oriented versions of the original data matrices can be used instead of $\V{X}$ and $\V{Y}$ in the rest of the pipeline if desired.
 
 \subsubsection{Finding Occlusions using Prediction Scores \& Anomalous Pose Values}\label{section:detecting-occlusions}
 Major postural changes and overlapping body parts during movements result in some body parts being occluded for a short interval of time.
@@ -133,16 +133,16 @@ The following conditions are considered to detect occluded body parts, note that
 	\item If the difference between the estimated pose value at time step $t$ and the median of pose values within the window of size $\tau$, centered at time step $t$, exceeds the threshold $\delta$, then the $t$ is marked to be imputed.
 \end{itemize}
 Here, the window sizes and threshold parameters are determined separately for each condition.
-The conditions described above are not only useful for the occluded body parts, but are also beneficial for tackling unnatural and abnormal predictions of the pose estimation model.
+The conditions described above are not only useful for the occluded body parts but are also beneficial for tackling unnatural and abnormal predictions of the pose estimation model.
 
 \subsection{Aligning Different Orientations}
 It may be desirable to align different orientations and postures in some cases.
-For instance, it is not possible to interpret vertical and horizontal replacements of body parts separately without aligning them into a reference frame. Flies can position themselves in different orientations while exhibiting similar actions, as it can be seen from the Figure~\ref{figure:parallel-horizontal-orientation}. % and Figure~\ref{figure:parallel-vertical-orientation}.
+For instance, it is not possible to interpret vertical and horizontal replacements of body parts separately without aligning them into a reference frame. Flies can position themselves in different orientations while exhibiting similar actions, as can be seen from Figure~\ref{figure:parallel-horizontal-orientation}. % and Figure~\ref{figure:parallel-vertical-orientation}.
 
 To rotationally align each frame, we transform body part coordinate values into an egocentric reference frame centered in the middle of the fly's spine, e.g., a line along the thorax.
 Then, we performed a linear transformation on the pose values to center the spine at the origin, oriented along the $y$-axis.
 
-Alignment of the frames is an optional step in the behavioral mapping pipeline.
+The alignment of the frames is an optional step in the behavioral mapping pipeline.
 It is potentially beneficial, and reasonable, to perform alignment when the Cartesian pose values of the body parts are included as spatio-temporal features.
 
 \subsection{Filtering and Imputation}
@@ -152,7 +152,7 @@ Thus, filtering the pose values and imputation of the data points marked as occl
 One of the most practical and effective approaches for time series imputation is applying interpolation.
 We also benefit from univariate interpolation to replace values at marked time points, where the exact algorithm is chosen to be one of the following; linear interpolation, spline interpolation, forward filling, or backward filling.
 
-After imputation, we apply a median filter with appropriate window size and smooth each $\V{x_i}$ and $\V{y_i}$ separately.
+After imputation, we apply a median filter with the appropriate window size and smooth each $\V{x_i}$ and $\V{y_i}$ separately.
 Finally, a boxcar filter (moving average) with a relatively small window size is used to filter out the rapidly changing signals by averaging.
 We observed that large window sizes may result in smoothing out some critical signals, which potentially define short-duration low-amplitude behaviors, e.g., switch-like haltere movement behavior.
 % The values of both $\tau_{\textnormal{median}}$ and $\tau_{\textnormal{boxcar}}$ is typically between $100$ milliseconds to $200$ milliseconds, which corresponds to $\sim 3$ frames to $\sim 6$ frames in our $30$ FPS setup.
@@ -163,8 +163,8 @@ However, no significant performance improvement is observed, and hence later aba
 The configuration and actual parameters of the imputation methods and the filters are provided in Chapter~\ref{section:employing-proposed-pipeline}.
 
 \section{Computation of Spatio-temporal Features}\label{section:spatiotemporal-fetaures}
-After preprocessing of pose values, learning stereotypical behaviors becomes feasible.
-Although tracking of relevant body parts and processing corresponding pose values is an essential step for quantifying behavior, a set of coordinate values is not sufficient to represent and capture complex spatio-temporal dynamics of animal behavior.
+After preprocessing pose values, learning stereotypical behaviors becomes feasible.
+Although tracking relevant body parts and processing corresponding pose values is an essential step for quantifying behavior, a set of coordinate values is not sufficient to represent and capture complex spatio-temporal dynamics of animal behavior.
 There are thousands of unique postures, and behaviors are not even exhibited by some static set of postures.
 Instead, they are defined by expressive and meaningful spatio-temporal features such as distances, velocities, angles, and angular velocities.
 Therefore, one needs to compute such features from the coordinate values of body parts in two-dimensional space.
@@ -218,7 +218,7 @@ where $\Delta t$ is the sampling period, and it is equal to $\sfrac{1}{\textnorm
 		\centering\includegraphics[width=\linewidth]{figures/ExampleTrajectory-HaltereSwitch_3.pdf}
 		\caption{Switch-like movement of the haltere.}
 	\end{subfigure}%
-	\caption{Three spatio-temporal feature examples describing kinematics of different behaviors.}
+	\caption{Three spatio-temporal feature examples describing the kinematics of different behaviors.}
 \end{figure}
 
 \subsection{Joint Angles Between Body Parts}
@@ -241,7 +241,7 @@ The cartesian pose values of a body part $i$ are straightforwardly given by the 
 	\end{aligned}
 \end{equation}
 
-Note that for such a single body part, two feature values are generated.
+Note that two feature values are generated for such a single body part.
 Corresponding gradient features, namely the body part velocities along each cartesian component, are computed by
 \begin{equation}
 	\begin{aligned}
@@ -255,13 +255,13 @@ In order to compute the overall two-dimensional velocity of a body part, one can
 \subsection{Constructing Spatio-temporal Feature Matrices}
 Let $\mathcal{C}, \mathcal{D}$, and $\mathcal{A}$ denote the sets of body parts, body part pairs, and body part triplets; respectively defining cartesian pose values, distances, and angles, respectively.
 Similarly, let $\mathcal{C}^{\prime}, \mathcal{D}^{\prime}$, and $\mathcal{A}^{\prime}$ denote sets that define sets of respective gradient features.
-Then the snapshot feature matrix $S$ constructed as follows:
+Then the snapshot feature matrix $S$ is constructed as follows:
 \begin{equation}
 	\V{S} = \rbr{\qmatrix{\rbr{\V{x}^i}_{i \in \mathcal{C}}} \concat \qmatrix{\rbr{\V{y}^i}_{i \in \mathcal{C}}} \concat \qmatrix{\rbr{\V{d}^{i,j}}_{\set{i,j} \in \mathcal{D}}} \concat \qmatrix{\rbr{\V{\omega}^{i,j,k}}_{\set{i,j,k} \in \mathcal{A}}}},
 \end{equation}
 where the vectors are defined as $\V{x}^{i}{=}\qmatrix{x^{i}_1, \cdots, x^{i}_T}$, $\V{y}^{i}{=}\qmatrix{y^{i}_1, \cdots, y^{i}_T}$,   $\V{d}^{i,j}{=}\qmatrix{d^{i,j}, \cdots, d^{i,j}_T}$, and $\V{\omega}^{i,j,k}{=}\qmatrix{\omega_1^{i,j,k}, \cdots, \omega^{i,j,k}_T}$.
 
-Similarly, for gradient features, the feature matrix is constructed by concatenating change of distances, angular velocities and body part velocities; given by
+Similarly, for gradient features, the feature matrix is constructed by concatenating change of distances, angular velocities, and body part velocities; given by
 \begin{equation}
 	\V{G} = \rbr{\qmatrix{\rbr{\V{\dot{x}}^i}_{i \in \mathcal{C}^{\prime}}} \concat \qmatrix{\rbr{\V{\dot{y}}^i}_{i \in \mathcal{C}^{\prime}}} \concat \qmatrix{\rbr{\V{\dot{d}}^{i,j}}_{\set{i,j} \in \mathcal{D}^{\prime}}} \concat \qmatrix{\rbr{\V{\dot{\omega}}^{i,j,k}}_{\set{i,j,k} \in \mathcal{A}^{\prime}}}},
 \end{equation}
@@ -271,7 +271,7 @@ The resulting two feature matrices are $\V{S} \in \mathbb{R}^{T \times \rbr{2\ca
 
 \section{Computation of Dynamic Postural Features}\label{section:dynamic-postural-features}
 Instantaneous values of spatio-temporal features do not provide a sufficient description of complex postural dynamics of behaviors.
-Understanding the output of a complex biological system, in our case the behavior, can only be achieved by studying multiple timescales concurrently.
+Understanding the output of a complex biological system, in our case, the behavior can only be achieved by studying multiple timescales concurrently.
 Previous studies attempted to search behavioral motifs, e.g., repeated sub-sequences of actions with finite length, within the behavioral time series \citep{ye_time_2011, brown_dictionary_2013}.
 However, as \citet{berman_mapping_2014} states, this paradigm usually requires problems of temporal alignment and relative phasing between different scales.
 Alternatively, extending spatio-temporal features to capture postural dynamics at different timescales eliminate the requirements of temporal alignment and motif-based analysis.
@@ -291,7 +291,7 @@ Similarly, the moving standard deviation of a gradient feature $g_{i,t}$ by is c
 	\sigma_\tau(g_{i,t}) = \rbr{\sfrac{1}{\min\{t+\tau,\, T\}-\max\{t-\tau,\, 1\}+1} \sum_{t^{\prime}=\max\{t-\tau,\, 1\}}^{\min\{t+\tau,\, T\}} \rbr{\mu_{\tau}(g_{i,t}) - g_{i, t^{\prime}}}^2}^{\sfrac{1}{2}}
 \end{equation}
 
-Approach of feature generation by computing moving statistics has been used to learn animal behavior by \citet{kabra_jaaba_2013}, and \citet{marshall_continuous_2021} has also included such features into the analysis.
+The approach of feature generation by computing moving statistics has been used to learn animal behavior by \citet{kabra_jaaba_2013}, and \citet{marshall_continuous_2021} has also included such features in the analysis.
 
 \subsection{Wavelet Transformation of Snapshot Features}
 The wavelet domain is a useful representation of postural dynamics due to the following reasons given by \citet{berman_mapping_2014}, and the proposed spectrogram generation is used by others as well \citep{marshall_continuous_2021, todd_systematic_2017}.
@@ -303,7 +303,7 @@ Given a function $s(t)$, the continuous wavelet transformation at a frequency $f
 \begin{equation}
 	W_{f,t^{\prime}}\qmatrix{s\rbr{t}} = \frac{1}{\sqrt{a\rbr{f}}} \int_{-\infty}^{\infty} s\rbr{t} \Psi^\ast\rbr{\frac{t - t^{\prime}}{a(f)}} \dd{t},
 \end{equation}
-where $\Psi$ is the wavelet function and $a$ is a function for converting frequencies to wavelet scale factor.
+where $\Psi$ is the wavelet function and $a$ is a function for converting frequencies to the wavelet scale factor.
 In particular, we used the Morlet wavelet, which is successful at isolating chirps of periodic motion and well suited for describing postural dynamics, similar to what we observe in our data \citep{daugman_uncertainty_1985, berman_mapping_2014}.
 The corresponding wavelet function is given by
 \begin{equation}
