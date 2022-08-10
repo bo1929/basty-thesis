@@ -297,14 +297,14 @@ Approach of feature generation by computing moving statistics has been used to l
 The wavelet domain is a useful representation of postural dynamics due to the following reasons given by \citet{berman_mapping_2014}, and the proposed spectrogram generation is used by others as well \citep{marshall_continuous_2021, todd_systematic_2017}.
 \begin{itemize}
 	\item It describes dynamics over multiple timescales simultaneously by possessing a multi-resolution time-frequency trade-off.
-	\item It eliminates the requirement of precise temporal alignment for capturing periodic behaviors by taking amplitudes of the continuous wavelet transform of each snapshot feature at different scales.
+	\item It eliminates the requirement of precise temporal alignment for capturing periodic behaviors by measuring only the amplitudes of the continuous wavelet transform of each snapshot feature at different scales.
 \end{itemize}
 Given a function $s(t)$, the continuous wavelet transformation at a frequency $f>0$ is expressed as the following integral:
 \begin{equation}
 	W_{f,t^{\prime}}\qmatrix{s\rbr{t}} = \frac{1}{\sqrt{a\rbr{f}}} \int_{-\infty}^{\infty} s\rbr{t} \Psi^\ast\rbr{\frac{t - t^{\prime}}{a(f)}} \dd{t},
 \end{equation}
 where $\Psi$ is the wavelet function and $a$ is a function for converting frequencies to wavelet scale factor.
-The Morlet wavelet is  well suited for describing postural dynamics which is closely related to human aural and vision perception  \citep{daugman_uncertainty_1985}, and it is used in the pipeline.
+In particular, we used the Morlet wavelet, which is successful at isolating chirps of periodic motion and well suited for describing postural dynamics, similar to what we observe in our data \citep{daugman_uncertainty_1985, berman_mapping_2014}.
 The corresponding wavelet function is given by
 \begin{equation}
 	\Psi(t) = \exp{\frac{t^2}{2}} \cos(w_0t),
