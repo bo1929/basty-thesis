@@ -1,11 +1,8 @@
 \setlength{\parindent}{0pt}
 \chapter{\bf CONCLUSION}\label{chapter:conclusion}
 
-% Retell what you have done.
 Ethology, the scientific study of animal behavior, focuses on behavior under natural conditions, and it is a rapidly growing field. With its scientific roots in the late 19th and early 20th centuries, it gradually became a well-recognized research area and yielded significant insight into general principles of the nervous system.
 Behaviors are arguably the most robust outputs of the brain. The technical advances, ranging from imaging technologies to machine learning techniques, has recently transformed ethology into a new computational discipline.
-
-%, is needed to be deciphered to understand complex neurobiological phenomena, including sleep.
 
 In the past decade, remarkable tools based on computer vision and machine learning have been developed for automated quantification of animal behavior.
 The use of such tools in analyzing animal behaviors has provided unprecedented insight into complex behaviors, such as hunting and mating \citep{mearns_deconstructing_2020, janisch_deciphering_2021}.
@@ -14,9 +11,9 @@ While behaviors exhibited by awake animals tend to be characterized by major pos
 Thus, exploring and quantifying the behavioral repertoire of sleep requires special care and additional considerations.
 
 To this end, we developed a multi-stage and end-to-end behavior mapping pipeline specifically designed for animals in the dormancy state. We release it as a freely accessible, configurable, and easy-to-use software package called \texttt{basty}.
-Our approach is to compute the representations for capturing complex spatio-temporal characteristics of behaviors, detecting micro-activities exhibited in long-duration sleep bouts, and mapping detected activities utilizing a nearest neighbor based analysis on the low-dimensional behavioral embeddings.
-Our pipeline can handle noisy pose estimation data, with missing points (i.e., occlusions), through rigorous pre-processing and post-processing steps.
-Using novel approaches such as semi-supervised pair embeddings approach and experiment committee by voting, \texttt{basty} can tackle mapping of the rich behavioral repertoire of dormant fruit flies with limited supervision.
+Our approach is to compute the representations for capturing complex spatio-temporal characteristics of behaviors, detecting micro-activities exhibited in long-duration sleep bouts, and mapping detected activities utilizing a nearest neighbor analysis on the behavioral embeddings.
+Our pipeline can handle noisy pose estimation data, with missing points (i.e., occlusions), through rigorous pre-processing and post-processing.
+Using novel approaches such as semi-supervised pair embeddings and experiment committee by voting, \texttt{basty} can tackle mapping of the rich behavioral repertoire of dormant fruit flies with limited supervision.
 
 We evaluate our \texttt{basty} with a dataset of sleep deprivation and wild-type sleep experiments, focusing on five behavioral categories: \Grooming, \Feeding, \ProboscisPumping, \HaltereSwitch, and \PosturalAdjustment.
 Automated quantification of \ProboscisPumping and \HaltereSwitch is achieved for the first time in this work.
