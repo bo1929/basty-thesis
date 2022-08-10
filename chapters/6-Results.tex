@@ -148,14 +148,14 @@ The normalization of behavioral weights with the number of occurrences of behavi
 We compute precision-recall and receiver operating characteristic curves for each split by employing the computed behavioral scores, and also calculate the interpolated weighted averages of the curves, see Figure~\ref{figure:ROC-PRC} and Figure~\ref{figure:AUC}.
 Evaluations are done by considering two subsets of frames: the subset of frames annotated as one of the behavioral categories (excluding the frames annotated as \QuiescentOther) and the $\MicroActivity$ set.
 The latter one contains false positive micro-activities, which are quantified as the recall score of the \QuiescentOther category in Figure~\ref{figure:detection-performance}.
-False positive micro-activities affect \HaltereSwitch detection performance most. Weighted mean precision score of \HaltereSwitch decreases by ${\sim}0.5$ for fixed interpolated recall score of $0.65$.
-This dramatic performance difference also indicates the importance of achieving low false-positive rate for \QuiescentOther category in the activity detection stage.
-Since the application of our pipeline to unannotated data requires tackling with false-positive activities as well, the following comments are made on the evaluation that is done by considering $\Microactivity$ set.
+False positive micro-activities affect \HaltereSwitch detection performance most. The weighted mean of \HaltereSwitch's precision scores decreases by ${\sim}0.5$ for a fixed interpolated recall score of $0.65$.
+This dramatic performance difference also indicates the importance of achieving a low false-positive rate for \QuiescentOther category in the activity detection stage.
+Since the application of our pipeline to unannotated data requires tackling false-positive activities as well, the following comments are made on the evaluation that is done by considering the $\MicroActivity$ set.
 
 The most robust detection is achieved for \ProboscisPumping and \PosturalAdjustment behavioral categories, respectively, achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
 The maximum $\textnormal{F-}1$ score achieved for \Grooming is $0.60$ for FlyF1-03082020164520 split, whereas $\textnormal{F-}1$ scores of \HaltereSwitch behavioral category do not exceed $0.4$.
 AUC scores for the \ProboscisPumping often exceed $0.95$, implying robust detection for almost all the splits.
-We observe that detection performance varies greatly among different experiments. This variation can be due to several reasons, and usually reasons are related to tracking performance and annotation quality, as well as behavioral repertoires of flies.
+We observe that detection performance varies greatly among different experiments. This variation can be due to several reasons, and usually, these are related to tracking performance and annotation quality, as well as behavioral repertoires of flies.
 Considering all splits together, we achieve a macro average of $0.8$ AUC score with a one-versus-rest approach.
 
 \begin{figure}[htb!]
@@ -189,9 +189,9 @@ Indeed, behavioral scores reflect the difference in the behavioral repertoires o
 As it can be seen in Figure~\ref{figure:repertoire-score-comparison}, behavioral scores obtained based on FlyF14-0817202's behavioral repertoire are much more confident about the correct behavioral category, whereas behavioral scores obtained based on FlyM13-08172021's behavioral repertoire are more uniform-like and total score is often shared among multiple behavioral categories.
 Using the entropy of the behavioral score, one can quantify the existence of unseen and new behavioral categories in a more systematic way.
 In Figure~\ref{figure:repertoire-entropy-comparison}, we compare entropy distributions of the behavioral scores obtained using annotated experiments FlyM13-08172021 and FlyF14-0817202.
-We can immediately see that scores obtained based on the FlyM13-08172021's repertoire have higher entropy, with a mean of $0.41$, whereas mean entropy for the other one is $0.15$.
+We can immediately see that scores obtained based on the FlyM13-08172021's repertoire have higher entropy, with a mean of $0.41$, whereas the mean entropy for the other one is $0.15$.
 For instance, if the entropy of a frame's score vector is greater than $0.2$, it may be recommended to perform a manual check and investigate the reason.
-Accordingly, set of annotated behavioral categories might be extended.
+Accordingly, the set of annotated behavioral categories might be extended.
 
 \section{Analyzing Behavioral Repertoires}\label{section:analyzing-behavioral-repertoires}
 In this section, we analyze the collected data of sleep experiments to discover how behaviors that we are interested in are exhibited and organized.
