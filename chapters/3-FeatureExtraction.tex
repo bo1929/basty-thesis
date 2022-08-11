@@ -39,7 +39,7 @@ In the Section~\ref{section:dealing-with-occluded-body-parts}, how $L$ is incorp
 \section{Preprocessing}
 This step involves preprocessing the signal by filtering and imputation of certain video frames.
 But in addition to this, there are a couple of optional procedures that can be beneficial for our task of learning stereotypical behaviors.
-These additional procedures deal with the occluded body parts of the fly, alignment of the fly orientations and defining new points of interest.
+These additional procedures deal with the occluded body parts of the fly, alignment of the fly orientations, and defining new points of interest.
 
 \subsection{Occluded Body Parts}\label{section:dealing-with-occluded-body-parts}
 The two-dimensional nature of the video recordings introduces several significant challenges,  one of which is the occluded body parts.
@@ -127,7 +127,7 @@ We first mark the body parts estimated to be occluded and the corresponding time
 The following conditions are considered to detect occluded body parts, note that they can be used separately or in combination with each other.
 
 \begin{itemize}
-	\item If the prediction confidence score at time step $t$ is lower than a given threshold $\epsilon$, then the $t$ is marked to be imputed.
+	\item If the prediction confidence score at the time step $t$ is lower than a given threshold $\epsilon$, then the $t$ is marked to be imputed.
 	\item If $z$-score of the prediction confidence score $l_{i,t}$ computed within a window with size $\tau$, and centered at $t$, is lower than a given threshold $\epsilon_z$, then the $t$ is marked to be imputed.
 	\item If the second-order gradient of the estimated pose value exceeds a given threshold $\delta$, then the $t$ is marked to be imputed.
 	\item If the difference between the estimated pose value at time step $t$ and the median of pose values within the window of size $\tau$, centered at time step $t$, exceeds the threshold $\delta$, then the $t$ is marked to be imputed.
@@ -169,7 +169,7 @@ There are thousands of unique postures, and behaviors are not even exhibited by 
 Instead, they are defined by expressive and meaningful spatio-temporal features such as distances, velocities, angles, and angular velocities.
 Therefore, one needs to compute such features from the coordinate values of body parts in two-dimensional space.
 
-The second stage of the feature extraction is the computation of spatio-temporal features from pose values. Two types of features are computed in this stage, as listed below.
+The second step of the feature extraction stage is the computation of spatio-temporal features from pose values. Two types of features are computed in this stage, as listed below.
 \begin{enumerate}
 	\item \textbf{Snapshot features:} Spatio-temporal feature values computed at a snapshot of time, listed as follows:
 	      \begin{itemize}
