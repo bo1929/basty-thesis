@@ -1,27 +1,26 @@
 \setlength{\parindent}{0pt}
 \chapter{\bf RESULTS}\label{chapter:results}
-\section{Applying basty to Annotate Activities }\label{section:employing-proposed-pipeline}
-
-We have 7 wild-type sleep and 4 sleep-deprived fly recordings. We apply the pipeline using a leave-one-out procedure. The annotations of 10 experiments are used for training  and 1 test experiment by leaving one out for each split.
-We evaluate  evaluate performance for each split.
+\section{Applying \texttt{basty} to Annotate Activities }\label{section:employing-proposed-pipeline}
+We have 7 wild-type sleep and 4 sleep-deprived fly recordings. Our pipeline is evaluated by using a leave-one-out procedure. The annotations of 10 experiments are used for training and 1 test experiment by leaving one out for each split.
+We evaluate varying performance for each split.
 
 \subsection{Preprocessing}
-\subsubsection{Identifying Occluded Boyd Parts}
+\subsubsection{Identifying Occluded Body Parts}
 We first extract features. In this step,  raw tracking data obtained by running DeepLabCut is used to generate meaningful behavioral representations.
 The features are generated using coordinates of the following body parts: proboscis, haltere, thorax, head (left and right), and three midlegs (left and right).
 
 In the preprocessing step, we first identify the occluded body parts. We use oriented pose values for body parts with left and right counterparts, as described in Section~\ref{section:oriented-pose-values}.  We set the low confidence score threshold to $0.075$.
 In addition to the hard threshold applied on the confidence score, we also apply a filtering based on the median window size. The moving median window size $\tau$ is set to $15$ frames ($0.5$ seconds), and threshold for $\tau$ is set to $15$ microns.
 If the position of a body part exceeds the median of the window centered around it by threshold tau $\tau$, or if the confidence score is lower than the threshold, then it is deemed that there exists an occluded body part at the corresponding time point, as described in Section~\ref{section:detecting-occlusions}.
-Finally, we use linear interpolation to the imputate of such frames with occluded body parts.
+Finally, we use linear interpolation to impute of such frames with occluded body parts.
 
-\subsection{Noise removal and smoothing}
+\subsubsection{Noise removal and smoothing}
 At the last preprocessing step, we aim to reduce the tracking noise and smooth the signal. We apply a median filter with a window size of $6$ frames ($0.2$ seconds), and then a boxcar filter with a window size of size $6$ frames ($0.2$ seconds). 
 Aligning different orientations and transforming the frames to be egocentric did not result in performance improvement in our case, hence, we did not transform frames as egocentric.
 
-\subsection{Generation of snapchat features}
+\subsubsection{Generation of snapchat features}
 In the next step, we computed snapshot features and gradient features as described in Section~\ref{section:spatiotemporal-fetaures}. Details of the snapshot and gradient features are provided in Table~\ref{table:spatiotemporal-features}.
-To generate postural dynamics from snapshot features, we applied wavelet transformation at $20$ different frequency channels dyadically spaced between $1$ Hz and $20$ Hz (see Equation~\ref{equation:dyadically-spaced-spectrum} for determining spectrum frequencies). Different timescales are normalized as given in Equation~\ref{equation:wavelet-normalization}. % \citep{liu_rectification_2007}
+In order to generate postural dynamics from snapshot features, we applied wavelet transformation at $20$ different frequency channels dyadically spaced between $1$ Hz and $20$ Hz (see Equation~\ref{equation:dyadically-spaced-spectrum} for determining spectrum frequencies). Different timescales are normalized as given in Equation~\ref{equation:wavelet-normalization}. % \citep{liu_rectification_2007}
 After flattening the tensor representation of the postural dynamics (with shape $T \times 13 \times 20)$, and $\textnormal{L}_1$ normalization of frames, we ended up with a $13 \times 20 = 260$ dimensional behavioral representation matrix $\V{\hat{W}}$.
 Similarly, for gradient features, moving mean values are computed for a single timescale, that is $33$ milliseconds, resulting in $9 \times 1 = 9$ dimensional behavioral representation matrix $\V{\hat{M}}^\mu$.
 It is only used in the activity detection stage for constructing $\Dormancy$ set.
@@ -49,9 +48,13 @@ It is only used in the activity detection stage for constructing $\Dormancy$ set
 	\caption{Computed spatio-temporal features. \label{table:spatiotemporal-features}}
 \end{table}
 \subsection{Activity detection}
-After computing behavioral representations and constructing $\V{\hat{W}}$ for each experiment, we use these for detection of flys' activities during sleep.
+After computing behavioral representations and constructing $\V{\hat{W}}$ for each experiment, we use these for the detection of flies' activities during sleep.
 Here, reported recall scores are for the frame set $\MicroActivity$, and it is important to achieve high recall scores, except for the \QuiescentOther category.
 Recall score for \QuiescentOther category corresponds to the false-positive rate.
+
+\subsection{Results}
+\subsubsection{Activity Mapping Performance}
+
 We evaluate both unsupervised and supervised approaches using recall, and accuracy values ( Figure~\ref{figure:detection-performance}).
 
 \begin{figure}[htb!]
@@ -84,6 +87,7 @@ For \ProboscisPumping, 6 out of 11 splits have a recall score greater than $0.9$
 \CHaltereSwitch is again the most challenging behavioral category. However, recall is often greater than $0.75$ as opposed to the unsupervised approach.
 Considering its superior performance over the unsupervised approach, we proceed to behavior mapping by employing supervised detection.
 
+\subsubsection{Behavior mapping performance}
 After activity detection, the next stage is behavior mapping, where the frames in the set $\MicroActivity$ are mapped to behavioral categories.
 The first step is the computation of behavioral embeddings.
 In this step, the semi-supervised pair embeddings described in the Section~\ref{section:pair-embeddings} computed for each annotated and unannotated experiment pair.
@@ -95,6 +99,7 @@ In each semi-supervised embedding, we computed $25$ nearest annotated neighbors 
 After that, each nearest neighbor weights are normalized with the $\log_2$ number of occurrences of the corresponding behavioral category, and then $\textnormal{L}_1$ normalized to make behavioral weights sum up to $1$ (see Equation ~\ref{equation:behavioral-weight-occurence-normalization},~\ref{equation:behavioral-weight-activation}).
 Finally, we sum behavioral weights obtained from different ``views'' (i.e., annotated experiment), and $\textnormal{L}_1$ normalization is applied again to end up with the final behavioral score values.
 
+\subsection{Behaviour Mapping Performance}
 \begin{figure}[htb!]
 	\centering
 	\includegraphics[width=\linewidth]{figures/BehavioralScoresDistributions_perBehavior.pdf}
@@ -103,7 +108,7 @@ Finally, we sum behavioral weights obtained from different ``views'' (i.e., anno
 \end{figure}
 
 The resulting score vectors are used for prediction and also utilized as confidence scores.
-In Figure~\ref{figure:behavioral-score-distributions}, behavioral score distribution for each category is given for all splits together.
+Figure~\ref{figure:behavioral-score-distributions} shows behavioral score distribution for each category  for all splits.
 Except for the \Feeding category, the median score of the correct target behavioral category is greater than $0.5$, and the computed behavioral scores successfully characterize categories.
 Compared to other behaviors, \Feeding has the poorest performance, with a median correct score of $0.2$.
 The \PosturalAdjustment category wrongly has the highest median score for \Feeding.
