@@ -155,7 +155,7 @@ As a result, for $\Ann{R}$ unannotated experiments and  $\Unann{R}$ annotated ex
 For a single unannotated experiment, a semi-supervised behavioral embedding for each annotated experiment provides different ``views''.
 Especially when the behavioral repertoire of the annotated and the unannotated experiments are similar, the provided ``view'' turns out to be an accurate, easy-to-interpret low-dimensional representation of the exhibited behaviors of the unannotated experiment.
 When the behavioral repertoire and/or feature distribution are dissimilar, the resulting embedding may not provide useful information about the unannotated experiment, but an advantage of this approach is that the other pair embeddings do not get distorted by poor matches.
-As described in Section~\ref{section:nearest-neighbors-analysis}, semi-supervised pair embeddings are utilized to predict behavioral categories of unannotated experiments by combining multiple view acquired from annotated ones.
+As described in Section~\ref{section:nearest-neighbors-analysis}, semi-supervised pair embeddings are utilized to predict behavioral categories of unannotated experiments by combining multiple views acquired from annotated ones.
 
 \begin{figure}[htb!]
 	\centering
@@ -175,7 +175,7 @@ As described in Section~\ref{section:nearest-neighbors-analysis}, semi-supervise
 \section{Nearest Neighbor Analysis}\label{section:nearest-neighbors-analysis}
 One of our ultimate goals is to annotate an experiment using already annotated ones.
 In previous sections and chapters, we described feature extraction, activity detection, and computation of behavioral embeddings.
-In this section, we describe a novel nearest neighbor based analysis for prediction of behavioral exhibitions, which has to tackle the following challenges:
+In this section, we describe a novel nearest neighbor based analysis for the prediction of behavioral exhibitions, which has to tackle the following challenges:
 \begin{itemize}
 	\item sparsity of behavioral expressions,
 	\item imbalanced distribution of behavioral categories,
