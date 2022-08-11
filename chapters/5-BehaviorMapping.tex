@@ -3,11 +3,11 @@
 \section{Overview of Behavior Mapping}
 Our ultimate goal is to have a fine-grained categorization of the behaviors observed during dormancy. Thus, it is not sufficient to detect the activities and construct the sets $\MicroActivity$ and $\MacroActivity$. The behavior mapping stage is the most critical and novel part of the pipeline, and in this stage, we discover and predict stereotypical behaviors by mapping each frame in the sets $\MicroActivity$.
 
-The behavior mapping stage starts by generating low dimensional behavioral embeddings from the high dimensional behavioral representation matrix $\V{\hat{W}}$, but only the rows corresponding to the $\MicroActivity$ are included in the mapping.
+The behavior mapping stage starts by generating low-dimensional behavioral embeddings from the high-dimensional behavioral representation matrix $\V{\hat{W}}$, but only the rows corresponding to the $\MicroActivity$ are included in the mapping.
 Rest of the frames, namely the $\Quiescence$ set and $\MacroActivity$ set directly assigned to \QuiescentOther and \Moving categories.
 In Section~\ref{section:behavioral-embeddings}, behavioral embedding generation is discussed in detail, including supervised, semi-supervised, and unsupervised approaches.
 We use semi-supervised pair UMAP embeddings, described in Section~\ref{section:pair-embeddings}, to project behavioral representations into a low-dimensional behavior embedding.
-The next step is a novel nearest neighbor analysis in the generated low-dimensional behavioral spaces, as we detail in Section~\ref{section:nearest-neighbors-classification}.
+The next step is a novel nearest neighbor analysis in the generated low-dimensional behavioral spaces, as we detail in Section~\ref{section:nearest-neighbors-analysis}.
 The nearest neighbor analysis consists of several parts.
 The first one is the computation of the behavioral weights (Section ~\ref{section:behavioral-weights}).
 Next, we combine behavioral weights provided by each ``view'', i.e., annotated experiment by forming a committee (Section~\ref{section:committee-by-voting}).
@@ -16,7 +16,7 @@ Finally, post-processing is described in the Section~\ref{section:postprocessing
 \section{Behavioral Embeddings}\label{section:behavioral-embeddings}
 The dynamic postural features are able to capture many different timescales, however, their high-dimensional structure makes it challenging to directly exploit behavioral representations in analysis, learning, and visualization.
 For example, the behavioral representation matrix ($\V{\hat{W}}$) computed from dynamic postural features ($\V{W}$) with $20$ spatio-temporal features and $25$ timescales (i.e., frequency channels) has $20 \times 25 {=} 500$ columns.
-Since the correlation between different spatio-temporal features (e.g., the distance between head and proboscis and cartesian pose values of proboscis) and different timescales are often strong (see Figure~\ref{figure:correlations-btw-features}), one may expect that the topological structure of the high dimensional behavioral representations ($\V{\hat{W}}$) can be accurately represented in a lower dimensional space.
+Since the correlation between different spatio-temporal features (e.g., the distance between head and proboscis and cartesian pose values of proboscis) and different timescales are often strong (see Figure~\ref{figure:correlations-btw-features}), one may expect that the topological structure of the high-dimensional behavioral representations ($\V{\hat{W}}$) can be accurately represented in a lower dimensional space.
 Therefore, we would like to find a low-dimensional embedding that captures the important features of the dataset.
 The embedding we compute should minimize local distortions, since trajectories pause near a repeatable position whenever a particular stereotyped behavior is observed \citep{berman_mapping_2014, deangelis_manifold_2019, ali_timecluster_2019}.
 
@@ -49,7 +49,7 @@ UMAP and other non-linear dimensionality reduction algorithms that attempt to us
 	\item Graph Layout
 	      \begin{enumerate}
 		      \item Define an objective function that preservers desired characteristics of the $k$-nearest neighbor graph.
-		      \item Compute a low dimensional representation by optimizing the defined objective function.
+		      \item Compute a low-dimensional representation by optimizing the defined objective function.
 	      \end{enumerate}
 \end{itemize}
 
@@ -64,7 +64,7 @@ Then, the $k$-NN graph is modified by making edges directed and defining the new
 After this step, there exist two edges with disagreeing weights between the nearest neighbors, as the local metrics differ.
 UMAP combines those weights by using $t$-conorm and the resulting weight can be interpreted as the probability of at least one of the two directed edge to exist.
 
-Finally, UMAP uses a force-directed graph layout algorithm in low dimensional space where attractive and repulsive forces are defined based on the gradients, optimizing the edge-wise cross-entropy between the original weighted graph and equivalent weighted graph induced by the embeddings.
+Finally, UMAP uses a force-directed graph layout algorithm in low-dimensional space where attractive and repulsive forces are defined based on the gradients, optimizing the edge-wise cross-entropy between the original weighted graph and equivalent weighted graph induced by the embeddings.
 The algorithm proceeds by iteratively applying attractive and repulsive forces at each edge or vertex.
 Since the ``true'' graph captures the topology of the source data, the approximated graph also matches the overall topology of the data, and thus produces a meaningful low-dimensional representation.
 A detailed mathematical and algorithmic description of the UMAP algorithm can be found in \citep{mcinnes_umap_2020}, and it is skipped here as it goes beyond the scope of this work.
@@ -155,7 +155,7 @@ As a result, for $\Ann{R}$ unannotated experiments and  $\Unann{R}$ annotated ex
 For a single unannotated experiment, a semi-supervised behavioral embedding for each annotated experiment provides different ``views''.
 Especially when the behavioral repertoire of the annotated and the unannotated experiments are similar, the provided ``view'' turns out to be an accurate, easy-to-interpret low-dimensional representation of the exhibited behaviors of the unannotated experiment.
 When the behavioral repertoire and/or feature distribution are dissimilar, the resulting embedding may not provide useful information about the unannotated experiment, but an advantage of this approach is that the other pair embeddings do not get distorted by poor matches.
-As described in Section~\ref{section:nearest-neighbors-classification}, semi-supervised pair embeddings are utilized to predict behavioral categories of unannotated experiments by combining multiple view acquired from annotated ones.
+As described in Section~\ref{section:nearest-neighbors-analysis}, semi-supervised pair embeddings are utilized to predict behavioral categories of unannotated experiments by combining multiple view acquired from annotated ones.
 
 \begin{figure}[htb!]
 	\centering
@@ -172,10 +172,10 @@ As described in Section~\ref{section:nearest-neighbors-classification}, semi-sup
 	\caption[Semi-supervised pair embeddings with an annotated and an unannotated experiment.]{Semi-supervised pair embeddings with an annotated and an unannotated experiment. FlyM4-03062020 (annotated) provides a ``view'' on the behavioral repertoire of the FlyF15-08182021 (unannotated).}
 \end{figure}
 
-\section{Nearest Neighbor Analysis and Classification}\label{section:nearest-neighbors-classification}
+\section{Nearest Neighbor Analysis}\label{section:nearest-neighbors-analysis}
 One of our ultimate goals is to annotate an experiment using already annotated ones.
 In previous sections and chapters, we described feature extraction, activity detection, and computation of behavioral embeddings.
-In this section, we describe a novel nearest neighbor based classification approach, which has to tackle the following challenges:
+In this section, we describe a novel nearest neighbor based analysis for prediction of behavioral exhibitions, which has to tackle the following challenges:
 \begin{itemize}
 	\item sparsity of behavioral expressions,
 	\item imbalanced distribution of behavioral categories,
@@ -228,7 +228,7 @@ Hence, we map the values of $b^\prime_{f,i}$ to $\sqbr{0,1}$ using either the $\
 \end{equation}
 The resulting behavioral weight vector $\V{\hat{b}}_f \in \sqbr{0,1}^K$ can be considered as a probability distribution.
 Here, the vector $\V{\hat{b}}_f$ represents the behavioral characteristics of the frame $f$ of $\exptUnann$ based on the behavioral repertoire of $\exptAnn$.
-The voting-like scheme, as described in Section~\ref{section:committee-by-voting}, incorporates the behavioral weight vectors of all annotated experiments to finalize the classification for $\exptUnann$.
+The voting-like scheme, as described in Section~\ref{section:committee-by-voting}, incorporates the behavioral weight vectors of all annotated experiments to finalize the prediction for $\exptUnann$.
 
 \subsection{Experiment Committee by Voting}\label{section:committee-by-voting}
 Consider all experiments: unannotated experiments $\exptUnann_1, \cdots, \exptUnann_{\Unann{R}}$, and annotated experiments $\exptAnn_1, \cdots, \exptAnn_{\Ann{R}}$, where $\Unann{R}$ and $\Ann{R}$ are the number of experiments, respectively.
@@ -313,7 +313,7 @@ For instance, a bout of proboscis's pumping-like movement should not be shorter 
 In addition to annotations, we may have reasons for physical and biological constraints.
 An example is that \Grooming behavior, bout duration of \Grooming can not exceed a couple of minutes, probability of observing a \Grooming behavior lasted longer than $2$ minutes is extremely low \citep{qiao_automated_2018}.
 Considering such constraints and temporal expectations, we apply the following post-processing procedures, and parameters should be determined based on the behavioral repertoire of interest.
-Post-processing procedures are especially helpful for avoiding misleading classification of the time points with erroneous tracking of body parts.
+Post-processing procedures are especially helpful for avoiding misleading prediction of the time points with erroneous tracking of body parts.
 Each procedure is optional but should be applied in the given order.
 
 \subsubsection{Pruning Interrupting Bouts}\label{section:pruning-interrupting-bouts}

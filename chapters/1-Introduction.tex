@@ -48,7 +48,7 @@ Similar to previous studies, our approach starts by computing meaningful behavio
 To this end, \texttt{basty} offers an easily configurable and flexible framework, which includes a novel preprocessing step, extensive spatio-temporal feature computation, and spectrogram generation.
 Enabling analysis of sleep experiments and biological inference, \texttt{basty} allows detecting activities in long sleep experiments (14-16 hours).
 Activity detection can be done both in a supervised manner and unsupervised manner by using the Gaussian mixture model and random forest ensembles, respectively.
-The proposed pipeline includes a novel supervised behavior mapping approach, which takes advantage of semi-supervised dimensionality reduction and nearest neighbors analysis in a low dimensional behavioral space.
+The proposed pipeline includes a novel supervised behavior mapping approach, which takes advantage of semi-supervised dimensionality reduction and nearest neighbors analysis in a low-dimensional behavioral space.
 
 We evaluate our pipeline with a dataset of sleep deprivation and wild-type sleep experiments, focusing on five behavioral categories: \Grooming, \Feeding, \ProboscisPumping, \HaltereSwitch, and \PosturalAdjustment.
 Notably, automated quantification of switch-like movement of the haltere and pumping-like proboscis behavior is achieved for the first time in this work.
@@ -62,7 +62,7 @@ The thesis is organized as follows:
 	\item Chapter~\ref{chapter:expt-data-collection} describes how the sleep experiments are conducted. We present the technical details for the collection of fly video recordings and pose estimation data.
 	\item Feature extraction stage is described in the Chapter~\ref{chapter:feature-extraction} in detail. This chapter includes preprocessing, computation of spatio-temporal features, wavelet transformation, and sliding window moving statistics for the generation of dynamic postural features.
 	\item Chapter~\ref{chapter:activity-detection} explains our approach for quantifying activities and extracting bouts of micro-activities observed during sleep.
-	\item We describe our approach for fine-grained categorization of the exhibited behaviors in Chapter~\ref{chapter:behavior-mapping}. In particular, behavioral embedding generation is discussed in Section~\ref{section:behavioral-embeddings}, and we explain nearest neighbor analysis in Section~\ref{section:nearest-neighbors-classification}.
+	\item We describe our approach for fine-grained categorization of the exhibited behaviors in Chapter~\ref{chapter:behavior-mapping}. In particular, behavioral embedding generation is discussed in Section~\ref{section:behavioral-embeddings}, and we explain nearest neighbor analysis in Section~\ref{section:nearest-neighbors-analysis}.
 	\item Evaluation of the pipeline and configurations that we used in \texttt{basty} is given in the Chapter~\ref{chapter:results}.  We also analyze the behavioral repertoire of the asleep fruit fly in terms of spatio-temporal characteristics later in this chapter.
 	\item We conclude our work and discuss future directions in Chapter~\ref{chapter:conclusion}.
 \end{itemize}
