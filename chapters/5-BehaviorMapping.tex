@@ -62,7 +62,7 @@ We use the Hellinger distance \citep{hellinger_neue_1909} to quantify the simila
 Then, based on the Hellinger distances, UMAP constructs a weighted $k$-NN graph using nearest neighbor descent \citep{dong_efficient_2011}.
 Then, the $k$-NN graph is modified by making edges directed and defining the new weights using the local Riemannian metric of each data point.
 After this step, there exist two edges with disagreeing weights between the nearest neighbors, as the local metrics differ.
-UMAP combines those weights by using $t$-conorm and the resulting weight can be interpreted as the probability of at least one of the two directed edge to exist.
+UMAP combines those weights by using $t$-conorm and the resulting weight can be interpreted as the probability of at least one of the two directed edges existing.
 
 Finally, UMAP uses a force-directed graph layout algorithm in low-dimensional space where attractive and repulsive forces are defined based on the gradients, optimizing the edge-wise cross-entropy between the original weighted graph and equivalent weighted graph induced by the embeddings.
 The algorithm proceeds by iteratively applying attractive and repulsive forces at each edge or vertex.
