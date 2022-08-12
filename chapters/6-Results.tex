@@ -74,9 +74,9 @@ Finally, we sum behavioral weights obtained from different ``views'' (i.e., anno
 
 \section{Performance Evaluation}\label{section:performance-evaluation}
 \subsection{Activity Detection Performance}
+We evaluate both unsupervised and supervised activity detection approaches using recall and accuracy evaluation metrics (Figure~\ref{figure:detection-performance}).
 Here, reported recall scores are for the frame set $\MicroActivity$, and it is important to achieve high recall scores, except for the \QuiescentOther category.
-Recall score for \QuiescentOther category corresponds to the false-positive rate.
-We evaluate both unsupervised and supervised approaches using recall and accuracy evaluation metrics (Figure~\ref{figure:detection-performance}).
+Recall score for \QuiescentOther category corresponds to the false-positive activity detection rate.
 
 \begin{figure}[htb!]
 	\centering
@@ -91,27 +91,34 @@ We evaluate both unsupervised and supervised approaches using recall and accurac
 	\end{subfigure}%
 	\caption[Performance summary of micro-activity detection.]{Performance summary of micro-activity detection.
 		The red line indicates the macro average of accuracy scores achieved for each split.
-		High recall scores are desired for behavioral categories, as opposed to the false-positive rate for the negative category of \QuiescentOther.
+		We aim to achieve high recall scores for behavioral categories, as opposed to the false-positive rate for the negative category of \QuiescentOther.
 		Supervised and unsupervised detection performances are given respectively in Figure~\ref{figure:supervised-detection-performance} and Figure~\ref{figure:unsupervised-detection-performance}. \label{figure:detection-performance}}
 \end{figure}
 
-The resulting detection performance is quite poor for the switch-like behavior of haltere since \HaltereSwitch behavior occurs very subtly and is similar to quiescent frames.
+As it can be seen in Figure~\ref{figure:unsupervised-detection-performance}, unsupervised activity detection performance is quite poor for the switch-like behavior of haltere since \HaltereSwitch behavior occurs very subtly and is similar to quiescent frames.
 8 out of 11 splits have a \HaltereSwitch recall score of less than $0.5$.
 Moreover, for two of the sleep-deprived experiment splits (FlyF19SDs), \ProboscisPumping recall scores are below $0.15$, which makes it impossible to proceed with a successful mapping.
 
-The recall scores of \ProboscisPumping category are always greater than $0.97$, which implies that we only lose an insignificant amount of annotated frames.
+On the other hand, for the supervised activity detection (Figure~\ref{figure:unsupervised-detection-performance}), the recall scores of \ProboscisPumping category are always greater than $0.97$, which implies that we only lose an insignificant amount of annotated frames.
 Similarly, the recall score of \Feeding drops below $0.95$ only once to $0.80$.
 For \ProboscisPumping, 6 out of 11 splits have a recall score greater than $0.9$, and performance is relatively poor for only two of the splits ($0.61$ and $0.56$ recall).
-\CHaltereSwitch is again the most challenging behavioral category. However, recall is often greater than $0.75$ as opposed to the unsupervised approach.
-Considering its superior performance over the unsupervised approach, we proceed to behavior mapping by employing supervised detection.
+\CHaltereSwitch is again the most challenging behavioral category. However, recall is often greater than $0.75$ as opposed to the unsupervised detection.
+Considering its superior performance over the unsupervised approach, we proceed to behavior mapping by employing the supervised detection approach.
 
 \subsection{Behavior Mapping Performance}
-
+We use computed behavioral score vectors for prediction and also utilize highest score values as the confidence score of prediction.
 Computed behavioral score vectors are used for prediction and also utilized as confidence scores.
 Figure~\ref{figure:behavioral-score-distributions} shows behavioral score distribution for each category for all splits.
 Except for the \Feeding category, the median score of the correct target behavioral category is greater than $0.5$, and the computed behavioral scores successfully characterize categories.
 Compared to other behaviors, \Feeding has the poorest performance, with a median score of $0.2$ for correct target behavior.
 The \PosturalAdjustment category wrongly has the highest median score for \Feeding.
+Behavioral scores are also helpful for revealing similarities and dissimilarities between behavioral categories and can be helpful for determining appropriate spatio-temporal feature sets.
+For instance, \Grooming and \PosturalAdjustment categories are target behaviors having the second-highest behavioral scores for each other, as expected.
+When the \Grooming behavior is short, it becomes more similar to short-duration moving and \PosturalAdjustment behavior.
+Frames with \Feeding behavior annotation are often misidentified as \PosturalAdjustment, \Grooming, and \ProboscisPumping.
+As the movement of the proboscis is common both for \Feeding and \ProboscisPumping, confusion with the \ProboscisPumping is expected for \Feeding.
+Another important observation reveals the robustness of the nearest neighbor analysis to the imbalanced distribution of behavioral categories.
+The normalization of behavioral weights with the number of occurrences of behaviors favors behavior categories that are rare and relatively short-duration (such as \HaltereSwitch). However, we observe that \HaltereSwitch scores successfully capture the correct behavioral category, and do not exceed $0.1$ for wrong categories.
 
 \begin{figure}[htb!]
 	\centering
@@ -120,22 +127,35 @@ The \PosturalAdjustment category wrongly has the highest median score for \Feedi
 		Each box-plot column demonstrates the behavioral score distributions of target behaviors for the corresponding annotation.\label{figure:behavioral-score-distributions}}
 \end{figure}
 
-Behavioral scores are also helpful for revealing similarities and dissimilarities between behavioral categories and can be helpful for determining appropriate spatio-temporal feature sets.
-For instance, \Grooming and \PosturalAdjustment categories are target behaviors having the second-highest behavioral scores for each other, as expected.
-When the \Grooming behavior is short, it becomes more similar to short-duration moving and \PosturalAdjustment behavior.
-Frames with \Feeding behavior annotation are often misidentified as \PosturalAdjustment, \Grooming, and \ProboscisPumping.
-As the movement of the proboscis is common both for \Feeding and \ProboscisPumping, confusion with the \ProboscisPumping is expected for \Feeding.
-
-Another important observation reveals the robustness of the nearest neighbor analysis to the imbalanced distribution of behavioral categories.
-The normalization of behavioral weights with the number of occurrences of behaviors favors behavior categories that are rare and relatively short-duration (such as \HaltereSwitch). However, we observe that \HaltereSwitch scores successfully capture the correct behavioral category, and do not exceed $0.1$ for wrong categories.
-
-
 We compute precision-recall and receiver operating characteristic curves for each split by employing the computed behavioral scores, and also calculate the interpolated weighted averages of the curves (Figure~\ref{figure:ROC-PRC} and Figure~\ref{figure:AUC}).
 We evaluate the mapping performance by considering two subsets of frames: the subset of frames annotated as one of the behavioral categories (excluding the frames annotated as \QuiescentOther) and the $\MicroActivity$ set.
 The latter one contains false positive micro-activities, which are quantified as the recall score of the \QuiescentOther category in Figure~\ref{figure:detection-performance}.
 False positive micro-activities affect \HaltereSwitch detection performance most. The weighted mean of \HaltereSwitch's precision scores decreases by ${\sim}0.5$ for a fixed interpolated recall score of $0.65$.
 This dramatic performance difference also indicates the importance of achieving a low false-positive rate for \QuiescentOther category in the activity detection stage.
 Since the application of our pipeline to unannotated data requires tackling false-positive activities as well, the following comments are made on the evaluation that is done by considering the $\MicroActivity$ set.
+
+\begin{figure}[htb!]
+	\centering
+	\begin{subfigure}[b]{0.995\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/PRC_ROC-DActfiltered.pdf}
+		\caption{ROC and precision-recall curves for frames detected as micro-activity. \label{figure:ROC-PRC-Act}}
+	\end{subfigure}%
+
+	\begin{subfigure}[htb!]{0.995\linewidth}
+		\centering\includegraphics[width=\linewidth]{figures/PRC_ROC-DAnnfiltered.pdf}
+		\caption{ROC and precision-recall curves for annotated frames. \label{figure:ROC-PRC-Ann}}
+	\end{subfigure}%
+	\caption[Performance summary of behavior mapping demonstrated using receiver operating characteristic curve and precision-recall curve.
+	]{Performance summary of behavior mapping demonstrated using receiver operating characteristic curve and precision-recall curve.
+		The weighted averages of ROC and precision-recall curves are computed by interpolation.
+		Curves for both frames estimated as micro-activity and annotated frames are given respectively in Figures~\ref{figure:ROC-PRC-Act}, ~\ref{figure:ROC-PRC-Ann}. \label{figure:ROC-PRC}}
+\end{figure}
+
+The most robust detection is achieved for \ProboscisPumping and \PosturalAdjustment behavioral categories, respectively, achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
+The maximum $\textnormal{F-}1$ score achieved for \Grooming is $0.60$ for FlyF1-03082020164520 split, whereas $\textnormal{F-}1$ scores of \HaltereSwitch behavioral category do not exceed $0.4$.
+AUC scores for the \ProboscisPumping often exceed $0.95$, implying robust detection for almost all the splits.
+We observe that detection performance varies greatly among different experiments. This variation can be due to several reasons, and usually, these are related to tracking performance and annotation quality, as well as behavioral repertoires of flies.
+Considering all splits together, we achieve a macro average of $0.8$ AUC score with a one-versus-rest approach.
 
 \begin{figure}[htb!]
 	\centering
@@ -155,30 +175,7 @@ Since the application of our pipeline to unannotated data requires tackling fals
 		\label{figure:AUC}}
 \end{figure}
 
-The most robust detection is achieved for \ProboscisPumping and \PosturalAdjustment behavioral categories, respectively, achieving $\textnormal{F-}1$ greater than $0.8$ and $0.85$ scores for some splits.
-The maximum $\textnormal{F-}1$ score achieved for \Grooming is $0.60$ for FlyF1-03082020164520 split, whereas $\textnormal{F-}1$ scores of \HaltereSwitch behavioral category do not exceed $0.4$.
-AUC scores for the \ProboscisPumping often exceed $0.95$, implying robust detection for almost all the splits.
-We observe that detection performance varies greatly among different experiments. This variation can be due to several reasons, and usually, these are related to tracking performance and annotation quality, as well as behavioral repertoires of flies.
-Considering all splits together, we achieve a macro average of $0.8$ AUC score with a one-versus-rest approach.
-
 \begin{figure}[htb!]
-	\centering
-	\begin{subfigure}[b]{0.995\linewidth}
-		\centering\includegraphics[width=\linewidth]{figures/PRC_ROC-DActfiltered.pdf}
-		\caption{ROC and precision-recall curves for frames detected as micro-activity. \label{figure:ROC-PRC-Act}}
-	\end{subfigure}%
-
-	\begin{subfigure}[htb!]{0.995\linewidth}
-		\centering\includegraphics[width=\linewidth]{figures/PRC_ROC-DAnnfiltered.pdf}
-		\caption{ROC and precision-recall curves for annotated frames. \label{figure:ROC-PRC-Ann}}
-	\end{subfigure}%
-	\caption[Performance summary of behavior mapping demonstrated using receiver operating characteristic curve and precision-recall curve.
-	]{Performance summary of behavior mapping demonstrated using receiver operating characteristic curve and precision-recall curve.
-		The weighted averages of ROC and precision-recall curves are computed by interpolation.
-		Curves for both frames estimated as micro-activity and annotated frames are given respectively in Figures~\ref{figure:ROC-PRC-Act}, ~\ref{figure:ROC-PRC-Ann}. \label{figure:ROC-PRC}}
-\end{figure}
-
-\begin{figure}[b!]
 	\centering
 	\begin{subfigure}[b]{0.545\linewidth}
 		\centering\includegraphics[width=\linewidth]{figures/BehavioralScores-RepertoireDifference.pdf}
