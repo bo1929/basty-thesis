@@ -10,7 +10,7 @@ In the preprocessing step, we use oriented pose values for body parts with left 
 Then, we identify occluded body parts as described in Section~\ref{section:detecting-occlusions}.
 The hard threshold of confidence score is set to $0.075$ as too low score values reported by the pose estimation algorithm usually indicate occlusions.
 In addition to the hard threshold of confidence score, we apply adaptive filtering based on the moving median.
-In the adaptive filtering, the moving median window size $\tau$ is determined to be $15$ frames ($0.5$ seconds), and threshold $\delta$ is set to $15$ microns.
+In the adaptive filtering, the moving median window size, $\tau$, is determined to be $15$ frames ($0.5$ seconds), and the threshold $\delta$ is set to $15$ microns.
 Consequently, if the position of a body part exceeds the median of the window centered around it by threshold $\delta$, or if the confidence score is lower than the threshold, then it is deemed that there exists an occluded body part at the corresponding time point.
 We use linear interpolation to impute such frames with occluded body parts.
 
@@ -53,7 +53,7 @@ It is only used in the activity detection stage for constructing $\Dormancy$ set
 After computing behavioral representations and constructing $\V{\hat{W}}$ for each experiment, we use these for the detection of flies' activities during sleep.
 Here, reported recall scores are for the frame set $\MicroActivity$, and it is important to achieve high recall scores, except for the \QuiescentOther category.
 Recall score for \QuiescentOther category corresponds to the false-positive rate.
-We evaluate both unsupervised and supervised approaches using recall and accuracy values (Figure~\ref{figure:detection-performance}).
+We evaluate both unsupervised and supervised approaches using recall and accuracy evaluation metrics (Figure~\ref{figure:detection-performance}).
 
 \begin{figure}[htb!]
 	\centering
