@@ -99,15 +99,14 @@ As it can be seen in Figure~\ref{figure:unsupervised-detection-performance}, uns
 8 out of 11 splits have a \HaltereSwitch recall score of less than $0.5$.
 Moreover, for two of the sleep-deprived experiment splits (FlyF19SDs), \ProboscisPumping recall scores are below $0.15$, which makes it impossible to proceed with a successful mapping.
 
-On the other hand, for the supervised activity detection (Figure~\ref{figure:unsupervised-detection-performance}), the recall scores of \ProboscisPumping category are always greater than $0.97$, which implies that we only lose an insignificant amount of annotated frames.
+On the other hand, for the supervised activity detection (see Figure~\ref{figure:unsupervised-detection-performance}), the recall scores of \ProboscisPumping category are always greater than $0.97$, which implies that we only lose an insignificant amount of annotated frames.
 Similarly, the recall score of \Feeding drops below $0.95$ only once to $0.80$.
 For \ProboscisPumping, 6 out of 11 splits have a recall score greater than $0.9$, and performance is relatively poor for only two of the splits ($0.61$ and $0.56$ recall).
-\CHaltereSwitch is again the most challenging behavioral category. However, recall is often greater than $0.75$ as opposed to the unsupervised detection.
+\CHaltereSwitch is again the most challenging behavioral category. However, recall is often greater than $0.75$ as opposed to unsupervised detection.
 Considering its superior performance over the unsupervised approach, we proceed to behavior mapping by employing the supervised detection approach.
 
 \subsection{Behavior Mapping Performance}
-We use computed behavioral score vectors for prediction and also utilize highest score values as the confidence score of prediction.
-Computed behavioral score vectors are used for prediction and also utilized as confidence scores.
+We use computed behavioral score vectors for prediction and also utilize the highest score values as the confidence score of prediction.
 Figure~\ref{figure:behavioral-score-distributions} shows behavioral score distribution for each category for all splits.
 Except for the \Feeding category, the median score of the correct target behavioral category is greater than $0.5$, and the computed behavioral scores successfully characterize categories.
 Compared to other behaviors, \Feeding has the poorest performance, with a median score of $0.2$ for correct target behavior.
