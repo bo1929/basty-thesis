@@ -27,7 +27,7 @@ In order to generate postural dynamics from snapshot features, we applied wavele
 Different timescales are normalized as given in Equation~\ref{equation:wavelet-normalization}.
 After flattening the tensor representation of the postural dynamics (with shape $T \times 13 \times 20)$, and $\textnormal{L}_1$ normalization of frames, we ended up with a $13 \times 20 = 260$ dimensional behavioral representation matrix $\V{\hat{W}}$.
 Similarly, for gradient features, moving mean values are computed for a single timescale, that is $33$ milliseconds, resulting in $9 \times 1 = 9$ dimensional behavioral representation matrix $\V{\hat{M}}^\mu$.
-It is only used in the activity detection stage for constructing $\Dormancy$ set.
+It is only used in the activity detection stage for constructing the $\Dormancy$ set.
 
 \begin{table}[htb!]
 	\begin{adjustbox}{width=1\textwidth}
@@ -112,7 +112,7 @@ Considering its superior performance over the unsupervised approach, we proceed 
 Computed behavioral score vectors are used for prediction and also utilized as confidence scores.
 Figure~\ref{figure:behavioral-score-distributions} shows behavioral score distribution for each category for all splits.
 Except for the \Feeding category, the median score of the correct target behavioral category is greater than $0.5$, and the computed behavioral scores successfully characterize categories.
-Compared to other behaviors, \Feeding has the poorest performance, with a median correct score of $0.2$.
+Compared to other behaviors, \Feeding has the poorest performance, with a median score of $0.2$ for correct target behavior.
 The \PosturalAdjustment category wrongly has the highest median score for \Feeding.
 Behavioral scores are also helpful for revealing similarities and dissimilarities between behavioral categories and can be helpful for determining appropriate spatio-temporal feature sets.
 For instance, \Grooming and \PosturalAdjustment categories are target behaviors having the second-highest behavioral scores for each other, as expected.
@@ -158,7 +158,7 @@ The normalization of behavioral weights with the number of occurrences of behavi
 \end{figure}
 
 We compute precision-recall and receiver operating characteristic curves for each split by employing the computed behavioral scores, and also calculate the interpolated weighted averages of the curves, see Figure~\ref{figure:ROC-PRC} and Figure~\ref{figure:AUC}.
-We evaluate by considering two subsets of frames: the subset of frames annotated as one of the behavioral categories (excluding the frames annotated as \QuiescentOther) and the $\MicroActivity$ set.
+We evaluate the mapping performance by considering two subsets of frames: the subset of frames annotated as one of the behavioral categories (excluding the frames annotated as \QuiescentOther) and the $\MicroActivity$ set.
 The latter one contains false positive micro-activities, which are quantified as the recall score of the \QuiescentOther category in Figure~\ref{figure:detection-performance}.
 False positive micro-activities affect \HaltereSwitch detection performance most. The weighted mean of \HaltereSwitch's precision scores decreases by ${\sim}0.5$ for a fixed interpolated recall score of $0.65$.
 This dramatic performance difference also indicates the importance of achieving a low false-positive rate for \QuiescentOther category in the activity detection stage.
