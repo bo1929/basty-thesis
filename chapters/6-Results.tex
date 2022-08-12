@@ -51,9 +51,30 @@ It is only used in the activity detection stage for constructing $\Dormancy$ set
 \end{table}
 
 After computing behavioral representations and constructing $\V{\hat{W}}$ for each experiment, we use these for the detection of flies' activities during sleep.
+For the unsupervised activity detection, the threshold $c$ is set to the decision boundary $\lambda_1$ of two Gaussian components for the construction of the $\Dormancy$ set, as described in Section~\ref{section:unsupervised-detection}.
+Similarly, thresholds $c_i$ for each $\V{u}_i$ value are determined as the first decision boundary $\lambda_1$ of $3$ Gaussian components sorted by their means.
+For the supervised approach, a random forest of decision trees \citep{breiman_random_2001} is utilized as described in Section~\ref{section:supervised-detection}.
+In our configuration, the ensemble consists of $10$ estimators, the maximum depth of each tree is $5$, and the criterion is Gini impurity.
+
+After activity detection, the next stage is behavior mapping, where the frames in the set $\MicroActivity$ are mapped to behavioral categories.
+The first step is the computation of behavioral embeddings.
+In this step, the semi-supervised pair embeddings described in the Section~\ref{section:pair-embeddings} computed for each annotated and unannotated experiment pair.
+We set the embedding space dimension to 2, which $260$ dimensional behavioral representation matrix $\V{\hat{W}}$ is reduced to.
+The number of neighbors parameter of UMAP is set to $75$, the minimum distance parameter is determined as $0$, and the distance metric is Hellinger distance (Equation~\ref{equation:hellinger-distance}).
+
+Then, utilizing the generated behavioral embeddings, a nearest neighbors analysis is performed in order to assign behavioral scores to each unannotated frame.
+In each semi-supervised embedding, we computed $25$ nearest annotated neighbors of the frames, and contributions of the neighbors are weighted disproportional to their distances, using the Euclidean distance, as formally given in the Equation~\ref{equation:nn-weights}.
+After that, each nearest neighbor weights are normalized with the $\log_2$ number of occurrences of the corresponding behavioral category, and then $\textnormal{L}_1$ normalized to make behavioral weights sum up to $1$ (see Equation ~\ref{equation:behavioral-weight-occurence-normalization},~\ref{equation:behavioral-weight-activation}).
+Finally, we sum behavioral weights obtained from different ``views'' (i.e., annotated experiment), and $\textnormal{L}_1$ normalization is applied again to end up with the final behavioral score values.
+
+\section{Performance Evaluation}\label{section:performance-evaluation}
 Here, reported recall scores are for the frame set $\MicroActivity$, and it is important to achieve high recall scores, except for the \QuiescentOther category.
 Recall score for \QuiescentOther category corresponds to the false-positive rate.
 We evaluate both unsupervised and supervised approaches using recall and accuracy evaluation metrics (Figure~\ref{figure:detection-performance}).
+
+The resulting detection performance is quite poor for the switch-like behavior of haltere since \HaltereSwitch behavior occurs very subtly and is similar to quiescent frames.
+8 out of 11 splits have a \HaltereSwitch recall score of less than $0.5$.
+Moreover, for two of the sleep-deprived experiment splits (FlyF19SDs), \ProboscisPumping recall scores are below $0.15$, which makes it impossible to proceed with a successful mapping.
 
 \begin{figure}[htb!]
 	\centering
@@ -72,29 +93,11 @@ We evaluate both unsupervised and supervised approaches using recall and accurac
 		Supervised and unsupervised detection performances are given respectively in Figure~\ref{figure:supervised-detection-performance} and Figure~\ref{figure:unsupervised-detection-performance}. \label{figure:detection-performance}}
 \end{figure}
 
-For unsupervised activity detection, the threshold $c$ is set to the decision boundary $\lambda_1$ of two Gaussian components for the construction of the $\Dormancy$ set, as described in Section~\ref{section:detecting-activities}.
-Similarly, thresholds $c_i$ for each $\V{u}_i$ value are determined as the first decision boundary $\lambda_1$ of $3$ Gaussian components sorted by their means.
-The resulting detection performance is quite poor for the switch-like behavior of haltere since \HaltereSwitch behavior occurs very subtly and is similar to quiescent frames.
-8 out of 11 splits have a \HaltereSwitch recall score of less than $0.5$.
-Moreover, for two of the sleep-deprived experiment splits (FlyF19SDs), \ProboscisPumping recall scores are below $0.15$, which makes it impossible to proceed with a successful mapping.
-
-In the supervised approach, a random forest of decision trees \citep{breiman_random_2001} is utilized with $10$ estimators. The maximum depth of each tree is $5$ and the criterion is Gini impurity.
 The recall scores of \ProboscisPumping category are always greater than $0.97$, which implies that we only lose an insignificant amount of annotated frames.
 Similarly, the recall score of \Feeding drops below $0.95$ only once to $0.80$.
 For \ProboscisPumping, 6 out of 11 splits have a recall score greater than $0.9$, and performance is relatively poor for only two of the splits ($0.61$ and $0.56$ recall).
 \CHaltereSwitch is again the most challenging behavioral category. However, recall is often greater than $0.75$ as opposed to the unsupervised approach.
 Considering its superior performance over the unsupervised approach, we proceed to behavior mapping by employing supervised detection.
-
-After activity detection, the next stage is behavior mapping, where the frames in the set $\MicroActivity$ are mapped to behavioral categories.
-The first step is the computation of behavioral embeddings.
-In this step, the semi-supervised pair embeddings described in the Section~\ref{section:pair-embeddings} computed for each annotated and unannotated experiment pair.
-We set the embedding space dimension to 2, which $260$ dimensional behavioral representation matrix $\V{\hat{W}}$ is reduced to.
-The number of neighbors parameter of UMAP is set to $75$, the minimum distance parameter is determined as $0$, and the distance metric is Hellinger distance (Equation~\ref{equation:hellinger-distance}).
-
-Then, utilizing the generated behavioral embeddings, a nearest neighbors analysis is performed in order to assign behavioral scores to each unannotated frame.
-In each semi-supervised embedding, we computed $25$ nearest annotated neighbors of the frames, and contributions of the neighbors are weighted disproportional to their distances, using the Euclidean distance, as formally given in the Equation~\ref{equation:nn-weights}.
-After that, each nearest neighbor weights are normalized with the $\log_2$ number of occurrences of the corresponding behavioral category, and then $\textnormal{L}_1$ normalized to make behavioral weights sum up to $1$ (see Equation ~\ref{equation:behavioral-weight-occurence-normalization},~\ref{equation:behavioral-weight-activation}).
-Finally, we sum behavioral weights obtained from different ``views'' (i.e., annotated experiment), and $\textnormal{L}_1$ normalization is applied again to end up with the final behavioral score values.
 
 \begin{figure}[htb!]
 	\centering
@@ -103,7 +106,7 @@ Finally, we sum behavioral weights obtained from different ``views'' (i.e., anno
 		Each box-plot column demonstrates the behavioral score distributions of target behaviors for the corresponding annotation.\label{figure:behavioral-score-distributions}}
 \end{figure}
 
-\section{Performance Evaluation}\label{section:performance-evaluation}
+
 Computed behavioral score vectors are used for prediction and also utilized as confidence scores.
 Figure~\ref{figure:behavioral-score-distributions} shows behavioral score distribution for each category for all splits.
 Except for the \Feeding category, the median score of the correct target behavioral category is greater than $0.5$, and the computed behavioral scores successfully characterize categories.
