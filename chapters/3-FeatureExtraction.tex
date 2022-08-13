@@ -2,12 +2,12 @@
 \chapter{\bf FEATURE EXTRACTION}\label{chapter:feature-extraction}
 \section{Overview of Feature Extraction}
 For a single experiment data, i.e., a single fruit fly recorded between ZT10 and ZT2 (zeitgeber time 10 and 2), feature extraction consists of four consecutive steps,  where the input in the present stage is the output of the previous one.
-In this study, the input of the first step is the raw output signal of the tracking and pose estimation model which is produced by DeepLabCut, a toolbox for markerless pose estimation.
+In the behavioral analysis pipeline, the input of the first stage is the raw output signal of the tracking and pose estimation data which is produced by DeepLabCut, a toolbox for markerless pose estimation.
 The feature extraction steps are as follows:
 
 \begin{enumerate}
 	\item Constructing pose values and preprocessing; dealing with occluded body parts, alignment of different orientations, filtering, and imputation.
-	\item Computing spatio-temporal features, such as distances between body parts, velocity, and angular velocity from body part positions.
+	\item Computing spatio-temporal features from body part positions, such as distances and angles between body parts, velocities, and angular velocities.
 	\item Computing dynamic postural features by extending spatio-temporal features to multiple timescales using wavelet transformation and sliding window statistics.
 	\item Computing normalized high-dimensional behavioral representations.
 \end{enumerate}
@@ -43,7 +43,7 @@ These additional procedures deal with the occluded body parts of the fly, alignm
 
 \subsection{Occluded Body Parts}\label{section:dealing-with-occluded-body-parts}
 The two-dimensional nature of the video recordings introduces several significant challenges,  one of which is the occluded body parts.
-Occlusion describes various cases where the tracked parts are eclipsed by other parts in the view area.
+Occlusion describes various cases where the tracked body parts become invisible from the camera's perspective due to being eclipsed by other body parts or because of the orientations of the animal's body that obstruct observing particular body parts.
 As we are interested in behaviors that are characterized by particular body parts, occlusion introduces a great challenge.
 Obviously, it is impossible to capture a switch-like movement of haltere, when haltere is occluded.
 
